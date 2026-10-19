@@ -25,44 +25,34 @@ Chrome 브라우저 초기 설정부터 온라인교무실 접속 및 바로가�
 
 ## 📑 수록 매뉴얼 목록 (7종)
 
-| 번호 | 매뉴얼 제목 | 분류 | 단계 수 | 원본 Canva 연동 |
-|:---:|:---|:---:|:---:|:---:|
-| **01** | [크롬브라우저 기본앱으로 설정하는 방법](chrome-default-app-guide-with-canva-link.html) | 브라우저 환경 | 3단계 | [Canva 열기](https://www.canva.com/design/DAGotK1iBWQ/fQ9N3piaD0zZCDtNWv6vCw/view?utm_content=DAGotK1iBWQ&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utm_id=h39e2295cc7) |
-| **02** | [크롬 북마크바 표시 방법](bookmark-bar-manual-with-canva-link.html) | 브라우저 환경 | 3단계 | [Canva 열기](https://www.canva.com/design/DAGoE56L5Qw/zEwEBK0UluCzBb1HR838Cg/view?utm_content=DAGoE56L5Qw&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utm_id=h7dc1509390) |
-| **03** | [바탕화면에 온라인교무실 바로가기 버튼 만들기](desktop-button-guide-manual.html) | 온라인교무실 | 4단계 | [Canva 열기](https://www.canva.com/design/DAHGJQe8CAA/kYI9m7jIEDhPaAbkuLZDGg/view?utm_content=DAHGJQe8CAA&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utm_id=ha7f0287432) |
-| **04** | [메인 페이지 편집 방법](main-page-edit-guide-manual.html) | 온라인교무실 | 4단계 | [Canva 열기](https://www.canva.com/design/DAGm6pqOZJM/rQnX-rH46Qv1cxtFaN2xhg/view?utm_content=DAGm6pqOZJM&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utm_id=h48af137ff0) |
-| **05** | [구글 Notebook LM 생성 후 공유 방법](notebooklm-create-share-guide-manual.html) | AI & 업무도구 | 11단계 | [Canva 열기](https://www.canva.com/design/DAHIAXtwfPQ/c0rlZicbmWImDTlLa5JJkQ/view?utm_content=DAHIAXtwfPQ&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utm_id=h7c5f276f63) |
-| **06** | [온라인교무실 공유 폴더 권한 설정 방법](permission-setting-guide-with-canva-link.html) | 보안 & 드라이브 | 4단계 | [Canva 열기](https://www.canva.com/design/DAGm6gX_4lM/rVOmpsykESZmuqzTnOMz8A/view?utm_content=DAGm6gX_4lM&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utm_id=hb1133ff80a) |
-| **07** | [연수서명부 서명 방법](training-signature-guide-manual.html) | 교무 행정 | 4단계 | [Canva 열기](https://www.canva.com/design/DAGm6jijC7A/i3ovxr1djLZxKIW9JRvAKg/view?utm_content=DAGm6jijC7A&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utm_id=h1e3a1fe2c0) |
+| 번호 | 매뉴얼 제목 | 분류 | 단계 수 | 독립 파일 | 원본 Canva 슬라이드 |
+|:---:|:---|:---:|:---:|:---:|:---:|
+| **01** | [크롬브라우저 기본앱으로 설정하는 방법](chrome-default-app-guide-with-canva-link.html) | 브라우저 환경 | 3단계 | [파일 열기](chrome-default-app-guide-with-canva-link.html) | [Canva 열기](https://www.canva.com/design/DAGotK1iBWQ/fQ9N3piaD0zZCDtNWv6vCw/view?utm_content=DAGotK1iBWQ&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utm_id=h39e2295cc7) |
+| **02** | [크롬 북마크바 표시 방법](bookmark-bar-manual-with-canva-link.html) | 브라우저 환경 | 3단계 | [파일 열기](bookmark-bar-manual-with-canva-link.html) | [Canva 열기](https://www.canva.com/design/DAGoE56L5Qw/zEwEBK0UluCzBb1HR838Cg/view?utm_content=DAGoE56L5Qw&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utm_id=h7dc1509390) |
+| **03** | [바탕화면에 온라인교무실 바로가기 버튼 만들기](desktop-button-guide-manual.html) | 온라인교무실 | 4단계 | [파일 열기](desktop-button-guide-manual.html) | [Canva 열기](https://www.canva.com/design/DAHGJQe8CAA/kYI9m7jIEDhPaAbkuLZDGg/view?utm_content=DAHGJQe8CAA&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utm_id=ha7f0287432) |
+| **04** | [메인 페이지 편집 방법](main-page-edit-guide-manual.html) | 온라인교무실 | 4단계 | [파일 열기](main-page-edit-guide-manual.html) | [Canva 열기](https://www.canva.com/design/DAGm6pqOZJM/rQnX-rH46Qv1cxtFaN2xhg/view?utm_content=DAGm6pqOZJM&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utm_id=h48af137ff0) |
+| **05** | [구글 Notebook LM 생성 후 공유 방법](notebooklm-create-share-guide-manual.html) | AI & 업무도구 | 11단계 | [파일 열기](notebooklm-create-share-guide-manual.html) | [Canva 열기](https://www.canva.com/design/DAHIAXtwfPQ/c0rlZicbmWImDTlLa5JJkQ/view?utm_content=DAHIAXtwfPQ&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utm_id=h7c5f276f63) |
+| **06** | [온라인교무실 공유 폴더 권한 설정 방법](permission-setting-guide-with-canva-link.html) | 보안 & 드라이브 | 4단계 | [파일 열기](permission-setting-guide-with-canva-link.html) | [Canva 열기](https://www.canva.com/design/DAGm6gX_4lM/rVOmpsykESZmuqzTnOMz8A/view?utm_content=DAGm6gX_4lM&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utm_id=hb1133ff80a) |
+| **07** | [연수서명부 서명 방법](training-signature-guide-manual.html) | 교무 행정 | 4단계 | [파일 열기](training-signature-guide-manual.html) | [Canva 열기](https://www.canva.com/design/DAGm6jijC7A/i3ovxr1djLZxKIW9JRvAKg/view?utm_content=DAGm6jijC7A&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utm_id=h1e3a1fe2c0) |
 
 ---
 
 ## ✨ 주요 기능
 
-### 1. 단일 파일 완성형 포털 (All-in-One SPA)
-- 별도의 이미지 폴더나 백엔드 서버 없이 `index.html` 하나로 7개 매뉴얼 전체가 완벽 구동됩니다.
-- 모든 스크린샷 이미지가 `base64`로 인코딩되어 있어 인터넷이 차단된 폐쇄망이나 오프라인 환경에서도 100% 정상 작동합니다.
+### 1. 단순하고 직관적인 1x7 버튼 레이아웃
+- 상단에 **'온라인 교무실 매뉴얼'** 메인 타이틀과 함께 7개의 매뉴얼 연결 버튼이 번호 없이 깔끔하게 **1행 7열(1x7)** 형태로 한눈에 펼쳐집니다.
+- 버튼을 클릭하면 화면 깜빡임이나 페이지 이동 없이 하단에 해당 매뉴얼 본문이 즉시 표시됩니다.
 
-### 2. 홈 대시보드 및 실시간 검색
-- **실시간 검색**: 제목, 요약문, 개별 단계 키워드까지 타이핑 즉시 실시간 필터링 (`/` 키로 검색창 포커스).
-- **카테고리 칩 필터**: `전체`, `브라우저 환경`, `온라인교무실`, `AI & 도구`, `보안 & 권한`, `교무 행정`.
-- **단계 미리보기**: 카드 내에서 주요 절차 칩을 미리 확인 가능.
+### 2. 세부단계별 고화질 스크린샷 돋보기(🔍) 모달 뷰어
+- 각 매뉴얼의 세부 절차 단계마다 우측 상단 돋보기(`🔍`) 버튼이 완벽하게 맞춤 배치되어 있습니다.
+- 버튼 클릭 시 해당 단계의 고화질 원본 스크린샷이 모달 팝업으로 즉시 확대 표시되며, `ESC` 키나 바깥 배경 클릭으로 닫을 수 있습니다.
 
-### 3. 일체형 매뉴얼 리더 뷰 (In-Portal Viewer)
-- 카드 클릭 시 페이지 전환 없이 부드럽게 본문 뷰어로 이동.
-- **상단 고정 툴바**:
-  - `← 전체 목록으로` (홈 복귀)
-  - 매뉴얼 즉시 전환 드롭다운 셀렉터
-  - `이전` / `다음` 매뉴얼 간편 이동
-  - `링크 복사` (현재 매뉴얼 해시 링크 클립보드 복사)
-  - `인쇄` (현재 열람 중인 매뉴얼만 인쇄)
+### 3. 각 매뉴얼 및 모달 내 원본 Canva 슬라이드 바로가기
+- 각 매뉴얼 상단 및 이미지 모달 팝업 내 파란색 **[원본 Canva 슬라이드 열기]** 버튼을 통해 원본 고화질 Canva 프레젠테이션으로 즉시 연결됩니다.
 
-### 4. 고화질 스크린샷 확대 모달 (🔍)
-- 각 단계의 돋보기(`🔍`) 버튼 클릭 시 전체 화면 크기의 고화질 캡처 팝업.
-- 단일 이미지 및 멀티 이미지 갤러리 지원 (`ESC` 키 및 바깥 배경 클릭으로 닫기).
-
-### 5. URL 해시 라우팅 지원
-- 브라우저 주소창에 `#notebooklm`, `#chrome-default` 등 해시를 붙여 특정 매뉴얼로 직접 연결할 수 있으며, 뒤로가기/앞으로가기 내비게이션을 지원합니다.
+### 4. URL 해시 라우팅 및 인쇄 지원
+- 브라우저 주소창에 `#notebooklm`, `#chrome-default` 등 해시를 붙여 특정 매뉴얼로 직접 연결할 수 있습니다.
+- 상단 **[인쇄하기]** 버튼 클릭 시 현재 선택된 매뉴얼만 인쇄용 규격 레이아웃으로 깔끔하게 출력됩니다.
 
 ---
 
