@@ -1385,7 +1385,7 @@
   <div class="modal" id="addManualModal" role="dialog" aria-modal="true" aria-label="새 매뉴얼 추가" hidden>
     <div class="modal-card add-modal-card">
       <div class="modal-header-bar">
-        <h2 class="add-modal-title">새 매뉴얼 추가</h2>
+        <h2 class="add-modal-title">새 매뉴얼 추가 및 배포 파일 다운로드</h2>
         <button class="modal-close" type="button" aria-label="닫기" onclick="closeAddManualModal()">×</button>
       </div>
       <form id="addManualForm" onsubmit="handleAddManualSubmit(event)">
@@ -1411,12 +1411,16 @@
           <label for="manualCanvaUrl">4. 원본 Canva 슬라이드 링크 (선택)</label>
           <input type="url" id="manualCanvaUrl" placeholder="https://www.canva.com/design/...">
         </div>
+        <div id="customManualsListBox" style="display:none;margin-top:12px;padding:12px;border-radius:8px;background:#f8fafc;border:1px solid var(--line);">
+          <div style="font-size:12.5px;font-weight:800;color:var(--ink-secondary);margin-bottom:8px;">📌 현재 추가된 신규 매뉴얼 목록 (pages/ 폴더용 개별 파일)</div>
+          <div id="customManualsListItems" style="display:grid;gap:6px;"></div>
+        </div>
         <div class="add-modal-actions">
-          <button type="button" class="btn-secondary" onclick="downloadUpdatedIndexHtml()" title="추가된 매뉴얼이 영구 포함된 index.html 파일 다운로드">
-            💾 통합 index.html 다운로드
+          <button type="button" class="btn-secondary" onclick="downloadAllDeploymentFiles()" title="통합 index.html 파일과 추가된 개별 HTML 파일들을 함께 다운로드합니다">
+            💾 배포 파일 일괄 다운로드 (index.html + 개별 HTML)
           </button>
           <div style="display:flex;gap:8px;">
-            <button type="button" class="btn-secondary" onclick="closeAddManualModal()">취소</button>
+            <button type="button" class="btn-secondary" onclick="closeAddManualModal()">닫기</button>
             <button type="submit" class="btn-primary">매뉴얼 추가하기</button>
           </div>
         </div>
@@ -1539,7 +1543,8 @@
     bindImageToggles(document);
 
     // Add Manual Modal Logic
-    function openAddManualModal() {
+    async function openAddManualModal() {
+      await refreshCustomManualsModalList();
       addModal.hidden = false;
       document.body.classList.add('modal-open');
     }
@@ -1586,14 +1591,14 @@
     }
 
     function processUploadedFile(file) {
-      uploadedFileName = file.name;
+      uploadedFileName = file.name.endsWith('.html') || file.name.endsWith('.htm') ? file.name : (file.name + '.html');
       const reader = new FileReader();
       reader.onload = (ev) => {
         uploadedRawHtml = ev.target.result;
-        document.getElementById('fileDropText').textContent = '✅ 선택됨: ' + file.name;
+        document.getElementById('fileDropText').textContent = '✅ 선택됨: ' + uploadedFileName;
         const parser = new DOMParser();
         const doc = parser.parseFromString(uploadedRawHtml, 'text/html');
-        const h1Text = doc.querySelector('h1')?.textContent?.trim() || doc.title?.trim() || file.name.replace(/\.html?$/i, '');
+        const h1Text = doc.querySelector('h1')?.textContent?.trim() || doc.title?.trim() || uploadedFileName.replace(/\.html?$/i, '');
         const titleInput = document.getElementById('manualShortTitle');
         if (!titleInput.value.trim()) {
           titleInput.value = h1Text.length > 18 ? h1Text.slice(0, 18) : h1Text;
@@ -1628,20 +1633,30 @@
     async function saveCustomManualToDB(item) {
       try {
         const db = await openManualDB();
-        const tx = db.transaction('manuals', 'readwrite');
-        tx.objectStore('manuals').put(item);
+        return new Promise((resolve) => {
+          const tx = db.transaction('manuals', 'readwrite');
+          tx.objectStore('manuals').put(item);
+          tx.oncomplete = () => resolve(true);
+          tx.onerror = () => resolve(false);
+        });
       } catch (e) {
         console.warn('IndexedDB save failed:', e);
+        return false;
       }
     }
 
     async function deleteCustomManualFromDB(id) {
       try {
         const db = await openManualDB();
-        const tx = db.transaction('manuals', 'readwrite');
-        tx.objectStore('manuals').delete(id);
+        return new Promise((resolve) => {
+          const tx = db.transaction('manuals', 'readwrite');
+          tx.objectStore('manuals').delete(id);
+          tx.oncomplete = () => resolve(true);
+          tx.onerror = () => resolve(false);
+        });
       } catch (e) {
         console.warn('IndexedDB delete failed:', e);
+        return false;
       }
     }
 
@@ -1657,6 +1672,44 @@
       } catch (e) {
         return [];
       }
+    }
+
+    async function refreshCustomManualsModalList() {
+      const listBox = document.getElementById('customManualsListBox');
+      const itemsContainer = document.getElementById('customManualsListItems');
+      const saved = await loadCustomManualsFromDB();
+      if (!saved.length) {
+        listBox.style.display = 'none';
+        itemsContainer.innerHTML = '';
+        return;
+      }
+      listBox.style.display = 'block';
+      itemsContainer.innerHTML = saved.map(item => `
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 10px;background:#fff;border:1px solid var(--line);border-radius:6px;font-size:12.5px;">
+          <span><strong>${item.title}</strong> <span style="color:var(--muted);">(${item.fileName || (item.id + '.html')})</span></span>
+          <button type="button" class="btn-secondary" style="padding:4px 10px;font-size:11.5px;" onclick="downloadSingleCustomManual('${item.id}')">개별 HTML 다운로드</button>
+        </div>
+      `).join('');
+    }
+
+    function triggerBlobDownload(content, filename) {
+      const blob = new Blob([content], { type: 'text/html;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 5000);
+    }
+
+    async function downloadSingleCustomManual(id) {
+      const saved = await loadCustomManualsFromDB();
+      const item = saved.find(m => m.id === id);
+      if (!item || !item.rawHtml) return;
+      const fname = item.fileName || (item.id + '.html');
+      triggerBlobDownload(item.rawHtml, fname);
     }
 
     function buildPaneHtmlFromRaw(rawHtml, canvaUrl, fileName) {
@@ -1741,25 +1794,23 @@
       document.getElementById(`pane-${id}`)?.remove();
       const idx = MANUAL_LIST.findIndex(m => m.id === id);
       if (idx >= 0) MANUAL_LIST.splice(idx, 1);
+      await refreshCustomManualsModalList();
       if (currentManualId === id) {
         selectManual(MANUAL_LIST[0].id);
       }
     }
 
-    async function handleAddManualSubmit(e) {
-      e.preventDefault();
-      if (!uploadedRawHtml) {
-        alert('먼저 업로드할 매뉴얼 HTML 파일을 선택해주세요.');
-        return;
-      }
-      const title = document.getElementById('manualShortTitle').value.trim();
+    async function registerCurrentFormManual() {
+      if (!uploadedRawHtml) return null;
+      const title = document.getElementById('manualShortTitle').value.trim() || uploadedFileName.replace(/\.html?$/i, '');
       const stepsCount = parseInt(document.getElementById('manualStepsCount').value, 10) || 1;
       const canva = document.getElementById('manualCanvaUrl').value.trim();
       const slugBase = (uploadedFileName || title).replace(/\.html?$/i, '').replace(/[^a-zA-Z0-9가-힣_-]/g, '-').toLowerCase();
       const id = 'manual-' + (slugBase || Date.now());
+      const safeFileName = uploadedFileName || (id + '.html');
 
-      const contentHtml = buildPaneHtmlFromRaw(uploadedRawHtml, canva, uploadedFileName);
-      const item = { id, title, stepsCount, canva, contentHtml, rawHtml: uploadedRawHtml, fileName: uploadedFileName };
+      const contentHtml = buildPaneHtmlFromRaw(uploadedRawHtml, canva, safeFileName);
+      const item = { id, title, stepsCount, canva, contentHtml, rawHtml: uploadedRawHtml, fileName: safeFileName };
 
       renderCustomManual(item);
       await saveCustomManualToDB(item);
@@ -1768,17 +1819,31 @@
       document.getElementById('fileDropText').textContent = '📂 클릭하여 HTML 파일 선택 (또는 여기로 드래그)';
       uploadedRawHtml = '';
       uploadedFileName = '';
-
-      closeAddManualModal();
-      selectManual(id);
+      await refreshCustomManualsModalList();
+      return item;
     }
 
-    function downloadUpdatedIndexHtml() {
+    async function handleAddManualSubmit(e) {
+      e.preventDefault();
+      if (!uploadedRawHtml) {
+        alert('먼저 업로드할 매뉴얼 HTML 파일을 선택해주세요.');
+        return;
+      }
+      const item = await registerCurrentFormManual();
+      if (item) {
+        closeAddManualModal();
+        selectManual(item.id);
+      }
+    }
+
+    function buildUpdatedIndexHtmlString() {
       const clone = document.documentElement.cloneNode(true);
       clone.querySelector('#globalImageModal')?.setAttribute('hidden', '');
       clone.querySelector('#addManualModal')?.setAttribute('hidden', '');
       clone.querySelector('body')?.classList.remove('modal-open');
       clone.querySelectorAll('.nav-btn-del').forEach(el => el.remove());
+      clone.querySelectorAll('.manual-nav-btn').forEach(el => el.removeAttribute('data-custom'));
+      clone.querySelectorAll('.pane-standalone-link').forEach(el => el.removeAttribute('data-blob-url'));
       clone.querySelectorAll('.img-toggle').forEach(el => el.removeAttribute('data-bound'));
       const scriptEl = clone.querySelector('#mainPortalScript');
       if (scriptEl) {
@@ -1788,12 +1853,26 @@
           'const MANUAL_LIST = ' + JSON.stringify(cleanList) + ';'
         );
       }
-      const htmlStr = '<!doctype html>\n' + clone.outerHTML;
-      const blob = new Blob([htmlStr], { type: 'text/html;charset=utf-8' });
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = 'index.html';
-      a.click();
+      return '<!doctype html>\n' + clone.outerHTML;
+    }
+
+    async function downloadAllDeploymentFiles() {
+      // If user selected a file in the form but hasn't clicked '매뉴얼 추가하기' yet, register it automatically
+      if (uploadedRawHtml) {
+        await registerCurrentFormManual();
+      }
+      const saved = await loadCustomManualsFromDB();
+      const indexHtmlStr = buildUpdatedIndexHtmlString();
+      triggerBlobDownload(indexHtmlStr, 'index.html');
+
+      saved.forEach((item, idx) => {
+        if (item.rawHtml) {
+          const fname = item.fileName || (item.id + '.html');
+          setTimeout(() => {
+            triggerBlobDownload(item.rawHtml, fname);
+          }, (idx + 1) * 350);
+        }
+      });
     }
 
     handleHash();
