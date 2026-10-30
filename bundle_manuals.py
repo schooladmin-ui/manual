@@ -300,7 +300,7 @@ index_html = f"""<!doctype html>
 
     .manual-nav-grid {{
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(5, 1fr);
       gap: 10px;
     }}
 
