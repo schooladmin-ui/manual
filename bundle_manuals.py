@@ -1489,6 +1489,7 @@ index_html = f"""<!doctype html>
     const deployDownloadBtn = document.getElementById('btnHeaderDeployDownload');
 
     let currentManualId = MANUAL_LIST[0].id;
+    const BUILTIN_IDS = new Set(MANUAL_LIST.map(m => m.id));
     let uploadedRawHtml = '';
     let uploadedFileName = '';
     let uploadedFileType = ''; // 'html' | 'pdf' | 'image'
@@ -1807,7 +1808,7 @@ index_html = f"""<!doctype html>
             const valid = [];
             all.forEach(item => {{
               const c = item.contentHtml || '';
-              if (c.includes('JFIF') || c.startsWith('%PDF-') || c.includes('\ufffd\ufffd\ufffd')) {{
+              if (BUILTIN_IDS.has(item.id) || c.includes('JFIF') || c.startsWith('%PDF-') || c.includes('\ufffd\ufffd\ufffd')) {{
                 store.delete(item.id);
               }} else {{
                 valid.push(item);
@@ -2025,6 +2026,8 @@ index_html = f"""<!doctype html>
           }}, idx * 250);
         }}
       }});
+      hasOrderChanged = false;
+      if (deployDownloadBtn) deployDownloadBtn.hidden = true;
     }}
 
     // Drag and Drop Reordering for Manual Navigation Buttons
