@@ -1761,9 +1761,22 @@ index_html = f"""<!doctype html>
       try {{
         const db = await openManualDB();
         return new Promise((resolve) => {{
-          const tx = db.transaction('manuals', 'readonly');
-          const req = tx.objectStore('manuals').getAll();
-          req.onsuccess = () => resolve(req.result || []);
+          const tx = db.transaction('manuals', 'readwrite');
+          const store = tx.objectStore('manuals');
+          const req = store.getAll();
+          req.onsuccess = () => {{
+            const all = req.result || [];
+            const valid = [];
+            all.forEach(item => {{
+              const c = item.contentHtml || '';
+              if (c.includes('JFIF') || c.startsWith('%PDF-') || c.includes('\ufffd\ufffd\ufffd')) {{
+                store.delete(item.id);
+              }} else {{
+                valid.push(item);
+              }}
+            }});
+            resolve(valid);
+          }};
           req.onerror = () => resolve([]);
         }});
       }} catch (e) {{
