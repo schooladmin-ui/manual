@@ -873,6 +873,24 @@
       height: auto;
     }
 
+    .pdf-embed-wrap {
+      margin: 14px 0 6px;
+      border: 1.5px solid var(--line);
+      border-radius: 12px;
+      overflow: hidden;
+      background: #334155;
+      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.08);
+    }
+
+    .pdf-embed-frame {
+      display: block;
+      width: 100%;
+      height: 82vh;
+      min-height: 760px;
+      border: none;
+      background: #fff;
+    }
+
     .step p {
       margin: 0;
       color: var(--muted);
@@ -1396,26 +1414,26 @@
   <div class="modal" id="addManualModal" role="dialog" aria-modal="true" aria-label="새 매뉴얼 추가" hidden>
     <div class="modal-card add-modal-card">
       <div class="modal-header-bar">
-        <h2 class="add-modal-title">새 매뉴얼 추가 및 배포 파일 다운로드</h2>
+        <h2 class="add-modal-title">새 매뉴얼 추가 (HTML · PDF · 이미지)</h2>
         <button class="modal-close" type="button" aria-label="닫기" onclick="closeAddManualModal()">×</button>
       </div>
       <form id="addManualForm" onsubmit="handleAddManualSubmit(event)">
         <div class="form-group">
-          <label>1. 매뉴얼 HTML 파일 업로드 *</label>
+          <label>1. 매뉴얼 파일 업로드 (HTML, PDF, 이미지) *</label>
           <label class="file-drop-area" id="fileDropArea" for="manualFileInput">
-            <input type="file" id="manualFileInput" accept=".html,.htm" onchange="handleManualFileSelect(event)">
-            <div class="file-drop-text" id="fileDropText">📂 클릭하여 HTML 파일 선택 (또는 여기로 드래그)</div>
-            <div class="file-drop-sub">업로드 시 제목·단계 수·Canva 링크가 자동으로 입력됩니다.</div>
+            <input type="file" id="manualFileInput" accept=".html,.htm,.pdf,image/*" multiple onchange="handleManualFileSelect(event)">
+            <div class="file-drop-text" id="fileDropText">📂 클릭하여 HTML · PDF · 이미지 파일 선택 (또는 드래그)</div>
+            <div class="file-drop-sub">PDF와 이미지는 화면에 바로 표시되는 매뉴얼 페이지로 자동 변환됩니다.</div>
           </label>
         </div>
         <div class="form-row-2">
           <div class="form-group">
             <label for="manualShortTitle">2. 매뉴얼 버튼 제목 *</label>
-            <input type="text" id="manualShortTitle" placeholder="예: 구글 설문지 만들기" required>
+            <input type="text" id="manualShortTitle" placeholder="예: 학사일정 안내 / 구글 설문지" required>
           </div>
           <div class="form-group">
             <label for="manualStepsCount">3. 단계 수 *</label>
-            <input type="number" id="manualStepsCount" min="1" max="99" value="4" required>
+            <input type="number" id="manualStepsCount" min="1" max="99" value="1" required>
           </div>
         </div>
         <div class="form-group">
@@ -1461,6 +1479,29 @@
     let currentManualId = MANUAL_LIST[0].id;
     let uploadedRawHtml = '';
     let uploadedFileName = '';
+    let uploadedFileType = ''; // 'html' | 'pdf' | 'image'
+    let uploadedDataUrls = [];
+
+    function hydratePdfFrames(root = document) {
+      root.querySelectorAll('iframe.pdf-embed-frame[data-pdf-src]').forEach(frame => {
+        if (frame.dataset.hydrated === '1') return;
+        const dataUrl = frame.getAttribute('data-pdf-src');
+        if (!dataUrl || !dataUrl.startsWith('data:application/pdf;base64,')) return;
+        try {
+          const b64 = dataUrl.split(',')[1];
+          const bin = atob(b64);
+          const len = bin.length;
+          const bytes = new Uint8Array(len);
+          for (let i = 0; i < len; i++) bytes[i] = bin.charCodeAt(i);
+          const blob = new Blob([bytes], { type: 'application/pdf' });
+          const blobUrl = URL.createObjectURL(blob);
+          frame.src = blobUrl;
+          frame.dataset.hydrated = '1';
+        } catch (e) {
+          frame.src = dataUrl;
+        }
+      });
+    }
 
     function selectManual(id, updateHash = true) {
       const exists = MANUAL_LIST.some(m => m.id === id);
@@ -1473,7 +1514,9 @@
       });
 
       document.querySelectorAll('.manual-pane').forEach(pane => {
-        pane.classList.toggle('active', pane.dataset.id === id);
+        const isActive = pane.dataset.id === id;
+        pane.classList.toggle('active', isActive);
+        if (isActive) hydratePdfFrames(pane);
       });
 
       const item = MANUAL_LIST.find(m => m.id === id);
@@ -1592,38 +1635,100 @@
       });
     });
     dropArea.addEventListener('drop', (e) => {
-      const file = e.dataTransfer?.files?.[0];
-      if (file) processUploadedFile(file);
+      const files = e.dataTransfer?.files;
+      if (files && files.length) processUploadedFiles(Array.from(files));
     });
 
     function handleManualFileSelect(e) {
-      const file = e.target.files?.[0];
-      if (file) processUploadedFile(file);
+      const files = e.target.files;
+      if (files && files.length) processUploadedFiles(Array.from(files));
     }
 
-    function processUploadedFile(file) {
-      uploadedFileName = file.name.endsWith('.html') || file.name.endsWith('.htm') ? file.name : (file.name + '.html');
-      const reader = new FileReader();
-      reader.onload = (ev) => {
-        uploadedRawHtml = ev.target.result;
-        document.getElementById('fileDropText').textContent = '✅ 선택됨: ' + uploadedFileName;
+    function readFileAsDataURL(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (ev) => resolve(ev.target.result);
+        reader.onerror = () => reject(reader.error);
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function readFileAsText(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (ev) => resolve(ev.target.result);
+        reader.onerror = () => reject(reader.error);
+        reader.readAsText(file, 'utf-8');
+      });
+    }
+
+    function buildStandaloneHtmlFromPdfOrImage(title, type, dataUrls, canvaUrl) {
+      const canvaBtn = canvaUrl ? `<a class="source-button" href="${canvaUrl}" target="_blank" rel="noopener">원본 Canva 슬라이드 열기</a>` : '';
+      let bodySection = '';
+      if (type === 'pdf') {
+        bodySection = `
+          <div class="pdf-embed-wrap">
+            <iframe class="pdf-embed-frame" data-pdf-src="${dataUrls[0]}" src="${dataUrls[0]}" title="${title} PDF 문서"></iframe>
+          </div>`;
+      } else {
+        bodySection = dataUrls.map((url, idx) => `
+          <article class="step">
+            <div class="step-top">
+              <span class="num">${idx + 1}</span>
+              <h3>${dataUrls.length > 1 ? (title + ' (' + (idx + 1) + '/' + dataUrls.length + ')') : title}</h3>
+              <button class="img-toggle" type="button" aria-label="이미지 확대 보기" title="클릭하여 크게 보기" data-image="${url}" data-alt="${title} ${idx + 1}">🔍</button>
+            </div>
+            <figure class="inline-figure"><img src="${url}" alt="${title} ${idx + 1}"></figure>
+          </article>`).join('');
+      }
+
+      return `<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${title}</title><style>:root{--ink:#172033;--muted:#5b6475;--line:#dfe5ee;--blue:#2563eb;--blue-soft:#eff6ff}*{box-sizing:border-box}body{margin:0;background:#f5f7fb;color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI","Noto Sans KR",sans-serif;line-height:1.55}.page{max-width:1080px;margin:0 auto;padding:28px;background:#fff;min-height:100vh}header{border-bottom:2px solid var(--ink);padding-bottom:16px;margin-bottom:18px}.title-row{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}.title-highlight{background:linear-gradient(transparent 48%,#fff36a 48%,#fff36a 91%,transparent 91%);padding:0 .1em}h1{margin:0;font-size:clamp(26px,4vw,42px);line-height:1.15;letter-spacing:-.04em;font-weight:850}.source-button{display:inline-flex;align-items:center;padding:9px 14px;border-radius:999px;background:var(--blue);color:#fff;font-size:13px;font-weight:800;text-decoration:none}.step{position:relative;border:1px solid var(--line);border-radius:12px;padding:17px 18px;margin:0 0 14px;background:#fff}.step-top{display:flex;align-items:center;gap:10px;padding-right:48px;margin-bottom:8px}.num{display:grid;place-items:center;width:32px;height:32px;flex:0 0 auto;border-radius:50%;background:var(--blue);color:#fff;font-weight:850}.step h3{margin:0;font-size:18px;line-height:1.25}.img-toggle{position:absolute;top:13px;right:14px;width:35px;height:35px;display:grid;place-items:center;border:1px solid #93c5fd;border-radius:50%;padding:0;background:#fff;color:#1d4ed8;font-size:18px;cursor:pointer}.inline-figure{margin:12px 0 4px;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff}.inline-figure img{display:block;width:100%;height:auto}.pdf-embed-wrap{margin:14px 0 6px;border:1.5px solid var(--line);border-radius:12px;overflow:hidden;background:#334155}.pdf-embed-frame{display:block;width:100%;height:84vh;min-height:760px;border:none;background:#fff}</style></head><body><main class="page"><header><div class="title-row"><h1><span class="title-highlight">${title}</span></h1>${canvaBtn}</div></header>${bodySection}</main><script>document.querySelectorAll('iframe.pdf-embed-frame[data-pdf-src]').forEach(f=>{try{const b=atob(f.dataset.pdfSrc.split(',')[1]),u=new Uint8Array(b.length);for(let i=0;i<b.length;i++)u[i]=b.charCodeAt(i);f.src=URL.createObjectURL(new Blob([u],{type:'application/pdf'}))}catch(e){}});<\/script></body></html>`;
+    }
+
+    async function processUploadedFiles(files) {
+      const first = files[0];
+      const baseName = first.name.replace(/\.[^.]+$/, '');
+      const ext = (first.name.split('.').pop() || '').toLowerCase();
+      const titleInput = document.getElementById('manualShortTitle');
+
+      if (ext === 'html' || ext === 'htm') {
+        uploadedFileType = 'html';
+        uploadedFileName = first.name;
+        uploadedRawHtml = await readFileAsText(first);
+        uploadedDataUrls = [];
+        document.getElementById('fileDropText').textContent = '✅ HTML 선택됨: ' + first.name;
         const parser = new DOMParser();
         const doc = parser.parseFromString(uploadedRawHtml, 'text/html');
-        const h1Text = doc.querySelector('h1')?.textContent?.trim() || doc.title?.trim() || uploadedFileName.replace(/\.html?$/i, '');
-        const titleInput = document.getElementById('manualShortTitle');
+        const h1Text = doc.querySelector('h1')?.textContent?.trim() || doc.title?.trim() || baseName;
         if (!titleInput.value.trim()) {
           titleInput.value = h1Text.length > 18 ? h1Text.slice(0, 18) : h1Text;
         }
         const steps = doc.querySelectorAll('.step').length;
-        if (steps > 0) {
-          document.getElementById('manualStepsCount').value = steps;
-        }
+        if (steps > 0) document.getElementById('manualStepsCount').value = steps;
         const canvaLink = doc.querySelector('a.source-button')?.getAttribute('href') || '';
         if (canvaLink && !document.getElementById('manualCanvaUrl').value) {
           document.getElementById('manualCanvaUrl').value = canvaLink;
         }
-      };
-      reader.readAsText(file, 'utf-8');
+      } else if (ext === 'pdf' || first.type === 'application/pdf') {
+        uploadedFileType = 'pdf';
+        uploadedFileName = baseName + '-pdf-guide.html';
+        const dataUrl = await readFileAsDataURL(first);
+        uploadedDataUrls = [dataUrl];
+        uploadedRawHtml = 'PDF_PENDING';
+        document.getElementById('fileDropText').textContent = '✅ PDF 선택됨: ' + first.name;
+        if (!titleInput.value.trim()) titleInput.value = baseName.slice(0, 18);
+        document.getElementById('manualStepsCount').value = 1;
+      } else if (first.type.startsWith('image/') || ['png', 'jpg', 'jpeg', 'gif', 'webp', 'svg'].includes(ext)) {
+        uploadedFileType = 'image';
+        uploadedFileName = baseName + '-image-guide.html';
+        uploadedDataUrls = await Promise.all(files.map(f => readFileAsDataURL(f)));
+        uploadedRawHtml = 'IMAGE_PENDING';
+        document.getElementById('fileDropText').textContent = `✅ 이미지 ${files.length}장 선택됨: ${first.name}${files.length > 1 ? ' 외 ' + (files.length - 1) + '장' : ''}`;
+        if (!titleInput.value.trim()) titleInput.value = baseName.slice(0, 18);
+        document.getElementById('manualStepsCount').value = files.length;
+      } else {
+        alert('지원하지 않는 파일 형식입니다. HTML, PDF 또는 이미지 파일을 선택해주세요.');
+      }
     }
 
     // IndexedDB Storage for Custom Manuals
@@ -1795,6 +1900,7 @@
 
       contentArea.appendChild(pane);
       bindImageToggles(pane);
+      hydratePdfFrames(pane);
     }
 
     async function removeCustomManual(e, id) {
@@ -1821,16 +1927,23 @@
       const id = 'manual-' + (slugBase || Date.now());
       const safeFileName = uploadedFileName || (id + '.html');
 
-      const contentHtml = buildPaneHtmlFromRaw(uploadedRawHtml, canva, safeFileName);
-      const item = { id, title, stepsCount, canva, contentHtml, rawHtml: uploadedRawHtml, fileName: safeFileName };
+      let finalRawHtml = uploadedRawHtml;
+      if (uploadedFileType === 'pdf' || uploadedFileType === 'image') {
+        finalRawHtml = buildStandaloneHtmlFromPdfOrImage(title, uploadedFileType, uploadedDataUrls, canva);
+      }
+
+      const contentHtml = buildPaneHtmlFromRaw(finalRawHtml, canva, safeFileName);
+      const item = { id, title, stepsCount, canva, contentHtml, rawHtml: finalRawHtml, fileName: safeFileName };
 
       renderCustomManual(item);
       await saveCustomManualToDB(item);
 
       document.getElementById('addManualForm').reset();
-      document.getElementById('fileDropText').textContent = '📂 클릭하여 HTML 파일 선택 (또는 여기로 드래그)';
+      document.getElementById('fileDropText').textContent = '📂 클릭하여 HTML · PDF · 이미지 파일 선택 (또는 드래그)';
       uploadedRawHtml = '';
       uploadedFileName = '';
+      uploadedFileType = '';
+      uploadedDataUrls = [];
       await refreshCustomManualsModalList();
       return item;
     }
@@ -1838,7 +1951,7 @@
     async function handleAddManualSubmit(e) {
       e.preventDefault();
       if (!uploadedRawHtml) {
-        alert('먼저 업로드할 매뉴얼 HTML 파일을 선택해주세요.');
+        alert('먼저 업로드할 파일(HTML, PDF, 이미지)을 선택해주세요.');
         return;
       }
       const item = await registerCurrentFormManual();
@@ -1857,6 +1970,10 @@
       clone.querySelectorAll('.manual-nav-btn').forEach(el => el.removeAttribute('data-custom'));
       clone.querySelectorAll('.pane-standalone-link').forEach(el => el.removeAttribute('data-blob-url'));
       clone.querySelectorAll('.img-toggle').forEach(el => el.removeAttribute('data-bound'));
+      clone.querySelectorAll('iframe.pdf-embed-frame[data-pdf-src]').forEach(frame => {
+        frame.removeAttribute('data-hydrated');
+        frame.setAttribute('src', frame.getAttribute('data-pdf-src'));
+      });
       const scriptEl = clone.querySelector('#mainPortalScript');
       if (scriptEl) {
         const cleanList = MANUAL_LIST.map(m => ({ id: m.id, title: m.title, canva: m.canva || '' }));
@@ -1869,7 +1986,6 @@
     }
 
     async function downloadAllDeploymentFiles() {
-      // If user selected a file in the form but hasn't clicked '매뉴얼 추가하기' yet, register it automatically
       if (uploadedRawHtml) {
         await registerCurrentFormManual();
       }
