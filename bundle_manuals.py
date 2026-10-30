@@ -668,9 +668,10 @@ index_html = f"""<!doctype html>
 
     .step-side-box {{
       position: relative;
-      border: 1.5px solid #bfdbfe;
-      border-radius: 10px;
-      background: #f8fafc;
+      border: 2px solid #f59e0b;
+      border-radius: 9px;
+      background: #fffbeb;
+      color: #92400e;
       padding: 14px 52px 14px 16px;
       cursor: pointer;
       transition: all 0.16s ease;
@@ -680,14 +681,14 @@ index_html = f"""<!doctype html>
     }}
 
     .step-side-box:hover {{
-      border-color: var(--blue);
-      background: var(--blue-soft);
+      border-color: #d97706;
+      background: #fef3c7;
     }}
 
     .step-side-box h4 {{
       margin: 0 0 8px;
       font-size: 14.5px;
-      color: #1e3a8a;
+      color: #92400e;
       font-weight: 800;
     }}
 
@@ -700,7 +701,14 @@ index_html = f"""<!doctype html>
       margin: 4px 0;
       font-size: 13px;
       line-height: 1.45;
-      color: var(--ink);
+      color: #92400e;
+      font-weight: 650;
+    }}
+
+    .side-important {{
+      margin-top: 0;
+      display: flex;
+      align-items: center;
     }}
 
     .group-link-panel {{
