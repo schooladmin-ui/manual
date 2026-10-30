@@ -210,7 +210,7 @@ index_html = f"""<!doctype html>
       background: #ffffff;
       border-bottom: 1px solid var(--line);
       box-shadow: var(--shadow-sm);
-      position: sticky;
+      position: static;
       top: 0;
       z-index: 50;
     }}
@@ -288,7 +288,7 @@ index_html = f"""<!doctype html>
       border-bottom: 2px solid var(--line);
       padding: 14px 20px;
       box-shadow: var(--shadow-sm);
-      position: sticky;
+      position: static;
       top: 71px;
       z-index: 40;
     }}
