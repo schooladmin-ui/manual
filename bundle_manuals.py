@@ -77,6 +77,14 @@ MANUALS = [
         "full_title": "그룹 만들기",
         "steps_count": 2,
         "canva": ""
+    },
+    {
+        "id": "manual-우리-학교--이제-구글-채팅-google-chat-으로-pdf-guide",
+        "file": "우리 학교, 이제 구글 채팅(Google Chat)으로-pdf-guide.html",
+        "short_title": "구글 채팅(Google Chat) 설치 방법",
+        "full_title": "구글 채팅(Google Chat) 설치 방법",
+        "steps_count": 1,
+        "canva": ""
     }
 ]
 
