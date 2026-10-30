@@ -222,6 +222,201 @@
       color: rgba(255, 255, 255, 0.9);
     }
 
+    .manual-add-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 10px;
+      border-radius: var(--radius-md);
+      background: #f8fafc;
+      border: 2px dashed #93c5fd;
+      color: var(--blue);
+      cursor: pointer;
+      transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+      min-height: 66px;
+      font-family: inherit;
+    }
+
+    .manual-add-btn:hover {
+      background: var(--blue-soft);
+      border-color: var(--blue);
+      color: var(--blue-dark);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .add-btn-icon {
+      font-size: 22px;
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .add-btn-label {
+      font-size: 12px;
+      font-weight: 750;
+      margin-top: 3px;
+    }
+
+    .nav-btn-del {
+      position: absolute;
+      top: 5px;
+      right: 6px;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(15, 23, 42, 0.12);
+      color: var(--ink-secondary);
+      font-size: 13px;
+      line-height: 1;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      opacity: 0;
+      transition: all 0.15s ease;
+    }
+
+    .manual-nav-btn:hover .nav-btn-del {
+      opacity: 1;
+    }
+
+    .manual-nav-btn.active .nav-btn-del {
+      background: rgba(255, 255, 255, 0.22);
+      color: #fff;
+    }
+
+    .nav-btn-del:hover {
+      background: var(--red) !important;
+      color: #fff !important;
+    }
+
+    .add-modal-card {
+      width: min(94vw, 540px);
+      padding: 24px;
+    }
+
+    .add-modal-title {
+      margin: 0;
+      font-size: 20px;
+      font-weight: 850;
+      color: var(--ink-dark);
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 13.5px;
+      font-weight: 750;
+      color: var(--ink-secondary);
+      margin-bottom: 6px;
+    }
+
+    .form-group input[type="text"],
+    .form-group input[type="number"],
+    .form-group input[type="url"] {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1.5px solid var(--line);
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      font-family: inherit;
+      color: var(--ink);
+      outline: none;
+      transition: border-color 0.15s;
+    }
+
+    .form-group input:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+    }
+
+    .file-drop-area {
+      border: 2px dashed #93c5fd;
+      border-radius: var(--radius-md);
+      background: var(--blue-soft);
+      padding: 18px 16px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .file-drop-area:hover {
+      border-color: var(--blue);
+      background: #dbeafe;
+    }
+
+    .file-drop-area input[type="file"] {
+      display: none;
+    }
+
+    .file-drop-text {
+      font-size: 14px;
+      font-weight: 750;
+      color: var(--blue-dark);
+    }
+
+    .file-drop-sub {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    .form-row-2 {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 12px;
+    }
+
+    .add-modal-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-top: 20px;
+      padding-top: 16px;
+      border-top: 1px solid var(--line);
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      padding: 10px 20px;
+      border-radius: var(--radius-sm);
+      border: none;
+      background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
+      color: #fff;
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+      font-family: inherit;
+      box-shadow: 0 3px 10px rgba(37, 99, 235, 0.25);
+    }
+
+    .btn-primary:hover {
+      background: #1d4ed8;
+    }
+
+    .btn-secondary {
+      padding: 9px 14px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--line);
+      background: #f8fafc;
+      color: var(--ink-secondary);
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .btn-secondary:hover {
+      background: var(--blue-soft);
+      color: var(--blue-dark);
+      border-color: var(--blue-border);
+    }
+
     /* =========================================================
        4. Manual Content Area
        ========================================================= */
@@ -989,7 +1184,7 @@
        ========================================================= -->
   <nav class="nav-bar-section" aria-label="매뉴얼 선택 바">
     <div class="nav-bar-container">
-      <div class="manual-nav-grid">
+      <div class="manual-nav-grid" id="manualNavGrid">
         
     <a href="#chrome-default" class="manual-nav-btn" data-id="chrome-default" onclick="selectManual('chrome-default'); event.preventDefault();">
       <span class="nav-btn-title">크롬 기본 앱 설정</span>
@@ -1036,6 +1231,10 @@
       <span class="nav-btn-steps">2단계</span>
     </a>
     
+        <button type="button" class="manual-add-btn" id="openAddManualBtn" onclick="openAddManualModal()" title="새 매뉴얼 추가">
+          <span class="add-btn-icon">+</span>
+          <span class="add-btn-label">매뉴얼 추가</span>
+        </button>
       </div>
     </div>
   </nav>
@@ -1043,7 +1242,7 @@
   <!-- =========================================================
        Manual Content Area
        ========================================================= -->
-  <div class="content-area">
+  <div class="content-area" id="manualContentArea">
     
     <div id="pane-chrome-default" class="manual-pane" data-id="chrome-default" data-canva="https://www.canva.com/design/DAGotK1iBWQ/fQ9N3piaD0zZCDtNWv6vCw/view?utm_content=DAGotK1iBWQ&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utm_id=h39e2295cc7">
       <main class="page">
@@ -1181,6 +1380,51 @@
   </div>
 
   <!-- =========================================================
+       Add Manual Modal (+ Button)
+       ========================================================= -->
+  <div class="modal" id="addManualModal" role="dialog" aria-modal="true" aria-label="새 매뉴얼 추가" hidden>
+    <div class="modal-card add-modal-card">
+      <div class="modal-header-bar">
+        <h2 class="add-modal-title">새 매뉴얼 추가</h2>
+        <button class="modal-close" type="button" aria-label="닫기" onclick="closeAddManualModal()">×</button>
+      </div>
+      <form id="addManualForm" onsubmit="handleAddManualSubmit(event)">
+        <div class="form-group">
+          <label>1. 매뉴얼 HTML 파일 업로드 *</label>
+          <label class="file-drop-area" id="fileDropArea" for="manualFileInput">
+            <input type="file" id="manualFileInput" accept=".html,.htm" onchange="handleManualFileSelect(event)">
+            <div class="file-drop-text" id="fileDropText">📂 클릭하여 HTML 파일 선택 (또는 여기로 드래그)</div>
+            <div class="file-drop-sub">업로드 시 제목·단계 수·Canva 링크가 자동으로 입력됩니다.</div>
+          </label>
+        </div>
+        <div class="form-row-2">
+          <div class="form-group">
+            <label for="manualShortTitle">2. 매뉴얼 버튼 제목 *</label>
+            <input type="text" id="manualShortTitle" placeholder="예: 구글 설문지 만들기" required>
+          </div>
+          <div class="form-group">
+            <label for="manualStepsCount">3. 단계 수 *</label>
+            <input type="number" id="manualStepsCount" min="1" max="99" value="4" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="manualCanvaUrl">4. 원본 Canva 슬라이드 링크 (선택)</label>
+          <input type="url" id="manualCanvaUrl" placeholder="https://www.canva.com/design/...">
+        </div>
+        <div class="add-modal-actions">
+          <button type="button" class="btn-secondary" onclick="downloadUpdatedIndexHtml()" title="추가된 매뉴얼이 영구 포함된 index.html 파일 다운로드">
+            💾 통합 index.html 다운로드
+          </button>
+          <div style="display:flex;gap:8px;">
+            <button type="button" class="btn-secondary" onclick="closeAddManualModal()">취소</button>
+            <button type="submit" class="btn-primary">매뉴얼 추가하기</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- =========================================================
        Simple Footer
        ========================================================= -->
   <footer class="simple-footer">
@@ -1188,19 +1432,20 @@
   </footer>
 
   <!-- =========================================================
-       Navigation & Modal Script
+       Navigation, Modal & Dynamic Manual Upload Script
        ========================================================= -->
-  <script>
+  <script id="mainPortalScript">
     const MANUAL_LIST = [{"id": "chrome-default", "title": "크롬 기본 앱 설정", "canva": "https://www.canva.com/design/DAGotK1iBWQ/fQ9N3piaD0zZCDtNWv6vCw/view?utm_content=DAGotK1iBWQ&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utm_id=h39e2295cc7"}, {"id": "bookmark-bar", "title": "크롬 북마크바 표시", "canva": "https://www.canva.com/design/DAGoE56L5Qw/zEwEBK0UluCzBb1HR838Cg/view?utm_content=DAGoE56L5Qw&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utm_id=h7dc1509390"}, {"id": "desktop-button", "title": "바탕화면 바로가기", "canva": "https://www.canva.com/design/DAHGJQe8CAA/kYI9m7jIEDhPaAbkuLZDGg/view?utm_content=DAHGJQe8CAA&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utm_id=ha7f0287432"}, {"id": "main-page-edit", "title": "메인 페이지 편집", "canva": "https://www.canva.com/design/DAGm6pqOZJM/rQnX-rH46Qv1cxtFaN2xhg/view?utm_content=DAGm6pqOZJM&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utm_id=h48af137ff0"}, {"id": "notebooklm", "title": "구글 NotebookLM", "canva": "https://www.canva.com/design/DAHIAXtwfPQ/c0rlZicbmWImDTlLa5JJkQ/view?utm_content=DAHIAXtwfPQ&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utm_id=h7c5f276f63"}, {"id": "permission-setting", "title": "공유 폴더 권한", "canva": "https://www.canva.com/design/DAGm6gX_4lM/rVOmpsykESZmuqzTnOMz8A/view?utm_content=DAGm6gX_4lM&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utm_id=hb1133ff80a"}, {"id": "training-signature", "title": "연수서명부 서명", "canva": "https://www.canva.com/design/DAGm6jijC7A/i3ovxr1djLZxKIW9JRvAKg/view?utm_content=DAGm6jijC7A&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utm_id=h1e3a1fe2c0"}, {"id": "google-chat", "title": "구글 채팅방(스페이스) 생성", "canva": ""}, {"id": "google-groups", "title": "그룹 만들기", "canva": ""}];
-    const navButtons = document.querySelectorAll('.manual-nav-btn');
-    const panes = document.querySelectorAll('.manual-pane');
     
     const modal = document.getElementById('globalImageModal');
     const modalGallery = document.getElementById('globalModalGallery');
     const modalCloseBtn = modal.querySelector('.modal-close');
     const modalCanvaBtn = document.getElementById('modalCanvaBtn');
+    const addModal = document.getElementById('addManualModal');
 
     let currentManualId = MANUAL_LIST[0].id;
+    let uploadedRawHtml = '';
+    let uploadedFileName = '';
 
     function selectManual(id, updateHash = true) {
       const exists = MANUAL_LIST.some(m => m.id === id);
@@ -1208,13 +1453,11 @@
 
       currentManualId = id;
 
-      // Update 1x7 nav button active states
-      navButtons.forEach(btn => {
+      document.querySelectorAll('.manual-nav-btn').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.id === id);
       });
 
-      // Update manual panes
-      panes.forEach(pane => {
+      document.querySelectorAll('.manual-pane').forEach(pane => {
         pane.classList.toggle('active', pane.dataset.id === id);
       });
 
@@ -1244,9 +1487,8 @@
     }
 
     window.addEventListener('hashchange', handleHash);
-    window.addEventListener('DOMContentLoaded', handleHash);
 
-    // Modal Logic
+    // Image Modal Logic
     function closeModal() {
       modal.hidden = true;
       document.body.classList.remove('modal-open');
@@ -1258,45 +1500,307 @@
       if (e.target === modal) closeModal();
     });
 
-    // Bind all .img-toggle buttons across all panes
-    document.querySelectorAll('.img-toggle').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        
-        // Find corresponding pane's canva link
-        const pane = btn.closest('.manual-pane');
-        const canvaUrl = (pane && pane.dataset.canva) ? pane.dataset.canva : (MANUAL_LIST.find(m => m.id === currentManualId)?.canva || '');
-        if (modalCanvaBtn) {
-          modalCanvaBtn.href = canvaUrl || '#';
-          modalCanvaBtn.style.visibility = canvaUrl ? 'visible' : 'hidden';
-        }
-
-        let urls = [];
-        if (btn.dataset.images) {
-          try {
-            urls = JSON.parse(decodeURIComponent(btn.dataset.images));
-          } catch(err) {
-            try { urls = JSON.parse(btn.dataset.images); } catch(err2) {}
+    function bindImageToggles(root = document) {
+      root.querySelectorAll('.img-toggle').forEach(btn => {
+        if (btn.dataset.bound === '1') return;
+        btn.dataset.bound = '1';
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const pane = btn.closest('.manual-pane');
+          const canvaUrl = (pane && pane.dataset.canva) ? pane.dataset.canva : (MANUAL_LIST.find(m => m.id === currentManualId)?.canva || '');
+          if (modalCanvaBtn) {
+            modalCanvaBtn.href = canvaUrl || '#';
+            modalCanvaBtn.style.visibility = canvaUrl ? 'visible' : 'hidden';
           }
-        } else if (btn.dataset.image) {
-          urls = [btn.dataset.image];
-        }
-        if (!urls.length) return;
 
-        modalGallery.innerHTML = urls.map((u, i) => `
-          <img src="${u}" alt="${btn.dataset.alt || '원본 안내 이미지'} ${i + 1}">
-        `).join('');
+          let urls = [];
+          if (btn.dataset.images) {
+            try {
+              urls = JSON.parse(decodeURIComponent(btn.dataset.images));
+            } catch(err) {
+              try { urls = JSON.parse(btn.dataset.images); } catch(err2) {}
+            }
+          } else if (btn.dataset.image) {
+            urls = [btn.dataset.image];
+          }
+          if (!urls.length) return;
 
-        modal.hidden = false;
-        document.body.classList.add('modal-open');
-        modalCloseBtn.focus();
+          modalGallery.innerHTML = urls.map((u, i) => `
+            <img src="${u}" alt="${btn.dataset.alt || '원본 안내 이미지'} ${i + 1}">
+          `).join('');
+
+          modal.hidden = false;
+          document.body.classList.add('modal-open');
+          modalCloseBtn.focus();
+        });
       });
+    }
+
+    bindImageToggles(document);
+
+    // Add Manual Modal Logic
+    function openAddManualModal() {
+      addModal.hidden = false;
+      document.body.classList.add('modal-open');
+    }
+
+    function closeAddManualModal() {
+      addModal.hidden = true;
+      document.body.classList.remove('modal-open');
+    }
+
+    addModal.addEventListener('click', (e) => {
+      if (e.target === addModal) closeAddManualModal();
     });
 
     window.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && !modal.hidden) {
-        closeModal();
+      if (e.key === 'Escape') {
+        if (!modal.hidden) closeModal();
+        if (!addModal.hidden) closeAddManualModal();
       }
+    });
+
+    const dropArea = document.getElementById('fileDropArea');
+    ['dragenter', 'dragover'].forEach(evt => {
+      dropArea.addEventListener(evt, (e) => {
+        e.preventDefault();
+        dropArea.style.borderColor = 'var(--blue)';
+        dropArea.style.background = '#dbeafe';
+      });
+    });
+    ['dragleave', 'drop'].forEach(evt => {
+      dropArea.addEventListener(evt, (e) => {
+        e.preventDefault();
+        dropArea.style.borderColor = '#93c5fd';
+        dropArea.style.background = 'var(--blue-soft)';
+      });
+    });
+    dropArea.addEventListener('drop', (e) => {
+      const file = e.dataTransfer?.files?.[0];
+      if (file) processUploadedFile(file);
+    });
+
+    function handleManualFileSelect(e) {
+      const file = e.target.files?.[0];
+      if (file) processUploadedFile(file);
+    }
+
+    function processUploadedFile(file) {
+      uploadedFileName = file.name;
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        uploadedRawHtml = ev.target.result;
+        document.getElementById('fileDropText').textContent = '✅ 선택됨: ' + file.name;
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(uploadedRawHtml, 'text/html');
+        const h1Text = doc.querySelector('h1')?.textContent?.trim() || doc.title?.trim() || file.name.replace(/\.html?$/i, '');
+        const titleInput = document.getElementById('manualShortTitle');
+        if (!titleInput.value.trim()) {
+          titleInput.value = h1Text.length > 18 ? h1Text.slice(0, 18) : h1Text;
+        }
+        const steps = doc.querySelectorAll('.step').length;
+        if (steps > 0) {
+          document.getElementById('manualStepsCount').value = steps;
+        }
+        const canvaLink = doc.querySelector('a.source-button')?.getAttribute('href') || '';
+        if (canvaLink && !document.getElementById('manualCanvaUrl').value) {
+          document.getElementById('manualCanvaUrl').value = canvaLink;
+        }
+      };
+      reader.readAsText(file, 'utf-8');
+    }
+
+    // IndexedDB Storage for Custom Manuals
+    function openManualDB() {
+      return new Promise((resolve, reject) => {
+        const req = indexedDB.open('OnlineOfficeManualDB', 1);
+        req.onupgradeneeded = (e) => {
+          const db = e.target.result;
+          if (!db.objectStoreNames.contains('manuals')) {
+            db.createObjectStore('manuals', { keyPath: 'id' });
+          }
+        };
+        req.onsuccess = () => resolve(req.result);
+        req.onerror = () => reject(req.error);
+      });
+    }
+
+    async function saveCustomManualToDB(item) {
+      try {
+        const db = await openManualDB();
+        const tx = db.transaction('manuals', 'readwrite');
+        tx.objectStore('manuals').put(item);
+      } catch (e) {
+        console.warn('IndexedDB save failed:', e);
+      }
+    }
+
+    async function deleteCustomManualFromDB(id) {
+      try {
+        const db = await openManualDB();
+        const tx = db.transaction('manuals', 'readwrite');
+        tx.objectStore('manuals').delete(id);
+      } catch (e) {
+        console.warn('IndexedDB delete failed:', e);
+      }
+    }
+
+    async function loadCustomManualsFromDB() {
+      try {
+        const db = await openManualDB();
+        return new Promise((resolve) => {
+          const tx = db.transaction('manuals', 'readonly');
+          const req = tx.objectStore('manuals').getAll();
+          req.onsuccess = () => resolve(req.result || []);
+          req.onerror = () => resolve([]);
+        });
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function buildPaneHtmlFromRaw(rawHtml, canvaUrl, fileName) {
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(rawHtml, 'text/html');
+      doc.querySelectorAll('.modal, .modal-close, script').forEach(el => el.remove());
+      const mainEl = doc.querySelector('main.page') || doc.querySelector('main') || doc.body;
+      const titleRow = mainEl.querySelector('.title-row');
+      if (titleRow) {
+        titleRow.querySelectorAll('a.source-button, .title-actions').forEach(el => el.remove());
+        const actionsDiv = doc.createElement('div');
+        actionsDiv.className = 'title-actions';
+        if (canvaUrl) {
+          actionsDiv.innerHTML += `<a class="source-button" href="${canvaUrl}" target="_blank" rel="noopener">원본 Canva 슬라이드 열기</a>`;
+        }
+        const fileHref = fileName ? `pages/${fileName}` : '#';
+        actionsDiv.innerHTML += `
+          <a href="${fileHref}" target="_blank" rel="noopener" class="pane-standalone-link" onclick="if(this.dataset.blobUrl){window.open(this.dataset.blobUrl,'_blank');return false;}" title="새 창에서 독립 파일로 열기">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+            독립창 열기
+          </a>`;
+        titleRow.appendChild(actionsDiv);
+      }
+      return mainEl.innerHTML;
+    }
+
+    function renderCustomManual(item) {
+      if (document.querySelector(`.manual-nav-btn[data-id="${item.id}"]`)) {
+        document.querySelector(`.manual-nav-btn[data-id="${item.id}"]`).remove();
+      }
+      if (document.getElementById(`pane-${item.id}`)) {
+        document.getElementById(`pane-${item.id}`).remove();
+      }
+
+      const existIdx = MANUAL_LIST.findIndex(m => m.id === item.id);
+      if (existIdx >= 0) MANUAL_LIST.splice(existIdx, 1);
+      MANUAL_LIST.push({ id: item.id, title: item.title, canva: item.canva || '', isCustom: true });
+
+      const navGrid = document.getElementById('manualNavGrid');
+      const addBtn = document.getElementById('openAddManualBtn');
+      const btn = document.createElement('a');
+      btn.href = '#' + item.id;
+      btn.className = 'manual-nav-btn';
+      btn.dataset.id = item.id;
+      btn.dataset.custom = '1';
+      btn.onclick = (e) => {
+        e.preventDefault();
+        selectManual(item.id);
+      };
+      btn.innerHTML = `
+        <button type="button" class="nav-btn-del" title="이 매뉴얼 삭제" onclick="removeCustomManual(event, '${item.id}')">×</button>
+        <span class="nav-btn-title">${item.title}</span>
+        <span class="nav-btn-steps">${item.stepsCount}단계</span>
+      `;
+      navGrid.insertBefore(btn, addBtn);
+
+      const contentArea = document.getElementById('manualContentArea');
+      const pane = document.createElement('div');
+      pane.id = 'pane-' + item.id;
+      pane.className = 'manual-pane';
+      pane.dataset.id = item.id;
+      pane.dataset.canva = item.canva || '';
+      pane.innerHTML = `<main class="page">${item.contentHtml}</main>`;
+
+      if (item.rawHtml) {
+        const blob = new Blob([item.rawHtml], { type: 'text/html;charset=utf-8' });
+        const blobUrl = URL.createObjectURL(blob);
+        const standaloneLink = pane.querySelector('.pane-standalone-link');
+        if (standaloneLink) standaloneLink.dataset.blobUrl = blobUrl;
+      }
+
+      contentArea.appendChild(pane);
+      bindImageToggles(pane);
+    }
+
+    async function removeCustomManual(e, id) {
+      e.stopPropagation();
+      e.preventDefault();
+      if (!confirm('추가한 매뉴얼을 목록에서 삭제하시겠습니까?')) return;
+      await deleteCustomManualFromDB(id);
+      document.querySelector(`.manual-nav-btn[data-id="${id}"]`)?.remove();
+      document.getElementById(`pane-${id}`)?.remove();
+      const idx = MANUAL_LIST.findIndex(m => m.id === id);
+      if (idx >= 0) MANUAL_LIST.splice(idx, 1);
+      if (currentManualId === id) {
+        selectManual(MANUAL_LIST[0].id);
+      }
+    }
+
+    async function handleAddManualSubmit(e) {
+      e.preventDefault();
+      if (!uploadedRawHtml) {
+        alert('먼저 업로드할 매뉴얼 HTML 파일을 선택해주세요.');
+        return;
+      }
+      const title = document.getElementById('manualShortTitle').value.trim();
+      const stepsCount = parseInt(document.getElementById('manualStepsCount').value, 10) || 1;
+      const canva = document.getElementById('manualCanvaUrl').value.trim();
+      const slugBase = (uploadedFileName || title).replace(/\.html?$/i, '').replace(/[^a-zA-Z0-9가-힣_-]/g, '-').toLowerCase();
+      const id = 'manual-' + (slugBase || Date.now());
+
+      const contentHtml = buildPaneHtmlFromRaw(uploadedRawHtml, canva, uploadedFileName);
+      const item = { id, title, stepsCount, canva, contentHtml, rawHtml: uploadedRawHtml, fileName: uploadedFileName };
+
+      renderCustomManual(item);
+      await saveCustomManualToDB(item);
+
+      document.getElementById('addManualForm').reset();
+      document.getElementById('fileDropText').textContent = '📂 클릭하여 HTML 파일 선택 (또는 여기로 드래그)';
+      uploadedRawHtml = '';
+      uploadedFileName = '';
+
+      closeAddManualModal();
+      selectManual(id);
+    }
+
+    function downloadUpdatedIndexHtml() {
+      const clone = document.documentElement.cloneNode(true);
+      clone.querySelector('#globalImageModal')?.setAttribute('hidden', '');
+      clone.querySelector('#addManualModal')?.setAttribute('hidden', '');
+      clone.querySelector('body')?.classList.remove('modal-open');
+      clone.querySelectorAll('.nav-btn-del').forEach(el => el.remove());
+      clone.querySelectorAll('.img-toggle').forEach(el => el.removeAttribute('data-bound'));
+      const scriptEl = clone.querySelector('#mainPortalScript');
+      if (scriptEl) {
+        const cleanList = MANUAL_LIST.map(m => ({ id: m.id, title: m.title, canva: m.canva || '' }));
+        scriptEl.textContent = scriptEl.textContent.replace(
+          /const MANUAL_LIST = \[.*?\];/,
+          'const MANUAL_LIST = ' + JSON.stringify(cleanList) + ';'
+        );
+      }
+      const htmlStr = '<!doctype html>
+' + clone.outerHTML;
+      const blob = new Blob([htmlStr], { type: 'text/html;charset=utf-8' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'index.html';
+      a.click();
+    }
+
+    window.addEventListener('DOMContentLoaded', async () => {
+      const saved = await loadCustomManualsFromDB();
+      saved.forEach(item => renderCustomManual(item));
+      handleHash();
     });
   </script>
 </body>
