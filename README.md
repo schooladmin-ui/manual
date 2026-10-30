@@ -35,6 +35,7 @@ Chrome 브라우저 초기 설정부터 온라인교무실 접속 및 바로가�
 | **06** | [온라인교무실 공유 폴더 권한 설정 방법](pages/permission-setting-guide-with-canva-link.html) | 보안 & 드라이브 | 4단계 | [파일 열기](pages/permission-setting-guide-with-canva-link.html) | [Canva 열기](https://www.canva.com/design/DAGm6gX_4lM/rVOmpsykESZmuqzTnOMz8A/view?utm_content=DAGm6gX_4lM&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utm_id=hb1133ff80a) |
 | **07** | [연수서명부 서명 방법](pages/training-signature-guide-manual.html) | 교무 행정 | 4단계 | [파일 열기](pages/training-signature-guide-manual.html) | [Canva 열기](https://www.canva.com/design/DAGm6jijC7A/i3ovxr1djLZxKIW9JRvAKg/view?utm_content=DAGm6jijC7A&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utm_id=h1e3a1fe2c0) |
 | **08** | [구글 채팅(Google Chat) 앱에서 채팅방(스페이스) 만드는 방법](pages/google-chat-space-guide.html) | 협업 & 메신저 | 4단계 | [파일 열기](pages/google-chat-space-guide.html) | - |
+| **09** | [그룹 만들기](pages/google-groups-create-guide.html) | 협업 & 그룹 | 2단계 | [파일 열기](pages/google-groups-create-guide.html) | - |
 
 ---
 

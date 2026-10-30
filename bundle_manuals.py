@@ -69,6 +69,14 @@ MANUALS = [
         "full_title": "구글 채팅(Google Chat) 앱에서 채팅방(스페이스) 만드는 방법",
         "steps_count": 4,
         "canva": ""
+    },
+    {
+        "id": "google-groups",
+        "file": "google-groups-create-guide.html",
+        "short_title": "그룹 만들기",
+        "full_title": "그룹 만들기",
+        "steps_count": 2,
+        "canva": ""
     }
 ]
 
@@ -659,6 +667,27 @@ index_html = f"""<!doctype html>
       color: #92400e;
       font-size: 13px;
       font-weight: 750;
+    }}
+
+    .step a {{
+      color: var(--blue);
+      font-weight: 700;
+      text-decoration: underline;
+    }}
+
+    .inline-figure {{
+      margin: 14px 0 4px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      overflow: hidden;
+      background: #fff;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
+    }}
+
+    .inline-figure img {{
+      display: block;
+      width: 100%;
+      height: auto;
     }}
 
     .step p {{
