@@ -613,8 +613,9 @@ index_html = f"""<!doctype html>
     .section-no {{
       display: grid;
       place-items: center;
-      width: 34px;
+      min-width: 34px;
       height: 34px;
+      padding: 0 8px;
       flex: 0 0 auto;
       border-radius: 10px;
       background: var(--blue);
