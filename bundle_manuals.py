@@ -289,6 +289,33 @@ index_html = f"""<!doctype html>
       border-color: var(--blue-border);
     }}
 
+    .btn-header-deploy {{
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 14px;
+      border-radius: var(--radius-sm);
+      background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
+      border: 1px solid #1d4ed8;
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 750;
+      cursor: pointer;
+      font-family: inherit;
+      box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25);
+      transition: all 0.15s ease;
+    }}
+
+    .btn-header-deploy:hover {{
+      background: #1e40af;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
+    }}
+
+    .btn-header-deploy[hidden] {{
+      display: none !important;
+    }}
+
     /* =========================================================
        3. 1x7 Manual Button Navigation Bar (No HTML Numbers)
        ========================================================= */
@@ -1344,6 +1371,10 @@ index_html = f"""<!doctype html>
         <h1 class="header-title">온라인 교무실 매뉴얼</h1>
       </div>
       <div class="header-actions">
+        <button type="button" id="btnHeaderDeployDownload" class="btn-header-deploy" onclick="downloadAllDeploymentFiles()" hidden title="통합 index.html과 추가된 개별 HTML 파일을 일괄 다운로드합니다">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+          배포 파일 일괄 다운로드
+        </button>
         <button type="button" class="btn-header-print" onclick="window.print()">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
           인쇄하기
@@ -1421,18 +1452,9 @@ index_html = f"""<!doctype html>
           <label for="manualCanvaUrl">4. 원본 Canva 슬라이드 링크 (선택)</label>
           <input type="url" id="manualCanvaUrl" placeholder="https://www.canva.com/design/...">
         </div>
-        <div id="customManualsListBox" style="display:none;margin-top:12px;padding:12px;border-radius:8px;background:#f8fafc;border:1px solid var(--line);">
-          <div style="font-size:12.5px;font-weight:800;color:var(--ink-secondary);margin-bottom:8px;">📌 현재 추가된 신규 매뉴얼 목록 (pages/ 폴더용 개별 파일)</div>
-          <div id="customManualsListItems" style="display:grid;gap:6px;"></div>
-        </div>
-        <div class="add-modal-actions">
-          <button type="button" class="btn-secondary" onclick="downloadAllDeploymentFiles()" title="통합 index.html 파일과 추가된 개별 HTML 파일들을 함께 다운로드합니다">
-            💾 배포 파일 일괄 다운로드 (index.html + 개별 HTML)
-          </button>
-          <div style="display:flex;gap:8px;">
-            <button type="button" class="btn-secondary" onclick="closeAddManualModal()">닫기</button>
-            <button type="submit" class="btn-primary">매뉴얼 추가하기</button>
-          </div>
+        <div class="add-modal-actions" style="justify-content:flex-end;">
+          <button type="button" class="btn-secondary" onclick="closeAddManualModal()">취소</button>
+          <button type="submit" class="btn-primary">매뉴얼 추가하기</button>
         </div>
       </form>
     </div>
@@ -1456,12 +1478,20 @@ index_html = f"""<!doctype html>
     const modalCloseBtn = modal.querySelector('.modal-close');
     const modalCanvaBtn = document.getElementById('modalCanvaBtn');
     const addModal = document.getElementById('addManualModal');
+    const deployDownloadBtn = document.getElementById('btnHeaderDeployDownload');
 
     let currentManualId = MANUAL_LIST[0].id;
     let uploadedRawHtml = '';
     let uploadedFileName = '';
     let uploadedFileType = ''; // 'html' | 'pdf' | 'image'
     let uploadedDataUrls = [];
+    const customManualsStore = [];
+    let hasOrderChanged = false;
+
+    function updateDeployButtonVisibility() {{
+      if (!deployDownloadBtn) return;
+      deployDownloadBtn.hidden = (customManualsStore.length === 0 && !hasOrderChanged);
+    }}
 
     function hydratePdfFrames(root = document) {{
       root.querySelectorAll('iframe.pdf-embed-frame[data-pdf-src]').forEach(frame => {{
@@ -1578,8 +1608,7 @@ index_html = f"""<!doctype html>
     bindImageToggles(document);
 
     // Add Manual Modal Logic
-    async function openAddManualModal() {{
-      await refreshCustomManualsModalList();
+    function openAddManualModal() {{
       addModal.hidden = false;
       document.body.classList.add('modal-open');
     }}
@@ -1732,7 +1761,8 @@ index_html = f"""<!doctype html>
         const db = await openManualDB();
         return new Promise((resolve) => {{
           const tx = db.transaction('manuals', 'readwrite');
-          tx.objectStore('manuals').put(item);
+          const copy = {{ id: item.id, title: item.title, stepsCount: item.stepsCount, canva: item.canva, contentHtml: item.contentHtml, rawHtml: item.rawHtml, fileName: item.fileName }};
+          tx.objectStore('manuals').put(copy);
           tx.oncomplete = () => resolve(true);
           tx.onerror = () => resolve(false);
         }});
@@ -1784,42 +1814,14 @@ index_html = f"""<!doctype html>
       }}
     }}
 
-    async function refreshCustomManualsModalList() {{
-      const listBox = document.getElementById('customManualsListBox');
-      const itemsContainer = document.getElementById('customManualsListItems');
-      const saved = await loadCustomManualsFromDB();
-      if (!saved.length) {{
-        listBox.style.display = 'none';
-        itemsContainer.innerHTML = '';
-        return;
-      }}
-      listBox.style.display = 'block';
-      itemsContainer.innerHTML = saved.map(item => `
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 10px;background:#fff;border:1px solid var(--line);border-radius:6px;font-size:12.5px;">
-          <span><strong>${{item.title}}</strong> <span style="color:var(--muted);">(${{item.fileName || (item.id + '.html')}})</span></span>
-          <button type="button" class="btn-secondary" style="padding:4px 10px;font-size:11.5px;" onclick="downloadSingleCustomManual('${{item.id}}')">개별 HTML 다운로드</button>
-        </div>
-      `).join('');
-    }}
-
-    function triggerBlobDownload(content, filename) {{
-      const blob = new Blob([content], {{ type: 'text/html;charset=utf-8' }});
-      const url = URL.createObjectURL(blob);
+    function triggerUrlDownload(url, filename) {{
       const a = document.createElement('a');
       a.href = url;
       a.download = filename;
+      a.style.display = 'none';
       document.body.appendChild(a);
       a.click();
-      a.remove();
-      setTimeout(() => URL.revokeObjectURL(url), 5000);
-    }}
-
-    async function downloadSingleCustomManual(id) {{
-      const saved = await loadCustomManualsFromDB();
-      const item = saved.find(m => m.id === id);
-      if (!item || !item.rawHtml) return;
-      const fname = item.fileName || (item.id + '.html');
-      triggerBlobDownload(item.rawHtml, fname);
+      setTimeout(() => a.remove(), 2000);
     }}
 
     function buildPaneHtmlFromRaw(rawHtml, canvaUrl, fileName) {{
@@ -1854,6 +1856,17 @@ index_html = f"""<!doctype html>
         document.getElementById(`pane-${{item.id}}`).remove();
       }}
 
+      let blobUrl = '';
+      if (item.rawHtml) {{
+        const blob = new Blob([item.rawHtml], {{ type: 'text/html;charset=utf-8' }});
+        blobUrl = URL.createObjectURL(blob);
+      }}
+      item.blobUrl = blobUrl;
+
+      const storeIdx = customManualsStore.findIndex(m => m.id === item.id);
+      if (storeIdx >= 0) customManualsStore.splice(storeIdx, 1);
+      customManualsStore.push(item);
+
       const existIdx = MANUAL_LIST.findIndex(m => m.id === item.id);
       if (existIdx >= 0) MANUAL_LIST.splice(existIdx, 1);
       MANUAL_LIST.push({{ id: item.id, title: item.title, canva: item.canva || '', isCustom: true }});
@@ -1885,9 +1898,7 @@ index_html = f"""<!doctype html>
       pane.dataset.canva = item.canva || '';
       pane.innerHTML = `<main class="page">${{item.contentHtml}}</main>`;
 
-      if (item.rawHtml) {{
-        const blob = new Blob([item.rawHtml], {{ type: 'text/html;charset=utf-8' }});
-        const blobUrl = URL.createObjectURL(blob);
+      if (blobUrl) {{
         const standaloneLink = pane.querySelector('.pane-standalone-link');
         if (standaloneLink) standaloneLink.dataset.blobUrl = blobUrl;
       }}
@@ -1895,6 +1906,7 @@ index_html = f"""<!doctype html>
       contentArea.appendChild(pane);
       bindImageToggles(pane);
       hydratePdfFrames(pane);
+      updateDeployButtonVisibility();
     }}
 
     async function removeCustomManual(e, id) {{
@@ -1904,9 +1916,11 @@ index_html = f"""<!doctype html>
       await deleteCustomManualFromDB(id);
       document.querySelector(`.manual-nav-btn[data-id="${{id}}"]`)?.remove();
       document.getElementById(`pane-${{id}}`)?.remove();
+      const sIdx = customManualsStore.findIndex(m => m.id === id);
+      if (sIdx >= 0) customManualsStore.splice(sIdx, 1);
       const idx = MANUAL_LIST.findIndex(m => m.id === id);
       if (idx >= 0) MANUAL_LIST.splice(idx, 1);
-      await refreshCustomManualsModalList();
+      updateDeployButtonVisibility();
       if (currentManualId === id) {{
         selectManual(MANUAL_LIST[0].id);
       }}
@@ -1938,7 +1952,6 @@ index_html = f"""<!doctype html>
       uploadedFileName = '';
       uploadedFileType = '';
       uploadedDataUrls = [];
-      await refreshCustomManualsModalList();
       return item;
     }}
 
@@ -1959,6 +1972,7 @@ index_html = f"""<!doctype html>
       const clone = document.documentElement.cloneNode(true);
       clone.querySelector('#globalImageModal')?.setAttribute('hidden', '');
       clone.querySelector('#addManualModal')?.setAttribute('hidden', '');
+      clone.querySelector('#btnHeaderDeployDownload')?.setAttribute('hidden', '');
       clone.querySelector('body')?.classList.remove('modal-open');
       clone.querySelectorAll('.nav-btn-del').forEach(el => el.remove());
       clone.querySelectorAll('.manual-nav-btn').forEach(el => el.removeAttribute('data-custom'));
@@ -1979,20 +1993,28 @@ index_html = f"""<!doctype html>
       return '<!doctype html>\\n' + clone.outerHTML;
     }}
 
-    async function downloadAllDeploymentFiles() {{
-      if (uploadedRawHtml) {{
-        await registerCurrentFormManual();
-      }}
-      const saved = await loadCustomManualsFromDB();
-      const indexHtmlStr = buildUpdatedIndexHtmlString();
-      triggerBlobDownload(indexHtmlStr, 'index.html');
-
-      saved.forEach((item, idx) => {{
+    function downloadAllDeploymentFiles() {{
+      // Synchronously prepare all Blob URLs BEFORE triggering any download so user activation stays active
+      const downloadQueue = [];
+      customManualsStore.forEach(item => {{
         if (item.rawHtml) {{
           const fname = item.fileName || (item.id + '.html');
+          const url = item.blobUrl || URL.createObjectURL(new Blob([item.rawHtml], {{ type: 'text/html;charset=utf-8' }}));
+          downloadQueue.push({{ url, fname }});
+        }}
+      }});
+
+      const indexHtmlStr = buildUpdatedIndexHtmlString();
+      const indexBlobUrl = URL.createObjectURL(new Blob([indexHtmlStr], {{ type: 'text/html;charset=utf-8' }}));
+      downloadQueue.push({{ url: indexBlobUrl, fname: 'index.html' }});
+
+      downloadQueue.forEach((entry, idx) => {{
+        if (idx === 0) {{
+          triggerUrlDownload(entry.url, entry.fname);
+        }} else {{
           setTimeout(() => {{
-            triggerBlobDownload(item.rawHtml, fname);
-          }}, (idx + 1) * 350);
+            triggerUrlDownload(entry.url, entry.fname);
+          }}, idx * 250);
         }}
       }});
     }}
@@ -2011,6 +2033,8 @@ index_html = f"""<!doctype html>
         return (ia === -1 ? 999 : ia) - (ib === -1 ? 999 : ib);
       }});
       if (saveToStorage) {{
+        hasOrderChanged = true;
+        updateDeployButtonVisibility();
         try {{
           localStorage.setItem(ORDER_STORAGE_KEY, JSON.stringify(newOrderIds));
         }} catch (e) {{}}
@@ -2091,6 +2115,7 @@ index_html = f"""<!doctype html>
       const saved = await loadCustomManualsFromDB();
       saved.forEach(item => renderCustomManual(item));
       applySavedManualOrder();
+      updateDeployButtonVisibility();
       handleHash();
     }});
   </script>
