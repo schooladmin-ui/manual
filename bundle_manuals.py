@@ -61,6 +61,14 @@ MANUALS = [
         "full_title": "연수서명부 서명 방법",
         "steps_count": 4,
         "canva": "https://www.canva.com/design/DAGm6jijC7A/i3ovxr1djLZxKIW9JRvAKg/view?utm_content=DAGm6jijC7A&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utm_id=h1e3a1fe2c0"
+    },
+    {
+        "id": "google-chat",
+        "file": "google-chat-space-guide.html",
+        "short_title": "구글 채팅방 생성",
+        "full_title": "구글 채팅(Google Chat) 앱에서 채팅방 만드는 방법",
+        "steps_count": 4,
+        "canva": ""
     }
 ]
 
@@ -71,8 +79,8 @@ def update_title_row(content, canva_url, file_url):
         if not h1_m:
             return m_row.group(0)
         h1_html = h1_m.group(1)
-        actions = f'''<div class="title-actions">
-  <a class="source-button" href="{canva_url}" target="_blank" rel="noopener">원본 Canva 슬라이드 열기</a>
+        canva_btn = f'\n  <a class="source-button" href="{canva_url}" target="_blank" rel="noopener">원본 Canva 슬라이드 열기</a>' if canva_url else ''
+        actions = f'''<div class="title-actions">{canva_btn}
   <a href="{file_url}" target="_blank" rel="noopener" class="pane-standalone-link" title="새 창에서 독립 파일로 열기">
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
     독립창 열기
@@ -159,6 +167,8 @@ index_html = f"""<!doctype html>
       --red-soft: #fef2f2;
       --green: #047857;
       --green-soft: #ecfdf5;
+      --purple: #6d28d9;
+      --purple-soft: #f5f3ff;
       
       --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
       --shadow-md: 0 4px 12px -2px rgba(15,23,42,0.08), 0 2px 6px -1px rgba(15,23,42,0.04);
@@ -290,7 +300,7 @@ index_html = f"""<!doctype html>
 
     .manual-nav-grid {{
       display: grid;
-      grid-template-columns: repeat(7, 1fr);
+      grid-template-columns: repeat(8, 1fr);
       gap: 10px;
     }}
 
@@ -576,11 +586,78 @@ index_html = f"""<!doctype html>
       font-size: 14px;
     }}
 
-    .step h2, .panel h2 {{
+    .step h2, .step h3, .panel h2 {{
       font-size: 17.5px;
       line-height: 1.3;
       margin: 0;
       font-weight: 800;
+    }}
+
+    .section {{
+      margin: 24px 0;
+    }}
+
+    .section-title {{
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      border-top: 3px solid var(--blue);
+      padding-top: 14px;
+      margin-bottom: 12px;
+    }}
+
+    .section-title.teacher {{
+      border-color: var(--purple);
+    }}
+
+    .section-no {{
+      display: grid;
+      place-items: center;
+      width: 34px;
+      height: 34px;
+      flex: 0 0 auto;
+      border-radius: 10px;
+      background: var(--blue);
+      color: #fff;
+      font-weight: 900;
+    }}
+
+    .teacher .section-no, .teacher .num {{
+      background: var(--purple);
+    }}
+
+    .section-title h2 {{
+      margin: 0;
+      font-size: 22px;
+      line-height: 1.2;
+    }}
+
+    .section-title p {{
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+    }}
+
+    .two-col-sections {{
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      align-items: start;
+    }}
+
+    .two-col-sections .section {{
+      margin: 0;
+    }}
+
+    .important {{
+      margin-top: 10px;
+      padding: 11px 13px;
+      border: 2px solid #f59e0b;
+      border-radius: 9px;
+      background: #fffbeb;
+      color: #92400e;
+      font-size: 13px;
+      font-weight: 750;
     }}
 
     .step p {{
@@ -846,8 +923,10 @@ index_html = f"""<!doctype html>
     @media (max-width: 900px) {{
       .page {{ padding: 22px 18px; }}
       .check {{ grid-template-columns: 1fr; }}
+      .two-col-sections {{ grid-template-columns: 1fr; }}
+      .two-col-sections .section {{ margin-top: 24px; }}
       .manual-nav-grid {{
-        grid-template-columns: repeat(7, minmax(130px, 1fr));
+        grid-template-columns: repeat(8, minmax(120px, 1fr));
         overflow-x: auto;
         padding-bottom: 6px;
       }}
@@ -973,7 +1052,8 @@ index_html = f"""<!doctype html>
       if (item) {{
         document.title = item.title + " | 온라인 교무실 매뉴얼";
         if (modalCanvaBtn) {{
-          modalCanvaBtn.href = item.canva;
+          modalCanvaBtn.href = item.canva || '#';
+          modalCanvaBtn.style.visibility = item.canva ? 'visible' : 'hidden';
         }}
       }}
 
@@ -1015,9 +1095,10 @@ index_html = f"""<!doctype html>
         
         // Find corresponding pane's canva link
         const pane = btn.closest('.manual-pane');
-        const canvaUrl = (pane && pane.dataset.canva) ? pane.dataset.canva : (MANUAL_LIST.find(m => m.id === currentManualId)?.canva || '#');
+        const canvaUrl = (pane && pane.dataset.canva) ? pane.dataset.canva : (MANUAL_LIST.find(m => m.id === currentManualId)?.canva || '');
         if (modalCanvaBtn) {{
-          modalCanvaBtn.href = canvaUrl;
+          modalCanvaBtn.href = canvaUrl || '#';
+          modalCanvaBtn.style.visibility = canvaUrl ? 'visible' : 'hidden';
         }}
 
         let urls = [];
