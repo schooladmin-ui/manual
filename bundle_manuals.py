@@ -2,7 +2,8 @@ import os
 import json
 import re
 
-BASE_DIR = r"c:\Users\user\Desktop\aside\Outputs"
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+PAGES_DIR = os.path.join(BASE_DIR, "pages")
 
 MANUALS = [
     {
@@ -83,7 +84,7 @@ def update_title_row(content, canva_url, file_url):
 
 manual_contents = {}
 for m in MANUALS:
-    fpath = os.path.join(BASE_DIR, m["file"])
+    fpath = os.path.join(PAGES_DIR, m["file"])
     with open(fpath, "r", encoding="utf-8", errors="ignore") as fp:
         raw = fp.read()
     
@@ -92,7 +93,7 @@ for m in MANUALS:
         content = main_match.group(1).strip()
         
         # Place Canva button and 독립창 열기 button side-by-side in title-row
-        content = update_title_row(content, m["canva"], m["file"])
+        content = update_title_row(content, m["canva"], f"pages/{m['file']}")
             
         # Clean up any modal-close button that might have been copied inside page content
         content = re.sub(r'<button class="modal-close"[^>]*>.*?</button>', '', content, flags=re.DOTALL)
