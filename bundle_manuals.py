@@ -110,6 +110,7 @@ for m in MANUALS:
         
         # Place Canva button and 독립창 열기 button side-by-side in title-row
         content = update_title_row(content, m["canva"], f"pages/{m['file']}")
+        content = content.replace('href="google-groups-create-guide.html"', 'href="#google-groups"')
             
         # Clean up any modal-close button that might have been copied inside page content
         content = re.sub(r'<button class="modal-close"[^>]*>.*?</button>', '', content, flags=re.DOTALL)
@@ -658,6 +659,74 @@ index_html = f"""<!doctype html>
       margin: 0;
     }}
 
+    .group-link-panel {{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin: 14px 0 24px;
+      padding: 16px 20px;
+      border: 1.5px solid #93c5fd;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #eff6ff 0%, #f5f3ff 100%);
+      color: var(--ink);
+      text-decoration: none;
+      transition: all 0.18s ease;
+      box-shadow: 0 2px 8px rgba(37, 99, 235, 0.08);
+    }}
+
+    .group-link-panel:hover {{
+      border-color: var(--blue);
+      box-shadow: 0 6px 16px rgba(37, 99, 235, 0.16);
+      transform: translateY(-1px);
+    }}
+
+    .group-link-info {{
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }}
+
+    .group-link-badge {{
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6px 10px;
+      border-radius: 8px;
+      background: var(--blue);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 800;
+      white-space: nowrap;
+    }}
+
+    .group-link-text strong {{
+      display: block;
+      font-size: 15px;
+      color: #1e3a8a;
+    }}
+
+    .group-link-text span {{
+      display: block;
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 2px;
+    }}
+
+    .group-link-action {{
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 16px;
+      border-radius: 999px;
+      background: var(--blue);
+      color: #fff;
+      font-size: 13.5px;
+      font-weight: 800;
+      white-space: nowrap;
+    }}
+
     .important {{
       margin-top: 10px;
       padding: 11px 13px;
@@ -1165,13 +1234,13 @@ index_html = f"""<!doctype html>
 
 # Output paths
 index_path = os.path.join(BASE_DIR, "index.html")
-with open(index_path, "w", encoding="utf-8") as f:
+with open(index_path, "w", encoding="utf-8", newline="\n") as f:
     f.write(index_html)
 
 bundle_path = os.path.join(BASE_DIR, "bundle_manuals.py")
 with open(__file__, "r", encoding="utf-8") as f:
     self_code = f.read()
-with open(bundle_path, "w", encoding="utf-8") as f:
+with open(bundle_path, "w", encoding="utf-8", newline="\n") as f:
     f.write(self_code)
 
 print("Generated clean index.html with single Canva button and side-by-side 독립창 열기 button.")
