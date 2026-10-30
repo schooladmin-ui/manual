@@ -65,8 +65,8 @@ MANUALS = [
     {
         "id": "google-chat",
         "file": "google-chat-space-guide.html",
-        "short_title": "구글 채팅방 생성",
-        "full_title": "구글 채팅(Google Chat) 앱에서 채팅방 만드는 방법",
+        "short_title": "구글 채팅방(스페이스) 생성",
+        "full_title": "구글 채팅(Google Chat) 앱에서 채팅방(스페이스) 만드는 방법",
         "steps_count": 4,
         "canva": ""
     }
