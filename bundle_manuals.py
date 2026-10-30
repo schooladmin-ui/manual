@@ -123,7 +123,7 @@ for m in MANUALS:
 buttons_html = []
 for m in MANUALS:
     btn = f"""
-    <a href="#{m['id']}" class="manual-nav-btn" data-id="{m['id']}" onclick="selectManual('{m['id']}'); event.preventDefault();">
+    <a href="#{m['id']}" class="manual-nav-btn" data-id="{m['id']}" draggable="true" onclick="selectManual('{m['id']}'); event.preventDefault();">
       <span class="nav-btn-title">{m['short_title']}</span>
       <span class="nav-btn-steps">{m['steps_count']}단계</span>
     </a>
@@ -364,6 +364,17 @@ index_html = f"""<!doctype html>
 
     .manual-nav-btn.active .nav-btn-steps {{
       color: rgba(255, 255, 255, 0.9);
+    }}
+
+    .manual-nav-btn.dragging {{
+      opacity: 0.4;
+      transform: scale(0.97);
+    }}
+
+    .manual-nav-btn.drag-over {{
+      border: 2px dashed var(--blue) !important;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2) !important;
+      transform: translateY(-2px);
     }}
 
     .manual-add-btn {{
@@ -1736,6 +1747,7 @@ index_html = f"""<!doctype html>
       btn.className = 'manual-nav-btn';
       btn.dataset.id = item.id;
       btn.dataset.custom = '1';
+      btn.draggable = true;
       btn.onclick = (e) => {{
         e.preventDefault();
         selectManual(item.id);
@@ -1856,10 +1868,100 @@ index_html = f"""<!doctype html>
       }});
     }}
 
+    // Drag and Drop Reordering for Manual Navigation Buttons
+    const ORDER_STORAGE_KEY = 'online_office_manual_nav_order';
+    let draggedBtn = null;
+
+    function syncManualOrderFromDOM(saveToStorage = true) {{
+      const navGrid = document.getElementById('manualNavGrid');
+      const btns = Array.from(navGrid.querySelectorAll('.manual-nav-btn'));
+      const newOrderIds = btns.map(b => b.dataset.id);
+      MANUAL_LIST.sort((a, b) => {{
+        const ia = newOrderIds.indexOf(a.id);
+        const ib = newOrderIds.indexOf(b.id);
+        return (ia === -1 ? 999 : ia) - (ib === -1 ? 999 : ib);
+      }});
+      if (saveToStorage) {{
+        try {{
+          localStorage.setItem(ORDER_STORAGE_KEY, JSON.stringify(newOrderIds));
+        }} catch (e) {{}}
+      }}
+    }}
+
+    function applySavedManualOrder() {{
+      try {{
+        const raw = localStorage.getItem(ORDER_STORAGE_KEY);
+        if (!raw) return;
+        const savedOrder = JSON.parse(raw);
+        if (!Array.isArray(savedOrder) || !savedOrder.length) return;
+        const navGrid = document.getElementById('manualNavGrid');
+        const addBtn = document.getElementById('openAddManualBtn');
+        savedOrder.forEach(id => {{
+          const btn = navGrid.querySelector(`.manual-nav-btn[data-id="${{id}}"]`);
+          if (btn) navGrid.insertBefore(btn, addBtn);
+        }});
+        syncManualOrderFromDOM(false);
+      }} catch (e) {{}}
+    }}
+
+    function initNavDragAndDrop() {{
+      const navGrid = document.getElementById('manualNavGrid');
+      navGrid.addEventListener('dragstart', (e) => {{
+        const btn = e.target.closest('.manual-nav-btn');
+        if (!btn) return;
+        draggedBtn = btn;
+        btn.classList.add('dragging');
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/plain', btn.dataset.id);
+      }});
+
+      navGrid.addEventListener('dragover', (e) => {{
+        if (!draggedBtn) return;
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+        const targetBtn = e.target.closest('.manual-nav-btn');
+        navGrid.querySelectorAll('.manual-nav-btn').forEach(b => b.classList.remove('drag-over'));
+        if (targetBtn && targetBtn !== draggedBtn) {{
+          targetBtn.classList.add('drag-over');
+        }}
+      }});
+
+      navGrid.addEventListener('dragleave', (e) => {{
+        const targetBtn = e.target.closest('.manual-nav-btn');
+        if (targetBtn) targetBtn.classList.remove('drag-over');
+      }});
+
+      navGrid.addEventListener('drop', (e) => {{
+        if (!draggedBtn) return;
+        e.preventDefault();
+        const targetBtn = e.target.closest('.manual-nav-btn');
+        navGrid.querySelectorAll('.manual-nav-btn').forEach(b => b.classList.remove('drag-over'));
+        if (targetBtn && targetBtn !== draggedBtn) {{
+          const allBtns = Array.from(navGrid.querySelectorAll('.manual-nav-btn'));
+          const draggedIdx = allBtns.indexOf(draggedBtn);
+          const targetIdx = allBtns.indexOf(targetBtn);
+          if (draggedIdx < targetIdx) {{
+            navGrid.insertBefore(draggedBtn, targetBtn.nextSibling);
+          }} else {{
+            navGrid.insertBefore(draggedBtn, targetBtn);
+          }}
+          syncManualOrderFromDOM(true);
+        }}
+      }});
+
+      navGrid.addEventListener('dragend', () => {{
+        if (draggedBtn) draggedBtn.classList.remove('dragging');
+        navGrid.querySelectorAll('.manual-nav-btn').forEach(b => b.classList.remove('drag-over'));
+        draggedBtn = null;
+      }});
+    }}
+
+    initNavDragAndDrop();
     handleHash();
     window.addEventListener('DOMContentLoaded', async () => {{
       const saved = await loadCustomManualsFromDB();
       saved.forEach(item => renderCustomManual(item));
+      applySavedManualOrder();
       handleHash();
     }});
   </script>

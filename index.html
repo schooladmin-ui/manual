@@ -222,6 +222,17 @@
       color: rgba(255, 255, 255, 0.9);
     }
 
+    .manual-nav-btn.dragging {
+      opacity: 0.4;
+      transform: scale(0.97);
+    }
+
+    .manual-nav-btn.drag-over {
+      border: 2px dashed var(--blue) !important;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2) !important;
+      transform: translateY(-2px);
+    }
+
     .manual-add-btn {
       display: flex;
       flex-direction: column;
@@ -1186,47 +1197,47 @@
     <div class="nav-bar-container">
       <div class="manual-nav-grid" id="manualNavGrid">
         
-    <a href="#chrome-default" class="manual-nav-btn" data-id="chrome-default" onclick="selectManual('chrome-default'); event.preventDefault();">
+    <a href="#chrome-default" class="manual-nav-btn" data-id="chrome-default" draggable="true" onclick="selectManual('chrome-default'); event.preventDefault();">
       <span class="nav-btn-title">크롬 기본 앱 설정</span>
       <span class="nav-btn-steps">3단계</span>
     </a>
     
-    <a href="#bookmark-bar" class="manual-nav-btn" data-id="bookmark-bar" onclick="selectManual('bookmark-bar'); event.preventDefault();">
+    <a href="#bookmark-bar" class="manual-nav-btn" data-id="bookmark-bar" draggable="true" onclick="selectManual('bookmark-bar'); event.preventDefault();">
       <span class="nav-btn-title">크롬 북마크바 표시</span>
       <span class="nav-btn-steps">3단계</span>
     </a>
     
-    <a href="#desktop-button" class="manual-nav-btn" data-id="desktop-button" onclick="selectManual('desktop-button'); event.preventDefault();">
+    <a href="#desktop-button" class="manual-nav-btn" data-id="desktop-button" draggable="true" onclick="selectManual('desktop-button'); event.preventDefault();">
       <span class="nav-btn-title">바탕화면 바로가기</span>
       <span class="nav-btn-steps">4단계</span>
     </a>
     
-    <a href="#main-page-edit" class="manual-nav-btn" data-id="main-page-edit" onclick="selectManual('main-page-edit'); event.preventDefault();">
+    <a href="#main-page-edit" class="manual-nav-btn" data-id="main-page-edit" draggable="true" onclick="selectManual('main-page-edit'); event.preventDefault();">
       <span class="nav-btn-title">메인 페이지 편집</span>
       <span class="nav-btn-steps">4단계</span>
     </a>
     
-    <a href="#notebooklm" class="manual-nav-btn" data-id="notebooklm" onclick="selectManual('notebooklm'); event.preventDefault();">
+    <a href="#notebooklm" class="manual-nav-btn" data-id="notebooklm" draggable="true" onclick="selectManual('notebooklm'); event.preventDefault();">
       <span class="nav-btn-title">구글 NotebookLM</span>
       <span class="nav-btn-steps">11단계</span>
     </a>
     
-    <a href="#permission-setting" class="manual-nav-btn" data-id="permission-setting" onclick="selectManual('permission-setting'); event.preventDefault();">
+    <a href="#permission-setting" class="manual-nav-btn" data-id="permission-setting" draggable="true" onclick="selectManual('permission-setting'); event.preventDefault();">
       <span class="nav-btn-title">공유 폴더 권한</span>
       <span class="nav-btn-steps">4단계</span>
     </a>
     
-    <a href="#training-signature" class="manual-nav-btn" data-id="training-signature" onclick="selectManual('training-signature'); event.preventDefault();">
+    <a href="#training-signature" class="manual-nav-btn" data-id="training-signature" draggable="true" onclick="selectManual('training-signature'); event.preventDefault();">
       <span class="nav-btn-title">연수서명부 서명</span>
       <span class="nav-btn-steps">4단계</span>
     </a>
     
-    <a href="#google-chat" class="manual-nav-btn" data-id="google-chat" onclick="selectManual('google-chat'); event.preventDefault();">
+    <a href="#google-chat" class="manual-nav-btn" data-id="google-chat" draggable="true" onclick="selectManual('google-chat'); event.preventDefault();">
       <span class="nav-btn-title">구글 채팅방(스페이스) 생성</span>
       <span class="nav-btn-steps">4단계</span>
     </a>
     
-    <a href="#google-groups" class="manual-nav-btn" data-id="google-groups" onclick="selectManual('google-groups'); event.preventDefault();">
+    <a href="#google-groups" class="manual-nav-btn" data-id="google-groups" draggable="true" onclick="selectManual('google-groups'); event.preventDefault();">
       <span class="nav-btn-title">그룹 만들기</span>
       <span class="nav-btn-steps">2단계</span>
     </a>
@@ -1755,6 +1766,7 @@
       btn.className = 'manual-nav-btn';
       btn.dataset.id = item.id;
       btn.dataset.custom = '1';
+      btn.draggable = true;
       btn.onclick = (e) => {
         e.preventDefault();
         selectManual(item.id);
@@ -1875,10 +1887,100 @@
       });
     }
 
+    // Drag and Drop Reordering for Manual Navigation Buttons
+    const ORDER_STORAGE_KEY = 'online_office_manual_nav_order';
+    let draggedBtn = null;
+
+    function syncManualOrderFromDOM(saveToStorage = true) {
+      const navGrid = document.getElementById('manualNavGrid');
+      const btns = Array.from(navGrid.querySelectorAll('.manual-nav-btn'));
+      const newOrderIds = btns.map(b => b.dataset.id);
+      MANUAL_LIST.sort((a, b) => {
+        const ia = newOrderIds.indexOf(a.id);
+        const ib = newOrderIds.indexOf(b.id);
+        return (ia === -1 ? 999 : ia) - (ib === -1 ? 999 : ib);
+      });
+      if (saveToStorage) {
+        try {
+          localStorage.setItem(ORDER_STORAGE_KEY, JSON.stringify(newOrderIds));
+        } catch (e) {}
+      }
+    }
+
+    function applySavedManualOrder() {
+      try {
+        const raw = localStorage.getItem(ORDER_STORAGE_KEY);
+        if (!raw) return;
+        const savedOrder = JSON.parse(raw);
+        if (!Array.isArray(savedOrder) || !savedOrder.length) return;
+        const navGrid = document.getElementById('manualNavGrid');
+        const addBtn = document.getElementById('openAddManualBtn');
+        savedOrder.forEach(id => {
+          const btn = navGrid.querySelector(`.manual-nav-btn[data-id="${id}"]`);
+          if (btn) navGrid.insertBefore(btn, addBtn);
+        });
+        syncManualOrderFromDOM(false);
+      } catch (e) {}
+    }
+
+    function initNavDragAndDrop() {
+      const navGrid = document.getElementById('manualNavGrid');
+      navGrid.addEventListener('dragstart', (e) => {
+        const btn = e.target.closest('.manual-nav-btn');
+        if (!btn) return;
+        draggedBtn = btn;
+        btn.classList.add('dragging');
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/plain', btn.dataset.id);
+      });
+
+      navGrid.addEventListener('dragover', (e) => {
+        if (!draggedBtn) return;
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+        const targetBtn = e.target.closest('.manual-nav-btn');
+        navGrid.querySelectorAll('.manual-nav-btn').forEach(b => b.classList.remove('drag-over'));
+        if (targetBtn && targetBtn !== draggedBtn) {
+          targetBtn.classList.add('drag-over');
+        }
+      });
+
+      navGrid.addEventListener('dragleave', (e) => {
+        const targetBtn = e.target.closest('.manual-nav-btn');
+        if (targetBtn) targetBtn.classList.remove('drag-over');
+      });
+
+      navGrid.addEventListener('drop', (e) => {
+        if (!draggedBtn) return;
+        e.preventDefault();
+        const targetBtn = e.target.closest('.manual-nav-btn');
+        navGrid.querySelectorAll('.manual-nav-btn').forEach(b => b.classList.remove('drag-over'));
+        if (targetBtn && targetBtn !== draggedBtn) {
+          const allBtns = Array.from(navGrid.querySelectorAll('.manual-nav-btn'));
+          const draggedIdx = allBtns.indexOf(draggedBtn);
+          const targetIdx = allBtns.indexOf(targetBtn);
+          if (draggedIdx < targetIdx) {
+            navGrid.insertBefore(draggedBtn, targetBtn.nextSibling);
+          } else {
+            navGrid.insertBefore(draggedBtn, targetBtn);
+          }
+          syncManualOrderFromDOM(true);
+        }
+      });
+
+      navGrid.addEventListener('dragend', () => {
+        if (draggedBtn) draggedBtn.classList.remove('dragging');
+        navGrid.querySelectorAll('.manual-nav-btn').forEach(b => b.classList.remove('drag-over'));
+        draggedBtn = null;
+      });
+    }
+
+    initNavDragAndDrop();
     handleHash();
     window.addEventListener('DOMContentLoaded', async () => {
       const saved = await loadCustomManualsFromDB();
       saved.forEach(item => renderCustomManual(item));
+      applySavedManualOrder();
       handleHash();
     });
   </script>
