@@ -300,7 +300,7 @@ index_html = f"""<!doctype html>
 
     .manual-nav-grid {{
       display: grid;
-      grid-template-columns: repeat(8, 1fr);
+      grid-template-columns: repeat(4, 1fr);
       gap: 10px;
     }}
 
@@ -927,7 +927,7 @@ index_html = f"""<!doctype html>
       .two-col-sections {{ grid-template-columns: 1fr; }}
       .two-col-sections .section {{ margin-top: 24px; }}
       .manual-nav-grid {{
-        grid-template-columns: repeat(8, minmax(120px, 1fr));
+        grid-template-columns: repeat(2, 1fr);
         overflow-x: auto;
         padding-bottom: 6px;
       }}
