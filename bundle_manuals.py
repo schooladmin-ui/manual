@@ -659,6 +659,50 @@ index_html = f"""<!doctype html>
       margin: 0;
     }}
 
+    .step-with-side {{
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(280px, 0.95fr);
+      gap: 18px;
+      align-items: stretch;
+    }}
+
+    .step-side-box {{
+      position: relative;
+      border: 1.5px solid #bfdbfe;
+      border-radius: 10px;
+      background: #f8fafc;
+      padding: 14px 52px 14px 16px;
+      cursor: pointer;
+      transition: all 0.16s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }}
+
+    .step-side-box:hover {{
+      border-color: var(--blue);
+      background: var(--blue-soft);
+    }}
+
+    .step-side-box h4 {{
+      margin: 0 0 8px;
+      font-size: 14.5px;
+      color: #1e3a8a;
+      font-weight: 800;
+    }}
+
+    .step-side-box ul {{
+      margin: 0;
+      padding-left: 18px;
+    }}
+
+    .step-side-box li {{
+      margin: 4px 0;
+      font-size: 13px;
+      line-height: 1.45;
+      color: var(--ink);
+    }}
+
     .group-link-panel {{
       display: flex;
       align-items: center;
@@ -1022,7 +1066,7 @@ index_html = f"""<!doctype html>
     @media (max-width: 900px) {{
       .page {{ padding: 22px 18px; }}
       .check {{ grid-template-columns: 1fr; }}
-      .two-col-sections {{ grid-template-columns: 1fr; }}
+      .two-col-sections, .step-with-side {{ grid-template-columns: 1fr; }}
       .two-col-sections .section {{ margin-top: 24px; }}
       .manual-nav-grid {{
         grid-template-columns: repeat(2, 1fr);
