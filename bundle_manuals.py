@@ -1769,7 +1769,7 @@ index_html = f"""<!doctype html>
           'const MANUAL_LIST = ' + JSON.stringify(cleanList) + ';'
         );
       }}
-      const htmlStr = '<!doctype html>\n' + clone.outerHTML;
+      const htmlStr = '<!doctype html>\\n' + clone.outerHTML;
       const blob = new Blob([htmlStr], {{ type: 'text/html;charset=utf-8' }});
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
@@ -1777,6 +1777,7 @@ index_html = f"""<!doctype html>
       a.click();
     }}
 
+    handleHash();
     window.addEventListener('DOMContentLoaded', async () => {{
       const saved = await loadCustomManualsFromDB();
       saved.forEach(item => renderCustomManual(item));
