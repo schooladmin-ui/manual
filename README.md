@@ -1,13 +1,13 @@
-# 🏫 홍익여고 온라인교무실 업무 매뉴얼 포털 (10대 핵심 가이드북)
+# 🏫 홍익여고 온라인교무실 업무 매뉴얼 포털 (20대 핵심 가이드북)
 
-> **교원 디지털 업무 지원 및 Google Workspace · 온라인교무실 활용 10대 핵심 가이드북 종합 포털**  
+> **교원 디지털 업무 지원 및 Google Workspace · 온라인교무실 · 디벗(크롬북) 활용 20대 핵심 가이드북 종합 포털**  
 > 모든 가이드와 고화질 스크린샷 이미지·PDF가 `index.html` 단일 파일에 내장되어 있으며, 개별 매뉴얼은 `pages/` 폴더, 원본 이미지는 `images/` 폴더에서 체계적으로 관리됩니다.
 
 ---
 
 ## 📌 목차
 1. [프로젝트 개요](#-프로젝트-개요)
-2. [수록 매뉴얼 목록 (10종)](#-수록-매뉴얼-목록-10종)
+2. [수록 매뉴얼 목록 (4대 카테고리 · 20종)](#-수록-매뉴얼-목록-4대-카테고리--20종)
 3. [주요 기능](#-주요-기능)
 4. [파일 구조](#-파일-구조)
 5. [배포 및 실행 방법](#-배포-및-실행-방법)
@@ -18,31 +18,46 @@
 
 ## 📖 프로젝트 개요
 
-본 프로젝트는 홍익여자고등학교 교원의 원활한 디지털 교무 업무를 지원하기 위해 제작된 종합 매뉴얼 포털입니다.  
-Chrome 브라우저 초기 설정부터 온라인교무실 접속 및 바로가기 앱 설치, Google Sites 편집, Google NotebookLM AI 활용, 공유 폴더 보안 권한 설정, 연수서명부 날인, Google Chat 설치 및 채팅방(스페이스) 생성, Google Groups 그룹 만들기까지 **총 10개 매뉴얼(40단계 실무 가이드)**을 체계적으로 묶어 제공합니다.
+본 프로젝트는 홍익여자고등학교 교원의 원활한 디지털 교무 업무 및 디벗 수업 환경을 지원하기 위해 제작된 종합 매뉴얼 포털입니다.  
+**4대 카테고리(`🛡️기본 환경 세팅`, `🏢 온라인 교무실`, `💬 구글 채팅(Google Chat)`, `💻 디벗 수업 활용`)**로 분류된 **총 20개 매뉴얼**을 카테고리별 탭과 파스텔 색상 버튼으로 손쉽게 찾아볼 수 있으며, 화면에서 직접 카테고리를 편집(추가·이름 변경·순서 이동·삭제·매뉴얼 분류 이동)할 수 있습니다.
 
 ---
 
-## 📑 수록 매뉴얼 목록 (10종)
+## 📑 수록 매뉴얼 목록 (4대 카테고리 · 20종)
 
-| 번호 | 매뉴얼 제목 | 분류 | 단계 수 | 독립 파일 | 원본 Canva 슬라이드 |
+| 번호 | 매뉴얼 제목 | 기본 카테고리 | 단계 수 | 독립 파일 | 표시 방식 |
 |:---:|:---|:---:|:---:|:---:|:---:|
-| **01** | [크롬브라우저 기본앱으로 설정하는 방법](pages/chrome-default-app-guide-with-canva-link.html) | 브라우저 환경 | 3단계 | [파일 열기](pages/chrome-default-app-guide-with-canva-link.html) | [Canva 열기](https://www.canva.com/design/DAGotK1iBWQ/fQ9N3piaD0zZCDtNWv6vCw/view?utm_content=DAGotK1iBWQ&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utm_id=h39e2295cc7) |
-| **02** | [크롬 북마크바 표시 방법](pages/bookmark-bar-manual-with-canva-link.html) | 브라우저 환경 | 3단계 | [파일 열기](pages/bookmark-bar-manual-with-canva-link.html) | [Canva 열기](https://www.canva.com/design/DAGoE56L5Qw/zEwEBK0UluCzBb1HR838Cg/view?utm_content=DAGoE56L5Qw&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utm_id=h7dc1509390) |
-| **03** | [바탕화면에 온라인교무실 바로가기 버튼 만들기](pages/desktop-button-guide-manual.html) | 온라인교무실 | 4단계 | [파일 열기](pages/desktop-button-guide-manual.html) | [Canva 열기](https://www.canva.com/design/DAHGJQe8CAA/kYI9m7jIEDhPaAbkuLZDGg/view?utm_content=DAHGJQe8CAA&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utm_id=ha7f0287432) |
-| **04** | [메인 페이지 편집 방법](pages/main-page-edit-guide-manual.html) | 온라인교무실 | 4단계 | [파일 열기](pages/main-page-edit-guide-manual.html) | [Canva 열기](https://www.canva.com/design/DAGm6pqOZJM/rQnX-rH46Qv1cxtFaN2xhg/view?utm_content=DAGm6pqOZJM&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utm_id=h48af137ff0) |
-| **05** | [구글 Notebook LM 생성 후 공유 방법](pages/notebooklm-create-share-guide-manual.html) | AI & 업무도구 | 11단계 | [파일 열기](pages/notebooklm-create-share-guide-manual.html) | [Canva 열기](https://www.canva.com/design/DAHIAXtwfPQ/c0rlZicbmWImDTlLa5JJkQ/view?utm_content=DAHIAXtwfPQ&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utm_id=h7c5f276f63) |
-| **06** | [온라인교무실 공유 폴더 권한 설정 방법](pages/permission-setting-guide-with-canva-link.html) | 보안 & 드라이브 | 4단계 | [파일 열기](pages/permission-setting-guide-with-canva-link.html) | [Canva 열기](https://www.canva.com/design/DAGm6gX_4lM/rVOmpsykESZmuqzTnOMz8A/view?utm_content=DAGm6gX_4lM&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utm_id=hb1133ff80a) |
-| **07** | [연수서명부 서명 방법](pages/training-signature-guide-manual.html) | 교무 행정 | 4단계 | [파일 열기](pages/training-signature-guide-manual.html) | [Canva 열기](https://www.canva.com/design/DAGm6jijC7A/i3ovxr1djLZxKIW9JRvAKg/view?utm_content=DAGm6jijC7A&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utm_id=h1e3a1fe2c0) |
-| **08** | [구글 채팅(Google Chat) 앱에서 채팅방(스페이스) 만드는 방법](pages/google-chat-space-guide.html) | 협업 & 메신저 | 4단계 | [파일 열기](pages/google-chat-space-guide.html) | - |
-| **09** | [그룹 만들기](pages/google-groups-create-guide.html) | 협업 & 그룹 | 2단계 | [파일 열기](pages/google-groups-create-guide.html) | - |
-| **10** | [구글 채팅(Google Chat) 설치 방법](<pages/우리 학교, 이제 구글 채팅(Google Chat)으로-pdf-guide.html>) | 협업 & 메신저 | 1단계 | [파일 열기](<pages/우리 학교, 이제 구글 채팅(Google Chat)으로-pdf-guide.html>) | - |
+| **01** | [크롬브라우저 기본앱으로 설정하는 방법](pages/chrome-default-app-guide-with-canva-link.html) | 🛡️기본 환경 세팅 | 3단계 | [파일 열기](pages/chrome-default-app-guide-with-canva-link.html) | 단계 카드 + 🔍 모달 |
+| **02** | [크롬 북마크바 표시 방법](pages/bookmark-bar-manual-with-canva-link.html) | 🛡️기본 환경 세팅 | 3단계 | [파일 열기](pages/bookmark-bar-manual-with-canva-link.html) | 단계 카드 + 🔍 모달 |
+| **03** | [바탕화면에 온라인교무실 바로가기 버튼 만들기](pages/desktop-button-guide-manual.html) | 🛡️기본 환경 세팅 | 4단계 | [파일 열기](pages/desktop-button-guide-manual.html) | 단계 카드 + 🔍 모달 |
+| **04** | [메인 페이지 편집 방법](pages/main-page-edit-guide-manual.html) | 🏢 온라인 교무실 | 4단계 | [파일 열기](pages/main-page-edit-guide-manual.html) | 단계 카드 + 🔍 모달 |
+| **05** | [온라인교무실 공유 폴더 권한 설정 방법](pages/permission-setting-guide-with-canva-link.html) | 🏢 온라인 교무실 | 4단계 | [파일 열기](pages/permission-setting-guide-with-canva-link.html) | 단계 카드 + 🔍 모달 |
+| **06** | [연수서명부 서명 방법](pages/training-signature-guide-manual.html) | 🏢 온라인 교무실 | 4단계 | [파일 열기](pages/training-signature-guide-manual.html) | 단계 카드 + 🔍 모달 |
+| **07** | [구글 Notebook LM 생성 후 공유 방법](pages/notebooklm-create-share-guide-manual.html) | 🏢 온라인 교무실 | 11단계 | [파일 열기](pages/notebooklm-create-share-guide-manual.html) | 단계 카드 + 🔍 모달 |
+| **08** | [구글 채팅(Google Chat) 설치 방법](<pages/우리 학교, 이제 구글 채팅(Google Chat)으로-pdf-guide.html>) | 💬 구글 채팅(Google Chat) | 1단계 | [파일 열기](<pages/우리 학교, 이제 구글 채팅(Google Chat)으로-pdf-guide.html>) | 내장 PDF 뷰어 |
+| **09** | [구글 채팅(Google Chat) 앱에서 채팅방(스페이스) 만드는 방법](pages/google-chat-space-guide.html) | 💬 구글 채팅(Google Chat) | 4단계 | [파일 열기](pages/google-chat-space-guide.html) | 단계 카드 + 🔍 모달 |
+| **10** | [그룹 만들기](pages/google-groups-create-guide.html) | 💬 구글 채팅(Google Chat) | 2단계 | [파일 열기](pages/google-groups-create-guide.html) | 인라인 이미지 바로 표시 |
+| **11** | [디벗 전원이 켜지지 않을 때](pages/dibut-power-on-guide.html) | 💻 디벗 수업 활용 | 2단계 | [파일 열기](pages/dibut-power-on-guide.html) | 인라인 이미지 바로 표시 |
+| **12** | [학생 비번 재설정 방법](pages/student-password-reset-guide.html) | 💻 디벗 수업 활용 | 3단계 | [파일 열기](pages/student-password-reset-guide.html) | 인라인 이미지 바로 표시 |
+| **13** | [북마크 수정하기 (관리 북마크)](pages/managed-bookmark-edit-guide.html) | 💻 디벗 수업 활용 | 2단계 | [파일 열기](pages/managed-bookmark-edit-guide.html) | 2장 모두 인라인 바로 표시 |
+| **14** | [앱 및 확장 프로그램 추가 방법 (교사용)](pages/teacher-app-extension-guide.html) | 💻 디벗 수업 활용 | 3단계 | [파일 열기](pages/teacher-app-extension-guide.html) | 3장 모두 인라인 바로 표시 |
+| **15** | [앱 및 확장 프로그램 추가 방법 (학생용)](pages/student-app-extension-guide.html) | 💻 디벗 수업 활용 | 2단계 | [파일 열기](pages/student-app-extension-guide.html) | 2장 모두 인라인 바로 표시 |
+| **16** | [기본 커서 모양 변경하기](pages/cursor-style-change-guide.html) | 💻 디벗 수업 활용 | 3단계 | [파일 열기](pages/cursor-style-change-guide.html) | 인라인 이미지 바로 표시 |
+| **17** | [유선 미러링 화면 복사 기능 구현하기](pages/wired-mirroring-display-guide.html) | 💻 디벗 수업 활용 | 2단계 | [파일 열기](pages/wired-mirroring-display-guide.html) | 인라인 이미지 바로 표시 |
+| **18** | [포커스팡(FocusPang) 활용 방법](pages/focuspang-guide.html) | 💻 디벗 수업 활용 | 5단계 | [파일 열기](pages/focuspang-guide.html) | 핵심 요약 + 원본 PDF/영상 보기 버튼 |
+| **19** | [디벗 충전함 사용법 (1·2학년 - 앱코 패드뱅크)](pages/dibut-charging-cabinet-1-2-guide.html) | 💻 디벗 수업 활용 | 5단계 | [파일 열기](pages/dibut-charging-cabinet-1-2-guide.html) | 핵심 요약 + 원본 PDF(7쪽) 보기 버튼 |
+| **20** | [디벗 충전함 사용법 (3학년 - 등대씨엔씨 도어락)](pages/dibut-charging-cabinet-3-guide.html) | 💻 디벗 수업 활용 | 4단계 | [파일 열기](pages/dibut-charging-cabinet-3-guide.html) | 핵심 요약 + 인라인 이미지 바로 표시 |
 
 ---
 
 ## ✨ 주요 기능
 
-### 1. 직관적인 `n × 5` 버튼 레이아웃 및 쾌적한 스크롤 뷰
+### 1. 카테고리별 탭 필터링 및 `⚙️ 카테고리 편집` 기능
+- 상단 카테고리 바에서 **`📋 전체 보기`** 또는 각 카테고리 탭을 클릭하여 원하는 분야의 매뉴얼만 빠르게 골라볼 수 있습니다.
+- 우측 **`⚙️ 카테고리 편집`** 버튼을 클릭하면:
+  - **카테고리 추가 · 이름 변경 · 순서 이동(`▲`/`▼`) · 삭제 · 기본값 초기화**가 가능합니다.
+  - 각 매뉴얼의 소속 카테고리를 드롭다운으로 즉시 변경할 수 있으며, 메인 화면에서 **매뉴얼 버튼을 상단 카테고리 탭으로 드래그 앤 드롭**하여 이동할 수도 있습니다.
+  - 편집된 카테고리 구성은 브라우저(`localStorage`)에 자동 저장되며, 상단 **`[배포 파일 일괄 다운로드]`** 실행 시 생성되는 `index.html`에도 영구 반영됩니다.
 - 상단에 **'온라인 교무실 매뉴얼'** 메인 타이틀과 함께 매뉴얼 선택 버튼이 **`n × 5` 그리드(`repeat(5, 1fr)`)** 형태로 깔끔하게 배치됩니다.
 - 버튼을 클릭하면 페이지 새로고침 없이 하단에 해당 매뉴얼 본문이 즉시 표시되며, 아래로 스크롤할 때 매뉴얼 선택 패널이 화면을 가리지 않도록 자연스럽게 함께 스크롤됩니다.
 

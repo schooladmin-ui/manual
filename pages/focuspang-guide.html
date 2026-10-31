@@ -1,0 +1,553 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>포커스팡(FocusPang) 활용 방법</title>
+
+  <style>
+    :root {
+      --ink: #172033;
+      --muted: #5b6475;
+      --line: #dfe5ee;
+      --blue: #2563eb;
+      --blue-soft: #eff6ff;
+      --red: #dc2626;
+      --red-soft: #fef2f2;
+      --green: #047857;
+      --green-soft: #ecfdf5;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: #f5f7fb;
+      color: var(--ink);
+      font-family: 'Pretendard', system-ui, -apple-system, "Segoe UI", "Noto Sans KR", sans-serif;
+      line-height: 1.55;
+    }
+    .page {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 28px;
+      background: #fff;
+      min-height: 100vh;
+    }
+    header {
+      border-bottom: 2px solid var(--ink);
+      padding-bottom: 16px;
+      margin-bottom: 18px;
+    }
+    .title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .title-highlight {
+      background: linear-gradient(transparent 48%, #fff36a 48%, #fff36a 91%, transparent 91%);
+      padding: 0 .1em;
+    }
+    h1 {
+      margin: 0;
+      font-size: clamp(24px, 3.6vw, 38px);
+      line-height: 1.2;
+      letter-spacing: -.035em;
+      font-weight: 850;
+    }
+    .lead {
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: 15px;
+    }
+    .source-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 15px;
+      border-radius: 8px;
+      background: var(--blue);
+      color: #fff;
+      font-size: 13.5px;
+      font-weight: 800;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+    }
+    .notice {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      background: var(--red-soft);
+      border: 1px solid #fecaca;
+      border-left: 7px solid var(--red);
+      border-radius: 12px;
+      padding: 16px 18px;
+      margin: 18px 0 22px;
+    }
+    .notice-label {
+      font-size: 18px;
+      line-height: 1.2;
+      font-weight: 950;
+      color: var(--red);
+      white-space: nowrap;
+    }
+    .notice p, .notice li {
+      margin: 0;
+      font-size: 14.5px;
+      font-weight: 650;
+      line-height: 1.55;
+    }
+    .notice ul {
+      margin: 0;
+      padding-left: 20px;
+    }
+    .notice li { margin: 4px 0; }
+    .notice strong {
+      font-weight: 900;
+      color: #b91c1c;
+    }
+    .flow {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin: 0 0 20px;
+    }
+    .flow span {
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: var(--blue-soft);
+      color: #1e40af;
+      font-size: 12.5px;
+      font-weight: 750;
+    }
+    .steps {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      margin: 0 0 22px;
+    }
+    .step {
+      position: relative;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 17px 18px;
+      background: #fff;
+    }
+    .step-head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+    .num {
+      display: inline-grid;
+      place-items: center;
+      width: 32px;
+      height: 32px;
+      flex: 0 0 auto;
+      border-radius: 50%;
+      background: var(--blue);
+      color: #fff;
+      font-weight: 850;
+      font-size: 14px;
+    }
+    .step h2, .step h3 {
+      margin: 0;
+      font-size: 17.5px;
+      line-height: 1.3;
+      font-weight: 800;
+    }
+    .step p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.55;
+    }
+    .step ul {
+      margin: 6px 0 0;
+      padding-left: 20px;
+    }
+    .step li {
+      margin: 5px 0;
+      font-size: 14px;
+      color: #334155;
+    }
+    .important {
+      margin-top: 10px;
+      padding: 11px 13px;
+      border: 2px solid #f59e0b;
+      border-radius: 9px;
+      background: #fffbeb;
+      color: #92400e;
+      font-size: 13.5px;
+      font-weight: 750;
+    }
+    .inline-figure {
+      margin: 14px 0 4px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      overflow: hidden;
+      background: #fff;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
+    }
+    .inline-figure img {
+      display: block;
+      width: 100%;
+      height: auto;
+      cursor: zoom-in;
+    }
+    .group-link-panel {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin: 14px 0 22px;
+      padding: 16px 20px;
+      border: 1.5px solid #93c5fd;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #eff6ff 0%, #f5f3ff 100%);
+      color: var(--ink);
+      text-decoration: none;
+    }
+    .group-link-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .group-link-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6px 10px;
+      border-radius: 8px;
+      background: var(--blue);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+    .group-link-text strong {
+      display: block;
+      font-size: 15px;
+      color: #1e3a8a;
+    }
+    .group-link-text span {
+      display: block;
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+    .group-link-action {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 16px;
+      border-radius: 999px;
+      background: var(--blue);
+      color: #fff;
+      font-size: 13.5px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+    .pdf-action-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+      padding: 16px 20px;
+      margin: 0 0 20px;
+      border-radius: 12px;
+      border: 1.5px solid #93c5fd;
+      background: linear-gradient(135deg, #eff6ff 0%, #f8fafc 100%);
+    }
+    .pdf-action-info strong {
+      display: block;
+      font-size: 15.5px;
+      color: #1e3a8a;
+      font-weight: 850;
+    }
+    .pdf-action-info span {
+      display: block;
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+    .pdf-action-buttons {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .pdf-btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 16px;
+      border-radius: 8px;
+      border: none;
+      background: #2563eb;
+      color: #fff !important;
+      font-size: 13.5px;
+      font-weight: 800;
+      cursor: pointer;
+      text-decoration: none !important;
+      box-shadow: 0 3px 8px rgba(37, 99, 235, 0.22);
+      transition: all 0.16s ease;
+      font-family: inherit;
+    }
+    .pdf-btn-primary:hover {
+      background: #1d4ed8;
+      transform: translateY(-1px);
+    }
+    .pdf-btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 14px;
+      border-radius: 8px;
+      border: 1.5px solid #93c5fd;
+      background: #fff;
+      color: #1d4ed8 !important;
+      font-size: 13px;
+      font-weight: 750;
+      cursor: pointer;
+      text-decoration: none !important;
+      transition: all 0.16s ease;
+      font-family: inherit;
+    }
+    .pdf-btn-secondary:hover {
+      background: #eff6ff;
+    }
+    .pdf-btn-video {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 15px;
+      border-radius: 8px;
+      border: none;
+      background: #dc2626;
+      color: #fff !important;
+      font-size: 13.5px;
+      font-weight: 800;
+      cursor: pointer;
+      text-decoration: none !important;
+      box-shadow: 0 3px 8px rgba(220, 38, 38, 0.22);
+      transition: all 0.16s ease;
+      font-family: inherit;
+    }
+    .pdf-btn-video:hover {
+      background: #b91c1c;
+      transform: translateY(-1px);
+    }
+    .pdf-embed-wrap {
+      margin: 14px 0 22px;
+      border: 1.5px solid var(--line);
+      border-radius: 12px;
+      overflow: hidden;
+      background: #334155;
+      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.08);
+    }
+    .pdf-embed-frame {
+      display: block;
+      width: 100%;
+      height: 82vh;
+      min-height: 720px;
+      border: none;
+      background: #fff;
+    }
+    .video-embed-wrap {
+      margin: 14px 0 22px;
+      border: 1.5px solid var(--line);
+      border-radius: 12px;
+      overflow: hidden;
+      background: #0f172a;
+      aspect-ratio: 16 / 9;
+    }
+    .video-embed-frame {
+      display: block;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+  </style>
+
+</head>
+<body>
+  <main class="page">
+    <header>
+      <div class="title-row">
+        <h1><span class="title-highlight">포커스팡(FocusPang) 활용 방법</span></h1>
+        <a class="source-button" href="https://drive.google.com/file/d/1rtdsy1Jcr7EAspvCyNfA1LN-Mb6OkUKd/view" target="_blank" rel="noopener">📄 원본 PDF 새 창 열기</a>
+      </div>
+      <p class="lead">수업 중 교사가 학생의 크롬북(디벗) 화면을 실시간으로 확인하고 통제하기 위한 크롬 웹 확장 프로그램 매뉴얼 요약입니다.</p>
+    </header>
+
+    <div class="pdf-action-bar" aria-label="원본 PDF 및 영상 바로보기">
+      <div class="pdf-action-info">
+        <strong>📄 매뉴얼_포커스팡.pdf 원본 문서 및 안내 영상</strong>
+        <span>핵심 요약 내용을 아래에서 빠르게 확인하거나, 버튼을 눌러 원본 PDF 전체(관리자·선생님·학생용)와 소개 영상을 바로 열람할 수 있습니다.</span>
+      </div>
+      <div class="pdf-action-buttons">
+        <button type="button" class="pdf-btn-primary" onclick="toggleCollapsibleViewer('focuspang-pdf-viewer', this, '📄 원본 PDF 바로보기 (열기)', '📄 원본 PDF 바로보기 (닫기)')">📄 원본 PDF 바로보기 (열기)</button>
+        <a class="pdf-btn-secondary" href="https://drive.google.com/file/d/1rtdsy1Jcr7EAspvCyNfA1LN-Mb6OkUKd/view" target="_blank" rel="noopener noreferrer">↗ 새 창에서 PDF 열기</a>
+        <button type="button" class="pdf-btn-video" onclick="toggleCollapsibleViewer('focuspang-video-viewer', this, '▶️ 소개 영상 보기 (열기)', '▶️ 소개 영상 보기 (닫기)')">▶️ 소개 영상 보기 (열기)</button>
+      </div>
+    </div>
+
+    <div id="focuspang-pdf-viewer" class="pdf-embed-wrap" style="display:none;">
+      <iframe class="pdf-embed-frame" data-lazy-src="https://drive.google.com/file/d/1rtdsy1Jcr7EAspvCyNfA1LN-Mb6OkUKd/preview" title="매뉴얼_포커스팡.pdf 원본 뷰어" allow="autoplay"></iframe>
+    </div>
+
+    <div id="focuspang-video-viewer" class="video-embed-wrap" style="display:none;">
+      <iframe class="video-embed-frame" data-lazy-src="https://www.youtube.com/embed/lhHP_fV473E" title="포커스팡(FocusPang) 소개 영상" allowfullscreen></iframe>
+    </div>
+
+    <section class="notice" aria-label="수업 시작 필수 원칙">
+      <div class="notice-label">필수 핵심</div>
+      <p>수업이 시작되면 <strong>[가장 먼저 학생들 기기의 크롬을 켜고 '포커스팡'에 접속한 후 선생님 기기와 전체화면을 공유]</strong>해야 수업 중 학생 기기의 화면 통제가 가능합니다! (아이패드의 '학교/교실' 앱과 유사한 기능)</p>
+    </section>
+
+    <div class="flow" aria-label="핵심 활용 순서">
+      <span>1. 학생 크롬 실행 및 전체화면 공유</span>
+      <span>2. 교사용 로그인 · 수업시간/학생 등록</span>
+      <span>3. 포커스 타임(화면 모니터링·주의집중·앱/웹 제어·링크 전송)</span>
+      <span>4. 모둠 활동 · 과제 관리</span>
+      <span>5. 퀴즈팡 · 수업 외 사용 관리</span>
+    </div>
+
+    <section class="steps" aria-label="포커스팡 핵심 요약 단계">
+      <article class="step">
+        <div class="step-head">
+          <span class="num">1</span>
+          <h2>[수업 시작 전 필수] 학생 크롬 실행 및 포커스팡 전체화면 공유</h2>
+        </div>
+        <ul>
+          <li>수업을 시작할 때 모든 학생이 디벗에서 <strong>크롬 브라우저를 켜고 '포커스팡'에 접속</strong>하도록 안내합니다.</li>
+          <li>학생이 <strong>[전체 화면]을 교사에게 공유</strong>하면, 교사 화면에서 모든 학생 기기의 화면을 실시간으로 확인하고 통제할 수 있습니다.</li>
+        </ul>
+      </article>
+
+      <article class="step">
+        <div class="step-head">
+          <span class="num">2</span>
+          <h2>[선생님용 초기 설정] 로그인, 수업시간 추가 및 학생 명단 등록</h2>
+        </div>
+        <ul>
+          <li><strong>로그인 및 수업시간 관리</strong>: 발급받은 교사 계정으로 로그인한 뒤 <strong>[수업시간 추가]</strong>에서 담당 학급·교시별 수업을 생성·수정합니다.</li>
+          <li><strong>학생 등록 및 공지사항</strong>: <strong>[학생 등록 및 명단 수정]</strong>에서 수강 학생을 등록하고, 수업에 필요한 <strong>[수업 공지사항]</strong>을 작성·배포할 수 있습니다.</li>
+        </ul>
+      </article>
+
+      <article class="step">
+        <div class="step-head">
+          <span class="num">3</span>
+          <h2>[포커스 타임] 실시간 수업 진행, 주의집중, 앱·웹 제어 및 링크 보내기</h2>
+        </div>
+        <ul>
+          <li><strong>수업 진행 및 대시보드</strong>: 참여 학생들의 실시간 화면과 접속 상태를 한눈에 모니터링합니다.</li>
+          <li><strong>수업 중 주의집중</strong>: 설명이 필요할 때 학생들의 기기 화면을 일괄 잠금(주의집중 모드)하여 교사에게 집중시킵니다.</li>
+          <li><strong>앱 및 웹사이트 제어</strong>: 수업과 무관한 앱이나 허용되지 않은 웹사이트 접속을 즉시 차단·제어합니다.</li>
+          <li><strong>링크 보내기</strong>: 수업 자료나 활동지 웹페이지 URL을 전체 학생 화면에 동시에 전송하여 자동으로 열리게 합니다.</li>
+        </ul>
+      </article>
+
+      <article class="step">
+        <div class="step-head">
+          <span class="num">4</span>
+          <h2>[모둠 활동 및 과제 관리] 조 편성 및 수업 과제 수합</h2>
+        </div>
+        <ul>
+          <li><strong>모둠 활동(조 편성)</strong>: 학급 학생들을 모둠별로 간편하게 편성하여 조별 협력 활동을 진행합니다.</li>
+          <li><strong>과제 관리</strong>: 수업 과제를 등록하고 학생들의 과제 제출 여부와 결과물을 확인합니다.</li>
+        </ul>
+      </article>
+
+      <article class="step">
+        <div class="step-head">
+          <span class="num">5</span>
+          <h2>[퀴즈팡 및 수업 외 관리] 실시간 퀴즈 출제 및 수업시간 외 앱·웹 관리</h2>
+        </div>
+        <ul>
+          <li><strong>퀴즈팡(QuizPang)</strong>: 문제 만들기 및 문제 생성 관리를 통해 수업 중 실시간 퀴즈를 진행하고 이해도를 점검합니다.</li>
+          <li><strong>수업시간 외 앱/웹 관리</strong>: 학생 명단과 관리 일정을 설정하여 수업 시간 외에도 허용/차단 정책을 운영할 수 있습니다.</li>
+        </ul>
+        <div class="important">
+          💡 관리자용(교사 계정 생성·권한 부여), 선생님용 세부 화면(p.22~46), 학생용 기기별 설치·설정(p.60~90) 상세 가이드는 상단의 <strong>[📄 원본 PDF 바로보기]</strong> 버튼을 눌러 확인하실 수 있습니다.
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <div id="standaloneImgModal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(15,23,42,0.82);backdrop-filter:blur(4px);place-items:center;padding:24px;" onclick="if(event.target===this)this.style.display='none'">
+    <div style="max-width:min(95vw,1200px);max-height:92vh;background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,0.35);display:flex;flex-direction:column;">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 18px;border-bottom:1px solid #dfe5ee;">
+        <strong id="standaloneImgCaption" style="font-size:15px;color:#172033;">상세 이미지</strong>
+        <button type="button" onclick="document.getElementById('standaloneImgModal').style.display='none'" style="border:none;background:#f1f5f9;border-radius:8px;padding:6px 12px;font-weight:800;cursor:pointer;">닫기 ✕</button>
+      </div>
+      <div style="overflow:auto;padding:16px;background:#f8fafc;display:grid;place-items:center;">
+        <img id="standaloneImgEl" src="" alt="" style="max-width:100%;max-height:80vh;height:auto;border-radius:8px;">
+      </div>
+    </div>
+  </div>
+  <script>
+    document.addEventListener('click', function(e) {
+      const img = e.target.closest('.inline-figure img');
+      if (img && img.getAttribute('src')) {
+        const modal = document.getElementById('standaloneImgModal');
+        const modalImg = document.getElementById('standaloneImgEl');
+        const modalCap = document.getElementById('standaloneImgCaption');
+        if (modal && modalImg) {
+          modalImg.src = img.getAttribute('src');
+          if (modalCap) modalCap.textContent = img.dataset.caption || img.getAttribute('alt') || '상세 이미지';
+          modal.style.display = 'grid';
+        }
+      }
+    });
+
+    function toggleCollapsibleViewer(boxId, btnEl, openText, closeText) {
+      const box = document.getElementById(boxId);
+      if (!box) return;
+      const isHidden = box.style.display === 'none' || !box.style.display;
+      if (isHidden) {
+        box.style.display = 'block';
+        const frame = box.querySelector('iframe');
+        if (frame) {
+          if (frame.dataset.lazySrc && !frame.getAttribute('src')) {
+            frame.setAttribute('src', frame.dataset.lazySrc);
+          } else if (frame.dataset.pdfSrc && !frame.getAttribute('src')) {
+            try {
+              const b = atob(frame.dataset.pdfSrc.split(',')[1]);
+              const u = new Uint8Array(b.length);
+              for (let i = 0; i < b.length; i++) u[i] = b.charCodeAt(i);
+              frame.src = URL.createObjectURL(new Blob([u], { type: 'application/pdf' }));
+            } catch (e) {}
+          }
+        }
+        if (btnEl && closeText) btnEl.innerHTML = closeText;
+        box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      } else {
+        box.style.display = 'none';
+        if (btnEl && openText) btnEl.innerHTML = openText;
+      }
+    }
+
+    function openEmbeddedPdfInNewTab(viewerId) {
+      const box = document.getElementById(viewerId);
+      if (!box) return;
+      const frame = box.querySelector('iframe[data-pdf-src]');
+      if (!frame || !frame.dataset.pdfSrc) return;
+      try {
+        const b = atob(frame.dataset.pdfSrc.split(',')[1]);
+        const u = new Uint8Array(b.length);
+        for (let i = 0; i < b.length; i++) u[i] = b.charCodeAt(i);
+        const url = URL.createObjectURL(new Blob([u], { type: 'application/pdf' }));
+        window.open(url, '_blank', 'noopener');
+      } catch (e) {}
+    }
+  </script>
+
+</body>
+</html>

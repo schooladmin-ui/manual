@@ -1,74 +1,117 @@
 import os
-import json
 import re
+import json
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+BASE_DIR = r"c:\Users\user\Desktop\html\06-온라인교무실 매뉴얼"
 PAGES_DIR = os.path.join(BASE_DIR, "pages")
+GOOGLE_SITES_URL = "https://sites.google.com/hongik68.sen.hs.kr/hongik-digitalfriend-homepage/%ED%99%88/%EB%A7%A4%EB%89%B4%EC%96%BC-%EA%B5%90%EC%82%AC%EC%9A%A9"
+FOCUSPANG_PDF_VIEW = "https://drive.google.com/file/d/1rtdsy1Jcr7EAspvCyNfA1LN-Mb6OkUKd/view"
+
+DEFAULT_CATEGORIES = [
+    {"id": "office-basic", "name": "🛡️기본 환경 세팅", "theme": 0},
+    {"id": "google-admin", "name": "🏢 온라인 교무실", "theme": 2},
+    {"id": "comm-ai", "name": "💬 구글 채팅(Google Chat)", "theme": 1},
+    {"id": "dibut-class", "name": "💻 디벗 수업 활용", "theme": 3},
+]
+
+CATEGORY_NAME_MAP = {c["id"]: c["name"] for c in DEFAULT_CATEGORIES}
+CATEGORY_THEME_MAP = {c["id"]: c["theme"] for c in DEFAULT_CATEGORIES}
 
 MANUALS = [
+    # 1. 🛡️기본 환경 세팅 (3개)
     {
         "id": "chrome-default",
         "file": "chrome-default-app-guide-with-canva-link.html",
-        "short_title": "크롬 기본 앱 설정",
+        "short_title": "크롬브라우저 기본앱으로 설정하는 방법",
         "full_title": "크롬브라우저 기본앱으로 설정하는 방법",
         "steps_count": 3,
-        "canva": "https://www.canva.com/design/DAGotK1iBWQ/fQ9N3piaD0zZCDtNWv6vCw/view?utm_content=DAGotK1iBWQ&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utm_id=h39e2295cc7"
+        "canva": "https://www.canva.com/design/DAHD337E4mE/Fd2130n11p3n8x7MG2m03g/view?utm_content=DAHD337E4mE&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h950d3fd7fc",
+        "source_label": "원본 Canva 슬라이드 열기",
+        "category": "office-basic"
     },
     {
         "id": "bookmark-bar",
         "file": "bookmark-bar-manual-with-canva-link.html",
-        "short_title": "크롬 북마크바 표시",
+        "short_title": "크롬 북마크바 표시 방법",
         "full_title": "크롬 북마크바 표시 방법",
         "steps_count": 3,
-        "canva": "https://www.canva.com/design/DAGoE56L5Qw/zEwEBK0UluCzBb1HR838Cg/view?utm_content=DAGoE56L5Qw&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utm_id=h7dc1509390"
+        "canva": "https://www.canva.com/design/DAHD4F2dd8k/single-page-manual",
+        "source_label": "원본 Canva 슬라이드 열기",
+        "category": "office-basic"
     },
     {
         "id": "desktop-button",
         "file": "desktop-button-guide-manual.html",
-        "short_title": "바탕화면 바로가기",
+        "short_title": "바탕화면에 온라인교무실 바로가기 버튼 만들기",
         "full_title": "바탕화면에 온라인교무실 바로가기 버튼 만들기",
         "steps_count": 4,
-        "canva": "https://www.canva.com/design/DAHGJQe8CAA/kYI9m7jIEDhPaAbkuLZDGg/view?utm_content=DAHGJQe8CAA&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utm_id=ha7f0287432"
+        "canva": "https://www.canva.com/design/DAHELA3cS3w/t33c2501-d763-4430-a827-9d160b6c6122/view",
+        "source_label": "원본 Canva 슬라이드 열기",
+        "category": "office-basic"
     },
+
+    # 2. 🏢 온라인 교무실 (4개)
     {
         "id": "main-page-edit",
         "file": "main-page-edit-guide-manual.html",
-        "short_title": "메인 페이지 편집",
+        "short_title": "메인 페이지 편집 방법",
         "full_title": "메인 페이지 편집 방법",
         "steps_count": 4,
-        "canva": "https://www.canva.com/design/DAGm6pqOZJM/rQnX-rH46Qv1cxtFaN2xhg/view?utm_content=DAGm6pqOZJM&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utm_id=h48af137ff0"
-    },
-    {
-        "id": "notebooklm",
-        "file": "notebooklm-create-share-guide-manual.html",
-        "short_title": "구글 NotebookLM",
-        "full_title": "구글 Notebook LM 생성 후 공유 방법",
-        "steps_count": 11,
-        "canva": "https://www.canva.com/design/DAHIAXtwfPQ/c0rlZicbmWImDTlLa5JJkQ/view?utm_content=DAHIAXtwfPQ&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utm_id=h7c5f276f63"
+        "canva": "https://www.canva.com/design/DAHEQ2_3d8k/single-page-manual",
+        "source_label": "원본 Canva 슬라이드 열기",
+        "category": "google-admin"
     },
     {
         "id": "permission-setting",
         "file": "permission-setting-guide-with-canva-link.html",
-        "short_title": "공유 폴더 권한",
+        "short_title": "온라인교무실 공유 폴더 권한 설정 방법",
         "full_title": "온라인교무실 공유 폴더 권한 설정 방법",
         "steps_count": 4,
-        "canva": "https://www.canva.com/design/DAGm6gX_4lM/rVOmpsykESZmuqzTnOMz8A/view?utm_content=DAGm6gX_4lM&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utm_id=hb1133ff80a"
+        "canva": "https://www.canva.com/design/DAHD4L6q2wU/single-page-manual",
+        "source_label": "원본 Canva 슬라이드 열기",
+        "category": "google-admin"
     },
     {
         "id": "training-signature",
         "file": "training-signature-guide-manual.html",
-        "short_title": "연수서명부 서명",
+        "short_title": "연수서명부 서명 방법",
         "full_title": "연수서명부 서명 방법",
         "steps_count": 4,
-        "canva": "https://www.canva.com/design/DAGm6jijC7A/i3ovxr1djLZxKIW9JRvAKg/view?utm_content=DAGm6jijC7A&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utm_id=h1e3a1fe2c0"
+        "canva": "https://www.canva.com/design/DAHE3k5t9xY/single-page-manual",
+        "source_label": "원본 Canva 슬라이드 열기",
+        "category": "google-admin"
+    },
+    {
+        "id": "notebooklm",
+        "file": "notebooklm-create-share-guide-manual.html",
+        "short_title": "구글 Notebook LM 생성 후 공유 방법",
+        "full_title": "구글 Notebook LM 생성 후 공유 방법",
+        "steps_count": 11,
+        "canva": "https://www.canva.com/design/DAHEc7d9s8A/single-page-manual",
+        "source_label": "원본 Canva 슬라이드 열기",
+        "category": "google-admin"
+    },
+
+    # 3. 💬 구글 채팅(Google Chat) (3개)
+    {
+        "id": "manual-우리-학교--이제-구글-채팅-google-chat-으로-pdf-guide",
+        "file": "우리 학교, 이제 구글 채팅(Google Chat)으로-pdf-guide.html",
+        "short_title": "구글 채팅(Google Chat) 설치 방법",
+        "full_title": "구글 채팅(Google Chat) 설치 방법",
+        "steps_count": 1,
+        "canva": "",
+        "source_label": "",
+        "category": "comm-ai"
     },
     {
         "id": "google-chat",
         "file": "google-chat-space-guide.html",
-        "short_title": "구글 채팅방(스페이스) 생성",
+        "short_title": "구글 채팅(Google Chat) 앱에서 채팅방(스페이스) 만드는 방법",
         "full_title": "구글 채팅(Google Chat) 앱에서 채팅방(스페이스) 만드는 방법",
         "steps_count": 4,
-        "canva": ""
+        "canva": "",
+        "source_label": "",
+        "category": "comm-ai"
     },
     {
         "id": "google-groups",
@@ -76,27 +119,129 @@ MANUALS = [
         "short_title": "그룹 만들기",
         "full_title": "그룹 만들기",
         "steps_count": 2,
-        "canva": ""
+        "canva": "",
+        "source_label": "",
+        "category": "comm-ai"
+    },
+
+    # 4. 💻 디벗 수업 활용 (10개)
+    {
+        "id": "dibut-power-on",
+        "file": "dibut-power-on-guide.html",
+        "short_title": "디벗 전원이 켜지지 않을 때",
+        "full_title": "디벗 전원이 켜지지 않을 때",
+        "steps_count": 2,
+        "canva": GOOGLE_SITES_URL,
+        "source_label": "원본 매뉴얼 페이지 열기",
+        "category": "dibut-class"
     },
     {
-        "id": "manual-우리-학교--이제-구글-채팅-google-chat-으로-pdf-guide",
-        "file": "우리 학교, 이제 구글 채팅(Google Chat)으로-pdf-guide.html",
-        "short_title": "구글 채팅(Google Chat) 설치 방법",
-        "full_title": "구글 채팅(Google Chat) 설치 방법",
-        "steps_count": 1,
-        "canva": ""
-    }
+        "id": "student-password-reset",
+        "file": "student-password-reset-guide.html",
+        "short_title": "학생 비번 재설정 방법",
+        "full_title": "학생 비번 재설정 방법",
+        "steps_count": 3,
+        "canva": GOOGLE_SITES_URL,
+        "source_label": "원본 매뉴얼 페이지 열기",
+        "category": "dibut-class"
+    },
+    {
+        "id": "managed-bookmark-edit",
+        "file": "managed-bookmark-edit-guide.html",
+        "short_title": "북마크 수정하기 (관리 북마크)",
+        "full_title": "북마크 수정하기 (관리 북마크)",
+        "steps_count": 2,
+        "canva": GOOGLE_SITES_URL,
+        "source_label": "원본 매뉴얼 페이지 열기",
+        "category": "dibut-class"
+    },
+    {
+        "id": "teacher-app-extension",
+        "file": "teacher-app-extension-guide.html",
+        "short_title": "앱 및 확장 프로그램 추가 방법 (교사용)",
+        "full_title": "앱 및 확장 프로그램 추가 방법 (교사용)",
+        "steps_count": 3,
+        "canva": GOOGLE_SITES_URL,
+        "source_label": "원본 매뉴얼 페이지 열기",
+        "category": "dibut-class"
+    },
+    {
+        "id": "student-app-extension",
+        "file": "student-app-extension-guide.html",
+        "short_title": "앱 및 확장 프로그램 추가 방법 (학생용)",
+        "full_title": "앱 및 확장 프로그램 추가 방법 (학생용)",
+        "steps_count": 2,
+        "canva": GOOGLE_SITES_URL,
+        "source_label": "원본 매뉴얼 페이지 열기",
+        "category": "dibut-class"
+    },
+    {
+        "id": "cursor-style-change",
+        "file": "cursor-style-change-guide.html",
+        "short_title": "기본 커서 모양 변경하기",
+        "full_title": "기본 커서 모양 변경하기",
+        "steps_count": 3,
+        "canva": GOOGLE_SITES_URL,
+        "source_label": "원본 매뉴얼 페이지 열기",
+        "category": "dibut-class"
+    },
+    {
+        "id": "wired-mirroring-display",
+        "file": "wired-mirroring-display-guide.html",
+        "short_title": "유선 미러링 화면 복사 기능 구현하기",
+        "full_title": "유선 미러링 화면 복사 기능 구현하기",
+        "steps_count": 2,
+        "canva": GOOGLE_SITES_URL,
+        "source_label": "원본 매뉴얼 페이지 열기",
+        "category": "dibut-class"
+    },
+    {
+        "id": "focuspang-guide",
+        "file": "focuspang-guide.html",
+        "short_title": "포커스팡(FocusPang) 활용 방법",
+        "full_title": "포커스팡(FocusPang) 활용 방법",
+        "steps_count": 5,
+        "canva": FOCUSPANG_PDF_VIEW,
+        "source_label": "📄 원본 PDF 새 창 열기",
+        "category": "dibut-class"
+    },
+    {
+        "id": "dibut-charging-1-2",
+        "file": "dibut-charging-cabinet-1-2-guide.html",
+        "short_title": "디벗 충전함 사용법 (1·2학년)",
+        "full_title": "디벗 충전함 사용법 (1·2학년 - 앱코 패드뱅크)",
+        "steps_count": 5,
+        "canva": "",
+        "source_label": "",
+        "extra_action_html": '<button type="button" class="source-button" onclick="openEmbeddedPdfInNewTab(\'charging-1-2-pdf-viewer\')">📄 원본 PDF 새 창 열기</button>',
+        "category": "dibut-class"
+    },
+    {
+        "id": "dibut-charging-3",
+        "file": "dibut-charging-cabinet-3-guide.html",
+        "short_title": "디벗 충전함 사용법 (3학년)",
+        "full_title": "디벗 충전함 사용법 (3학년 - 등대씨엔씨 도어락)",
+        "steps_count": 4,
+        "canva": GOOGLE_SITES_URL,
+        "source_label": "원본 매뉴얼 페이지 열기",
+        "category": "dibut-class"
+    },
 ]
 
-def update_title_row(content, canva_url, file_url):
+def update_title_row(content, m, file_url):
+    canva_url = m.get("canva", "")
+    source_label = m.get("source_label") or "원본 Canva 슬라이드 열기"
+    extra_action_html = m.get("extra_action_html", "")
+
     def repl(m_row):
         inner = m_row.group(1)
         h1_m = re.search(r'(<h1[^>]*>.*?</h1>)', inner, re.DOTALL)
         if not h1_m:
             return m_row.group(0)
         h1_html = h1_m.group(1)
-        canva_btn = f'\n  <a class="source-button" href="{canva_url}" target="_blank" rel="noopener">원본 Canva 슬라이드 열기</a>' if canva_url else ''
-        actions = f'''<div class="title-actions">{canva_btn}
+        canva_btn = f'\n  <a class="source-button" href="{canva_url}" target="_blank" rel="noopener">{source_label}</a>' if canva_url else ''
+        extra_btn = f'\n  {extra_action_html}' if extra_action_html else ''
+        actions = f'''<div class="title-actions">{canva_btn}{extra_btn}
   <a href="{file_url}" target="_blank" rel="noopener" class="pane-standalone-link" title="새 창에서 독립 파일로 열기">
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
     독립창 열기
@@ -115,30 +260,46 @@ for m in MANUALS:
     main_match = re.search(r'<main class="page">(.*?)</main>', raw, re.DOTALL)
     if main_match:
         content = main_match.group(1).strip()
-        
-        # Place Canva button and 독립창 열기 button side-by-side in title-row
-        content = update_title_row(content, m["canva"], f"pages/{m['file']}")
+        content = update_title_row(content, m, f"pages/{m['file']}")
         content = content.replace('href="google-groups-create-guide.html"', 'href="#google-groups"')
-            
-        # Clean up any modal-close button that might have been copied inside page content
         content = re.sub(r'<button class="modal-close"[^>]*>.*?</button>', '', content, flags=re.DOTALL)
     else:
         content = "<div>매뉴얼 내용을 불러올 수 없습니다.</div>"
     
     manual_contents[m["id"]] = content
 
-# 1x7 Buttons - WITHOUT numbers, clean titles & step badges
+# Pre-render category tabs ('전체 보기' placed at the rightmost end)
+cat_counts = {c["id"]: 0 for c in DEFAULT_CATEGORIES}
+for m in MANUALS:
+    cat_counts[m["category"]] = cat_counts.get(m["category"], 0) + 1
+
+category_tabs_html = []
+for idx, c in enumerate(DEFAULT_CATEGORIES):
+    cnt = cat_counts.get(c["id"], 0)
+    theme_idx = c.get("theme", idx % 8)
+    category_tabs_html.append(f'''<button type="button" class="category-tab" data-cat-id="{c['id']}" data-cat-theme="{theme_idx}" onclick="selectCategory('{c['id']}')">
+      <span class="cat-tab-name">{c['name']}</span>
+      <span class="cat-tab-count">{cnt}</span>
+    </button>''')
+
+category_tabs_html.append(f'''<button type="button" class="category-tab active" data-cat-id="all" onclick="selectCategory('all')">
+      <span class="cat-tab-name">📋 전체 보기</span>
+      <span class="cat-tab-count">{len(MANUALS)}</span>
+    </button>''')
+
+# Manual Buttons with pastel category theme & compact height (no step count text)
 buttons_html = []
 for m in MANUALS:
+    cat_name = CATEGORY_NAME_MAP.get(m["category"], "기타")
+    theme_idx = CATEGORY_THEME_MAP.get(m["category"], 0)
     btn = f"""
-    <a href="#{m['id']}" class="manual-nav-btn" data-id="{m['id']}" draggable="true" onclick="selectManual('{m['id']}'); event.preventDefault();">
+    <a href="#{m['id']}" class="manual-nav-btn" data-id="{m['id']}" data-category="{m['category']}" data-cat-theme="{theme_idx}" title="{cat_name}" draggable="true" onclick="selectManual('{m['id']}'); event.preventDefault();">
       <span class="nav-btn-title">{m['short_title']}</span>
-      <span class="nav-btn-steps">{m['steps_count']}단계</span>
     </a>
     """
     buttons_html.append(btn)
 
-# Manual content panes - NO duplicate pane-top-bar panel! Clean and direct.
+# Manual content panes
 panes_html = []
 for m in MANUALS:
     pane = f"""
@@ -240,6 +401,7 @@ index_html = f"""<!doctype html>
       align-items: center;
       justify-content: space-between;
       gap: 16px;
+      flex-wrap: wrap;
     }}
 
     .header-title-group {{
@@ -273,7 +435,8 @@ index_html = f"""<!doctype html>
     .header-actions {{
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
+      flex-wrap: wrap;
     }}
 
     .btn-header-print {{
@@ -282,13 +445,14 @@ index_html = f"""<!doctype html>
       gap: 6px;
       padding: 8px 14px;
       border-radius: var(--radius-sm);
-      background: #fff;
+      background: #f8fafc;
       border: 1px solid var(--line);
       color: var(--ink-secondary);
       font-size: 13px;
-      font-weight: 650;
+      font-weight: 600;
       cursor: pointer;
       transition: all 0.15s ease;
+      font-family: inherit;
     }}
 
     .btn-header-print:hover {{
@@ -325,12 +489,12 @@ index_html = f"""<!doctype html>
     }}
 
     /* =========================================================
-       3. 1x7 Manual Button Navigation Bar (No HTML Numbers)
+       3. Category Filter Bar & Manual Button Navigation Bar
        ========================================================= */
     .nav-bar-section {{
       background: #ffffff;
       border-bottom: 2px solid var(--line);
-      padding: 14px 20px;
+      padding: 14px 20px 16px;
       box-shadow: var(--shadow-sm);
       position: static;
       top: 71px;
@@ -342,10 +506,130 @@ index_html = f"""<!doctype html>
       margin: 0 auto;
     }}
 
+    .category-bar-wrap {{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      padding-bottom: 12px;
+      margin-bottom: 12px;
+      border-bottom: 1px solid var(--line-light);
+    }}
+
+    .category-tabs {{
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }}
+
+    .category-tab {{
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 8px 14px;
+      border-radius: var(--radius-full);
+      border: 1.5px solid var(--line);
+      background: #f8fafc;
+      color: var(--ink-secondary);
+      font-size: 13.5px;
+      font-weight: 750;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.16s ease;
+      white-space: nowrap;
+    }}
+
+    .category-tab:hover {{
+      border-color: var(--blue);
+      color: var(--blue-dark);
+      background: #ffffff;
+    }}
+
+    .category-tab[data-cat-theme="0"] {{ background: #eff6ff; border-color: #bfdbfe; color: #1e3a8a; }}
+    .category-tab[data-cat-theme="1"] {{ background: #ecfdf5; border-color: #a7f3d0; color: #065f46; }}
+    .category-tab[data-cat-theme="2"] {{ background: #f5f3ff; border-color: #ddd6fe; color: #4c1d95; }}
+    .category-tab[data-cat-theme="3"] {{ background: #fffbeb; border-color: #fde68a; color: #92400e; }}
+    .category-tab[data-cat-theme="4"] {{ background: #fff1f2; border-color: #fecdd3; color: #9f1239; }}
+    .category-tab[data-cat-theme="5"] {{ background: #ecfeff; border-color: #a5f3fc; color: #155e75; }}
+    .category-tab[data-cat-theme="6"] {{ background: #f7fee7; border-color: #d9f99d; color: #3f6212; }}
+    .category-tab[data-cat-theme="7"] {{ background: #eef2ff; border-color: #c7d2fe; color: #3730a3; }}
+
+    .category-tab.active {{
+      background: var(--ink-dark);
+      border-color: var(--ink-dark);
+      color: #ffffff;
+      box-shadow: 0 3px 10px rgba(15, 23, 42, 0.18);
+    }}
+
+    .category-tab[data-cat-theme="0"].active {{ background: #1d4ed8; border-color: #1d4ed8; color: #ffffff; box-shadow: 0 3px 10px rgba(29, 78, 216, 0.25); }}
+    .category-tab[data-cat-theme="1"].active {{ background: #047857; border-color: #047857; color: #ffffff; box-shadow: 0 3px 10px rgba(4, 120, 87, 0.25); }}
+    .category-tab[data-cat-theme="2"].active {{ background: #6d28d9; border-color: #6d28d9; color: #ffffff; box-shadow: 0 3px 10px rgba(109, 40, 217, 0.25); }}
+    .category-tab[data-cat-theme="3"].active {{ background: #d97706; border-color: #d97706; color: #ffffff; box-shadow: 0 3px 10px rgba(217, 119, 6, 0.25); }}
+    .category-tab[data-cat-theme="4"].active {{ background: #be123c; border-color: #be123c; color: #ffffff; box-shadow: 0 3px 10px rgba(190, 18, 60, 0.25); }}
+    .category-tab[data-cat-theme="5"].active {{ background: #0e7490; border-color: #0e7490; color: #ffffff; box-shadow: 0 3px 10px rgba(14, 116, 144, 0.25); }}
+    .category-tab[data-cat-theme="6"].active {{ background: #4d7c0f; border-color: #4d7c0f; color: #ffffff; box-shadow: 0 3px 10px rgba(77, 124, 15, 0.25); }}
+    .category-tab[data-cat-theme="7"].active {{ background: #4338ca; border-color: #4338ca; color: #ffffff; box-shadow: 0 3px 10px rgba(67, 56, 202, 0.25); }}
+
+    .category-tab.drag-over-cat {{
+      border: 2px dashed var(--blue) !important;
+      background: var(--blue-soft) !important;
+      color: var(--blue-dark) !important;
+      transform: scale(1.04);
+    }}
+
+    .cat-tab-count {{
+      display: inline-grid;
+      place-items: center;
+      min-width: 22px;
+      height: 20px;
+      padding: 0 6px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.08);
+      color: inherit;
+      font-size: 11.5px;
+      font-weight: 800;
+    }}
+
+    .category-tab.active .cat-tab-count {{
+      background: rgba(255, 255, 255, 0.22);
+      color: #ffffff;
+    }}
+
+    .category-bar-actions {{
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }}
+
+    .btn-category-edit {{
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 13px;
+      border-radius: var(--radius-sm);
+      border: 1.5px solid var(--line);
+      background: #ffffff;
+      color: var(--ink-secondary);
+      font-size: 13px;
+      font-weight: 750;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+    }}
+
+    .btn-category-edit:hover {{
+      background: var(--blue-soft);
+      border-color: var(--blue-border);
+      color: var(--blue-dark);
+    }}
+
     .manual-nav-grid {{
       display: grid;
       grid-template-columns: repeat(5, 1fr);
-      gap: 10px;
+      gap: 8px;
     }}
 
     .manual-nav-btn {{
@@ -353,52 +637,175 @@ index_html = f"""<!doctype html>
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 14px 10px;
-      border-radius: var(--radius-md);
-      background: #f8fafc;
-      border: 1.5px solid var(--line);
-      color: var(--ink-secondary);
+      padding: 9px 10px;
+      border-radius: var(--radius-sm);
+      background: #e8f2ff;
+      border: 1.5px solid #b9d5ff;
+      color: #1e3a8a;
       text-decoration: none;
       transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
       cursor: pointer;
       text-align: center;
-      min-height: 66px;
+      min-height: 44px;
       position: relative;
     }}
 
+    /* 카테고리별 파스텔 배경색 테마 */
+    .manual-nav-btn[data-cat-theme="0"] {{
+      background: #e8f2ff;
+      border-color: #b9d5ff;
+      color: #1e3a8a;
+    }}
+    .manual-nav-btn[data-cat-theme="0"]:hover {{
+      background: #dbeafe;
+      border-color: #60a5fa;
+      color: #1d4ed8;
+    }}
+    .manual-nav-btn[data-cat-theme="0"].active {{
+      background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
+      border-color: #1d4ed8;
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+    }}
+
+    .manual-nav-btn[data-cat-theme="1"] {{
+      background: #e6faef;
+      border-color: #a7f3d0;
+      color: #065f46;
+    }}
+    .manual-nav-btn[data-cat-theme="1"]:hover {{
+      background: #d1fae5;
+      border-color: #34d399;
+      color: #047857;
+    }}
+    .manual-nav-btn[data-cat-theme="1"].active {{
+      background: linear-gradient(135deg, #047857 0%, #059669 100%);
+      border-color: #047857;
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
+    }}
+
+    .manual-nav-btn[data-cat-theme="2"] {{
+      background: #f3eeff;
+      border-color: #ddd6fe;
+      color: #4c1d95;
+    }}
+    .manual-nav-btn[data-cat-theme="2"]:hover {{
+      background: #ede9fe;
+      border-color: #a78bfa;
+      color: #5b21b6;
+    }}
+    .manual-nav-btn[data-cat-theme="2"].active {{
+      background: linear-gradient(135deg, #6d28d9 0%, #7c3aed 100%);
+      border-color: #6d28d9;
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(109, 40, 217, 0.3);
+    }}
+
+    .manual-nav-btn[data-cat-theme="3"] {{
+      background: #fff6df;
+      border-color: #fde68a;
+      color: #92400e;
+    }}
+    .manual-nav-btn[data-cat-theme="3"]:hover {{
+      background: #fef3c7;
+      border-color: #fbbf24;
+      color: #b45309;
+    }}
+    .manual-nav-btn[data-cat-theme="3"].active {{
+      background: linear-gradient(135deg, #d97706 0%, #ea580c 100%);
+      border-color: #d97706;
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(217, 119, 6, 0.3);
+    }}
+
+    .manual-nav-btn[data-cat-theme="4"] {{
+      background: #ffeef2;
+      border-color: #fecdd3;
+      color: #9f1239;
+    }}
+    .manual-nav-btn[data-cat-theme="4"]:hover {{
+      background: #ffe4e6;
+      border-color: #fb7185;
+      color: #be123c;
+    }}
+    .manual-nav-btn[data-cat-theme="4"].active {{
+      background: linear-gradient(135deg, #be123c 0%, #e11d48 100%);
+      border-color: #be123c;
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(190, 18, 60, 0.3);
+    }}
+
+    .manual-nav-btn[data-cat-theme="5"] {{
+      background: #e6fafe;
+      border-color: #a5f3fc;
+      color: #155e75;
+    }}
+    .manual-nav-btn[data-cat-theme="5"]:hover {{
+      background: #cffafe;
+      border-color: #22d3ee;
+      color: #0e7490;
+    }}
+    .manual-nav-btn[data-cat-theme="5"].active {{
+      background: linear-gradient(135deg, #0e7490 0%, #0891b2 100%);
+      border-color: #0e7490;
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(14, 116, 144, 0.3);
+    }}
+
+    .manual-nav-btn[data-cat-theme="6"] {{
+      background: #f2fce2;
+      border-color: #d9f99d;
+      color: #3f6212;
+    }}
+    .manual-nav-btn[data-cat-theme="6"]:hover {{
+      background: #ecfccb;
+      border-color: #a3e635;
+      color: #4d7c0f;
+    }}
+    .manual-nav-btn[data-cat-theme="6"].active {{
+      background: linear-gradient(135deg, #4d7c0f 0%, #65a30d 100%);
+      border-color: #4d7c0f;
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(77, 124, 15, 0.3);
+    }}
+
+    .manual-nav-btn[data-cat-theme="7"] {{
+      background: #eef2ff;
+      border-color: #c7d2fe;
+      color: #3730a3;
+    }}
+    .manual-nav-btn[data-cat-theme="7"]:hover {{
+      background: #e0e7ff;
+      border-color: #818cf8;
+      color: #4338ca;
+    }}
+    .manual-nav-btn[data-cat-theme="7"].active {{
+      background: linear-gradient(135deg, #4338ca 0%, #4f46e5 100%);
+      border-color: #4338ca;
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(67, 56, 202, 0.3);
+    }}
+
+    .manual-nav-btn[hidden] {{
+      display: none !important;
+    }}
+
     .manual-nav-btn:hover {{
-      background: #ffffff;
-      border-color: var(--blue);
-      color: var(--blue-dark);
       transform: translateY(-2px);
       box-shadow: var(--shadow-md);
     }}
 
     .manual-nav-btn.active {{
-      background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
-      border-color: #1d4ed8;
-      color: #ffffff;
-      box-shadow: 0 4px 14px rgba(37,99,235,0.32);
       transform: translateY(-1px);
     }}
 
     .nav-btn-title {{
-      font-size: 14px;
+      font-size: 13.5px;
       font-weight: 800;
       line-height: 1.25;
       letter-spacing: -0.02em;
       word-break: keep-all;
-    }}
-
-    .nav-btn-steps {{
-      font-size: 11.5px;
-      font-weight: 600;
-      color: var(--muted);
-      margin-top: 4px;
-    }}
-
-    .manual-nav-btn.active .nav-btn-steps {{
-      color: rgba(255, 255, 255, 0.9);
     }}
 
     .manual-nav-btn.dragging {{
@@ -414,17 +821,18 @@ index_html = f"""<!doctype html>
 
     .manual-add-btn {{
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
       align-items: center;
       justify-content: center;
-      padding: 10px;
-      border-radius: var(--radius-md);
+      gap: 6px;
+      padding: 9px 10px;
+      border-radius: var(--radius-sm);
       background: #f8fafc;
       border: 2px dashed #93c5fd;
       color: var(--blue);
       cursor: pointer;
       transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
-      min-height: 66px;
+      min-height: 44px;
       font-family: inherit;
     }}
 
@@ -437,15 +845,14 @@ index_html = f"""<!doctype html>
     }}
 
     .add-btn-icon {{
-      font-size: 22px;
+      font-size: 18px;
       font-weight: 900;
       line-height: 1;
     }}
 
     .add-btn-label {{
-      font-size: 12px;
-      font-weight: 750;
-      margin-top: 3px;
+      font-size: 13px;
+      font-weight: 800;
     }}
 
     .nav-btn-del {{
@@ -482,8 +889,191 @@ index_html = f"""<!doctype html>
     }}
 
     .add-modal-card {{
-      width: min(94vw, 540px);
+      width: min(94vw, 560px);
       padding: 24px;
+    }}
+
+    .cat-modal-card {{
+      width: min(95vw, 720px);
+      max-height: 90vh;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }}
+
+    .cat-modal-body {{
+      overflow-y: auto;
+      padding-right: 4px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }}
+
+    .cat-section-box {{
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      background: #f8fafc;
+    }}
+
+    .cat-section-title {{
+      font-size: 15px;
+      font-weight: 850;
+      color: var(--ink-dark);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }}
+
+    .cat-add-row {{
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+    }}
+
+    .cat-add-row input {{
+      flex: 1;
+      padding: 9px 12px;
+      border: 1.5px solid var(--line);
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      font-family: inherit;
+    }}
+
+    .cat-edit-list {{
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }}
+
+    .cat-edit-item {{
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #ffffff;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      padding: 8px 10px;
+    }}
+
+    .cat-edit-item input {{
+      flex: 1;
+      padding: 7px 10px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      font-size: 13.5px;
+      font-weight: 700;
+      font-family: inherit;
+      color: var(--ink);
+    }}
+
+    .cat-edit-item input:focus {{
+      border-color: var(--blue);
+      outline: none;
+    }}
+
+    .cat-item-badge {{
+      font-size: 12px;
+      font-weight: 750;
+      color: var(--muted);
+      background: #f1f5f9;
+      padding: 4px 8px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }}
+
+    .cat-icon-btn {{
+      width: 30px;
+      height: 30px;
+      border-radius: 6px;
+      border: 1px solid var(--line);
+      background: #f8fafc;
+      color: var(--ink-secondary);
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+      display: inline-grid;
+      place-items: center;
+    }}
+
+    .cat-icon-btn:hover:not(:disabled) {{
+      background: var(--blue-soft);
+      color: var(--blue-dark);
+      border-color: var(--blue-border);
+    }}
+
+    .cat-icon-btn:disabled {{
+      opacity: 0.35;
+      cursor: not-allowed;
+    }}
+
+    .cat-del-btn {{
+      padding: 6px 10px;
+      border-radius: 6px;
+      border: 1px solid #fecaca;
+      background: var(--red-soft);
+      color: var(--red);
+      font-size: 12px;
+      font-weight: 750;
+      cursor: pointer;
+      white-space: nowrap;
+    }}
+
+    .cat-del-btn:hover {{
+      background: var(--red);
+      color: #ffffff;
+    }}
+
+    .manual-cat-assign-list {{
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 7px;
+      max-height: 290px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }}
+
+    .manual-cat-assign-row {{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      background: #ffffff;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      padding: 8px 12px;
+    }}
+
+    .manual-cat-assign-title {{
+      font-size: 13.5px;
+      font-weight: 750;
+      color: var(--ink);
+      flex: 1;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }}
+
+    .manual-cat-assign-select {{
+      padding: 6px 10px;
+      border-radius: 6px;
+      border: 1.5px solid var(--line);
+      font-size: 13px;
+      font-weight: 700;
+      font-family: inherit;
+      color: var(--ink-secondary);
+      background: #f8fafc;
+      cursor: pointer;
+      min-width: 210px;
+    }}
+
+    .manual-cat-assign-select:focus {{
+      border-color: var(--blue);
+      outline: none;
     }}
 
     .add-modal-title {{
@@ -507,7 +1097,8 @@ index_html = f"""<!doctype html>
 
     .form-group input[type="text"],
     .form-group input[type="number"],
-    .form-group input[type="url"] {{
+    .form-group input[type="url"],
+    .form-group select {{
       width: 100%;
       padding: 10px 12px;
       border: 1.5px solid var(--line);
@@ -515,11 +1106,13 @@ index_html = f"""<!doctype html>
       font-size: 14px;
       font-family: inherit;
       color: var(--ink);
+      background: #fff;
       outline: none;
       transition: border-color 0.15s;
     }}
 
-    .form-group input:focus {{
+    .form-group input:focus,
+    .form-group select:focus {{
       border-color: var(--blue);
       box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
     }}
@@ -656,6 +1249,7 @@ index_html = f"""<!doctype html>
       gap: 6px;
       padding: 9px 15px;
       border-radius: 8px;
+      border: none;
       background: #2563eb;
       color: #ffffff !important;
       text-decoration: none;
@@ -665,6 +1259,7 @@ index_html = f"""<!doctype html>
       box-shadow: 0 3px 8px rgba(37,99,235,0.22);
       transition: all 0.18s ease;
       cursor: pointer;
+      font-family: inherit;
     }}
 
     .source-button:hover {{
@@ -820,7 +1415,7 @@ index_html = f"""<!doctype html>
       align-items: center;
       gap: 10px;
       margin-bottom: 8px;
-      padding-right: 48px; /* space for img-toggle button */
+      padding-right: 48px;
     }}
 
     .num {{
@@ -1020,6 +1615,128 @@ index_html = f"""<!doctype html>
       white-space: nowrap;
     }}
 
+    .pdf-action-bar {{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+      padding: 16px 20px;
+      margin: 0 0 20px;
+      border-radius: 12px;
+      border: 1.5px solid #93c5fd;
+      background: linear-gradient(135deg, #eff6ff 0%, #f8fafc 100%);
+    }}
+
+    .pdf-action-info {{
+      flex: 1;
+      min-width: 240px;
+    }}
+
+    .pdf-action-info strong {{
+      display: block;
+      font-size: 15.5px;
+      color: #1e3a8a;
+      font-weight: 850;
+    }}
+
+    .pdf-action-info span {{
+      display: block;
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 2px;
+    }}
+
+    .pdf-action-buttons {{
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }}
+
+    .pdf-btn-primary {{
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 16px;
+      border-radius: 8px;
+      border: none;
+      background: #2563eb;
+      color: #fff !important;
+      font-size: 13.5px;
+      font-weight: 800;
+      cursor: pointer;
+      text-decoration: none !important;
+      box-shadow: 0 3px 8px rgba(37, 99, 235, 0.22);
+      transition: all 0.16s ease;
+      font-family: inherit;
+    }}
+
+    .pdf-btn-primary:hover {{
+      background: #1d4ed8;
+      transform: translateY(-1px);
+    }}
+
+    .pdf-btn-secondary {{
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 14px;
+      border-radius: 8px;
+      border: 1.5px solid #93c5fd;
+      background: #fff;
+      color: #1d4ed8 !important;
+      font-size: 13px;
+      font-weight: 750;
+      cursor: pointer;
+      text-decoration: none !important;
+      transition: all 0.16s ease;
+      font-family: inherit;
+    }}
+
+    .pdf-btn-secondary:hover {{
+      background: #eff6ff;
+    }}
+
+    .pdf-btn-video {{
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 15px;
+      border-radius: 8px;
+      border: none;
+      background: #dc2626;
+      color: #fff !important;
+      font-size: 13.5px;
+      font-weight: 800;
+      cursor: pointer;
+      text-decoration: none !important;
+      box-shadow: 0 3px 8px rgba(220, 38, 38, 0.22);
+      transition: all 0.16s ease;
+      font-family: inherit;
+    }}
+
+    .pdf-btn-video:hover {{
+      background: #b91c1c;
+      transform: translateY(-1px);
+    }}
+
+    .video-embed-wrap {{
+      margin: 14px 0 22px;
+      border: 1.5px solid var(--line);
+      border-radius: 12px;
+      overflow: hidden;
+      background: #0f172a;
+      aspect-ratio: 16 / 9;
+    }}
+
+    .video-embed-frame {{
+      display: block;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }}
+
     .important {{
       margin-top: 10px;
       padding: 11px 13px;
@@ -1050,10 +1767,11 @@ index_html = f"""<!doctype html>
       display: block;
       width: 100%;
       height: auto;
+      cursor: zoom-in;
     }}
 
     .pdf-embed-wrap {{
-      margin: 14px 0 6px;
+      margin: 14px 0 20px;
       border: 1.5px solid var(--line);
       border-radius: 12px;
       overflow: hidden;
@@ -1065,7 +1783,7 @@ index_html = f"""<!doctype html>
       display: block;
       width: 100%;
       height: 82vh;
-      min-height: 760px;
+      min-height: 740px;
       border: none;
       background: #fff;
     }}
@@ -1202,123 +1920,109 @@ index_html = f"""<!doctype html>
     }}
 
     .finish li {{
-      margin: 4px 0;
+      margin: 5px 0;
       font-size: 13.5px;
-      color: var(--green);
-      font-weight: 650;
     }}
 
-    .check {{
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      margin-top: 12px;
-    }}
-
-    .check div {{
-      background: #ffffff;
-      border: 1px solid #a7f3d0;
-      border-radius: var(--radius-sm);
-      padding: 10px;
+    code {{
+      padding: 2px 6px;
+      border-radius: 5px;
+      background: #eef2ff;
+      color: #1e3a8a;
       font-size: 12.5px;
-      font-weight: 650;
-      text-align: center;
-      color: var(--green);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
     }}
 
     .foot {{
-      margin-top: 20px;
-      padding-top: 14px;
-      border-top: 1px solid var(--line);
+      margin-top: 14px;
       color: var(--muted);
       font-size: 12.5px;
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      flex-wrap: wrap;
+      text-align: right;
     }}
 
     /* =========================================================
-       7. High-Res Image Modal (With Canva Button)
+       7. Image Zoom Modal
        ========================================================= */
+    body.modal-open {{
+      overflow: hidden;
+    }}
+
     .modal[hidden] {{
-      display: none !important;
+      display: none;
     }}
 
     .modal {{
       position: fixed;
       inset: 0;
       z-index: 1000;
-      background: rgba(15, 23, 42, 0.85);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
       display: grid;
       place-items: center;
-      padding: 24px;
+      padding: 20px;
+      background: rgba(15, 23, 42, 0.78);
+      backdrop-filter: blur(4px);
     }}
 
     .modal-card {{
       position: relative;
-      width: min(94vw, 1150px);
-      max-height: 94vh;
-      background: #fff;
+      width: min(96vw, 1320px);
+      max-height: 92vh;
+      padding: 18px;
       border-radius: var(--radius-lg);
-      box-shadow: 0 25px 60px -15px rgba(0,0,0,0.5);
-      padding: 20px;
+      background: #ffffff;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
       overflow: auto;
     }}
 
     .modal-header-bar {{
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      gap: 16px;
+      align-items: center;
+      gap: 12px;
       margin-bottom: 14px;
       padding-bottom: 12px;
       border-bottom: 1px solid var(--line);
     }}
 
-    .modal-card img {{
-      display: block;
-      width: 100%;
-      height: auto;
-      max-height: calc(92vh - 120px);
-      object-fit: contain;
-      background: #fff;
-      border-radius: var(--radius-sm);
-    }}
-
-    .modal-gallery {{
-      display: grid;
-      gap: 18px;
-    }}
-
     .modal-close {{
-      width: 36px;
-      height: 36px;
-      border: 0;
+      width: 40px;
+      height: 40px;
+      border: 1px solid var(--line);
       border-radius: 50%;
-      background: rgba(15, 23, 42, 0.85);
-      color: #fff;
+      background: #ffffff;
+      color: var(--ink);
       font-size: 22px;
+      font-weight: 800;
       line-height: 1;
       cursor: pointer;
       display: grid;
       place-items: center;
-      transition: background 0.15s;
-      flex-shrink: 0;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.15s ease;
     }}
 
     .modal-close:hover {{
-      background: #0f172a;
+      background: var(--red-soft);
+      color: var(--red);
+      border-color: #fecaca;
     }}
 
-    .modal-open {{
-      overflow: hidden !important;
+    .modal-gallery {{
+      display: grid;
+      gap: 16px;
+    }}
+
+    .modal img {{
+      display: block;
+      width: 100%;
+      max-height: calc(92vh - 95px);
+      object-fit: contain;
+      border-radius: 10px;
+      background: #f8fafc;
+      border: 1px solid var(--line);
     }}
 
     /* =========================================================
-       8. Footer & Responsive / Print
+       8. Simple Footer
        ========================================================= */
     .simple-footer {{
       margin-top: auto;
@@ -1326,28 +2030,60 @@ index_html = f"""<!doctype html>
       border-top: 1px solid var(--line);
       padding: 20px 24px;
       text-align: center;
-      font-size: 13px;
       color: var(--muted);
+      font-size: 13px;
     }}
 
-    @media (max-width: 900px) {{
-      .page {{ padding: 22px 18px; }}
-      .check {{ grid-template-columns: 1fr; }}
-      .two-col-sections, .step-with-side {{ grid-template-columns: 1fr; }}
-      .two-col-sections .section {{ margin-top: 24px; }}
+    /* =========================================================
+       9. Responsive & Print
+       ========================================================= */
+    @media (max-width: 1120px) {{
+      .manual-nav-grid {{
+        grid-template-columns: repeat(4, 1fr);
+      }}
+    }}
+
+    @media (max-width: 820px) {{
       .manual-nav-grid {{
         grid-template-columns: repeat(2, 1fr);
-        overflow-x: auto;
-        padding-bottom: 6px;
+      }}
+      .two-col-sections, .step-with-side {{
+        grid-template-columns: 1fr;
+      }}
+      .page {{
+        padding: 20px 18px;
+      }}
+      .notice {{
+        flex-direction: column;
+        gap: 6px;
+      }}
+      .manual-cat-assign-row {{
+        flex-direction: column;
+        align-items: stretch;
+      }}
+    }}
+
+    @media (max-width: 480px) {{
+      .header-inner {{
+        padding: 12px 16px;
       }}
       .nav-bar-section {{
-        padding: 10px 14px;
+        padding: 10px 12px;
+      }}
+      .manual-nav-btn {{
+        padding: 8px 8px;
+        min-height: 38px;
+      }}
+      .nav-btn-title {{
+        font-size: 12.5px;
       }}
     }}
 
     @media print {{
-      body {{ background: #fff !important; }}
-      .simple-header, .nav-bar-section, .simple-footer, .img-toggle, .modal, .source-button, .pane-standalone-link {{
+      body {{
+        background: #fff;
+      }}
+      .simple-header, .nav-bar-section, .simple-footer, .img-toggle, .modal, .source-button, .pane-standalone-link, .pdf-action-bar {{
         display: none !important;
       }}
       .content-area {{
@@ -1392,10 +2128,21 @@ index_html = f"""<!doctype html>
   </header>
 
   <!-- =========================================================
-       1x7 Manual Button Navigation Bar (No HTML Numbers)
+       Category Filter Bar & Manual Button Navigation Bar
        ========================================================= -->
   <nav class="nav-bar-section" aria-label="매뉴얼 선택 바">
     <div class="nav-bar-container">
+      <div class="category-bar-wrap">
+        <div class="category-tabs" id="categoryTabs" role="tablist" aria-label="카테고리별 매뉴얼 선택">
+          {''.join(category_tabs_html)}
+        </div>
+        <div class="category-bar-actions">
+          <button type="button" class="btn-category-edit" onclick="openCategoryEditModal()" title="카테고리 추가·수정·순서 변경 및 매뉴얼별 카테고리 설정">
+            ⚙️ 카테고리 편집
+          </button>
+        </div>
+      </div>
+
       <div class="manual-nav-grid" id="manualNavGrid">
         {''.join(buttons_html)}
         <button type="button" class="manual-add-btn" id="openAddManualBtn" onclick="openAddManualModal()" title="새 매뉴얼 추가">
@@ -1414,17 +2161,53 @@ index_html = f"""<!doctype html>
   </div>
 
   <!-- =========================================================
-       High-Res Image Modal (With Canva Open Button)
+       High-Res Image Modal (With Canva/Source Open Button)
        ========================================================= -->
   <div class="modal" id="globalImageModal" role="dialog" aria-modal="true" aria-label="원본 이미지 확대 뷰어" hidden>
     <div class="modal-card">
       <div class="modal-header-bar">
         <a id="modalCanvaBtn" class="source-button" href="#" target="_blank" rel="noopener">
-          원본 Canva 슬라이드 열기
+          원본 문서 열기
         </a>
         <button class="modal-close" type="button" aria-label="닫기">×</button>
       </div>
       <div class="modal-gallery" id="globalModalGallery"></div>
+    </div>
+  </div>
+
+  <!-- =========================================================
+       Category Edit Modal (⚙️ 카테고리 편집)
+       ========================================================= -->
+  <div class="modal" id="categoryEditModal" role="dialog" aria-modal="true" aria-label="카테고리 편집" hidden>
+    <div class="modal-card cat-modal-card">
+      <div class="modal-header-bar">
+        <h2 class="add-modal-title">⚙️ 카테고리 편집 및 매뉴얼 분류 관리</h2>
+        <button class="modal-close" type="button" aria-label="닫기" onclick="closeCategoryEditModal()">×</button>
+      </div>
+      <div class="cat-modal-body">
+        <div class="cat-section-box">
+          <div class="cat-section-title">
+            <span>1. 카테고리 목록 관리 (추가 · 이름 변경 · 순서 이동 · 삭제)</span>
+            <button type="button" class="btn-secondary" style="padding:5px 10px;font-size:12px;" onclick="resetCategoriesToDefault()">기본값 초기화</button>
+          </div>
+          <div class="cat-add-row">
+            <input type="text" id="newCategoryNameInput" placeholder="새 카테고리 이름 입력 (예: 📝 평가 · 생기부)" onkeydown="if(event.key==='Enter'){{event.preventDefault();handleAddCategory();}}">
+            <button type="button" class="btn-primary" style="padding:9px 15px;white-space:nowrap;" onclick="handleAddCategory()">+ 카테고리 추가</button>
+          </div>
+          <div class="cat-edit-list" id="categoryEditList"></div>
+        </div>
+
+        <div class="cat-section-box">
+          <div class="cat-section-title">
+            <span>2. 매뉴얼별 소속 카테고리 지정</span>
+            <span style="font-size:12px;font-weight:600;color:var(--muted);">메인 화면에서 매뉴얼 버튼을 상단 카테고리 탭으로 드래그해도 이동됩니다</span>
+          </div>
+          <div class="manual-cat-assign-list" id="manualCatAssignList"></div>
+        </div>
+      </div>
+      <div class="add-modal-actions" style="justify-content:flex-end;margin-top:14px;">
+        <button type="button" class="btn-primary" onclick="closeCategoryEditModal()">완료 및 닫기</button>
+      </div>
     </div>
   </div>
 
@@ -1457,7 +2240,11 @@ index_html = f"""<!doctype html>
           </div>
         </div>
         <div class="form-group">
-          <label for="manualCanvaUrl">4. 원본 Canva 슬라이드 링크 (선택)</label>
+          <label for="manualCategorySelect">4. 소속 카테고리 *</label>
+          <select id="manualCategorySelect"></select>
+        </div>
+        <div class="form-group">
+          <label for="manualCanvaUrl">5. 원본 슬라이드/문서 링크 (선택)</label>
           <input type="url" id="manualCanvaUrl" placeholder="https://www.canva.com/design/...">
         </div>
         <div class="add-modal-actions" style="justify-content:flex-end;">
@@ -1476,19 +2263,28 @@ index_html = f"""<!doctype html>
   </footer>
 
   <!-- =========================================================
-       Navigation, Modal & Dynamic Manual Upload Script
+       Navigation, Category Management, Modal & Dynamic Upload Script
        ========================================================= -->
   <script id="mainPortalScript">
-    const MANUAL_LIST = {json.dumps([{"id": m["id"], "title": m["short_title"], "canva": m["canva"]} for m in MANUALS], ensure_ascii=False)};
+    const INITIAL_CATEGORIES = {json.dumps(DEFAULT_CATEGORIES, ensure_ascii=False)};
+    let CATEGORIES_DATA = JSON.parse(JSON.stringify(INITIAL_CATEGORIES));
+    const MANUAL_LIST = {json.dumps([{"id": m["id"], "title": m["short_title"], "canva": m["canva"], "category": m["category"]} for m in MANUALS], ensure_ascii=False)};
+    const INITIAL_MANUAL_CATEGORIES = Object.fromEntries(MANUAL_LIST.map(m => [m.id, m.category]));
     
     const modal = document.getElementById('globalImageModal');
     const modalGallery = document.getElementById('globalModalGallery');
     const modalCloseBtn = modal.querySelector('.modal-close');
     const modalCanvaBtn = document.getElementById('modalCanvaBtn');
     const addModal = document.getElementById('addManualModal');
+    const catEditModal = document.getElementById('categoryEditModal');
     const deployDownloadBtn = document.getElementById('btnHeaderDeployDownload');
 
+    const CATEGORIES_STORAGE_KEY = 'online_office_manual_categories_v1';
+    const MANUAL_CAT_MAP_STORAGE_KEY = 'online_office_manual_cat_map_v1';
+    const ORDER_STORAGE_KEY = 'online_office_manual_nav_order';
+
     let currentManualId = MANUAL_LIST[0].id;
+    let currentCategoryId = 'all';
     const BUILTIN_IDS = new Set(MANUAL_LIST.map(m => m.id));
     let uploadedRawHtml = '';
     let uploadedFileName = '';
@@ -1496,15 +2292,338 @@ index_html = f"""<!doctype html>
     let uploadedDataUrls = [];
     const customManualsStore = [];
     let hasOrderChanged = false;
+    let hasCategoryChanged = false;
 
     function updateDeployButtonVisibility() {{
       if (!deployDownloadBtn) return;
-      deployDownloadBtn.hidden = (customManualsStore.length === 0 && !hasOrderChanged);
+      deployDownloadBtn.hidden = (customManualsStore.length === 0 && !hasOrderChanged && !hasCategoryChanged);
+    }}
+
+    function getCategoryName(catId) {{
+      const found = CATEGORIES_DATA.find(c => c.id === catId);
+      return found ? found.name : (CATEGORIES_DATA[0]?.name || '기타');
+    }}
+
+    function getCategoryThemeIndex(catId) {{
+      const idx = CATEGORIES_DATA.findIndex(c => c.id === catId);
+      if (idx >= 0) {{
+        const cat = CATEGORIES_DATA[idx];
+        return (typeof cat.theme === 'number') ? (cat.theme % 8) : (idx % 8);
+      }}
+      return 0;
+    }}
+
+    function saveCategoryStateToStorage(markChanged = true) {{
+      if (markChanged) {{
+        hasCategoryChanged = true;
+        updateDeployButtonVisibility();
+      }}
+      try {{
+        localStorage.setItem(CATEGORIES_STORAGE_KEY, JSON.stringify(CATEGORIES_DATA));
+        const catMap = {{}};
+        MANUAL_LIST.forEach(m => {{ catMap[m.id] = m.category; }});
+        localStorage.setItem(MANUAL_CAT_MAP_STORAGE_KEY, JSON.stringify(catMap));
+      }} catch (e) {{}}
+    }}
+
+    function loadCategoryStateFromStorage() {{
+      try {{
+        const rawCats = localStorage.getItem(CATEGORIES_STORAGE_KEY);
+        if (rawCats) {{
+          const parsed = JSON.parse(rawCats);
+          if (Array.isArray(parsed) && parsed.length > 0) {{
+            CATEGORIES_DATA = parsed;
+          }}
+        }}
+        const rawMap = localStorage.getItem(MANUAL_CAT_MAP_STORAGE_KEY);
+        if (rawMap) {{
+          const mapObj = JSON.parse(rawMap);
+          if (mapObj && typeof mapObj === 'object') {{
+            MANUAL_LIST.forEach(m => {{
+              if (mapObj[m.id] && CATEGORIES_DATA.some(c => c.id === mapObj[m.id])) {{
+                m.category = mapObj[m.id];
+              }}
+            }});
+          }}
+        }}
+        // Ensure every manual has a valid category
+        const fallbackCat = CATEGORIES_DATA[0]?.id || 'office-basic';
+        MANUAL_LIST.forEach(m => {{
+          if (!m.category || !CATEGORIES_DATA.some(c => c.id === m.category)) {{
+            m.category = fallbackCat;
+          }}
+        }});
+      }} catch (e) {{}}
+    }}
+
+    function renderCategoryBar() {{
+      const tabsContainer = document.getElementById('categoryTabs');
+      if (!tabsContainer) return;
+
+      const counts = {{}};
+      CATEGORIES_DATA.forEach(c => {{ counts[c.id] = 0; }});
+      MANUAL_LIST.forEach(m => {{
+        const cid = CATEGORIES_DATA.some(c => c.id === m.category) ? m.category : (CATEGORIES_DATA[0]?.id || '');
+        m.category = cid;
+        counts[cid] = (counts[cid] || 0) + 1;
+      }});
+
+      let html = '';
+
+      CATEGORIES_DATA.forEach(c => {{
+        const isActive = currentCategoryId === c.id ? 'active' : '';
+        const cnt = counts[c.id] || 0;
+        const themeIdx = getCategoryThemeIndex(c.id);
+        html += `
+          <button type="button" class="category-tab ${{isActive}}" data-cat-id="${{c.id}}" data-cat-theme="${{themeIdx}}" onclick="selectCategory('${{c.id}}')">
+            <span class="cat-tab-name">${{c.name}}</span>
+            <span class="cat-tab-count">${{cnt}}</span>
+          </button>
+        `;
+      }});
+
+      html += `
+        <button type="button" class="category-tab ${{currentCategoryId === 'all' ? 'active' : ''}}" data-cat-id="all" onclick="selectCategory('all')">
+          <span class="cat-tab-name">📋 전체 보기</span>
+          <span class="cat-tab-count">${{MANUAL_LIST.length}}</span>
+        </button>
+      `;
+
+      tabsContainer.innerHTML = html;
+      bindCategoryTabDropTargets();
+      syncManualButtonCategoriesAndFilter();
+      populateAddManualCategorySelect();
+    }}
+
+    function syncManualButtonCategoriesAndFilter() {{
+      const navGrid = document.getElementById('manualNavGrid');
+      if (!navGrid) return;
+      navGrid.querySelectorAll('.manual-nav-btn').forEach(btn => {{
+        const item = MANUAL_LIST.find(m => m.id === btn.dataset.id);
+        const catId = item ? item.category : (btn.dataset.category || CATEGORIES_DATA[0]?.id);
+        btn.dataset.category = catId;
+        btn.dataset.catTheme = String(getCategoryThemeIndex(catId));
+        btn.title = getCategoryName(catId);
+        btn.hidden = (currentCategoryId !== 'all' && catId !== currentCategoryId);
+      }});
+    }}
+
+    function selectCategory(catId, autoSelectFirstManual = true) {{
+      if (catId !== 'all' && !CATEGORIES_DATA.some(c => c.id === catId)) {{
+        catId = 'all';
+      }}
+      currentCategoryId = catId;
+      renderCategoryBar();
+
+      if (autoSelectFirstManual && catId !== 'all') {{
+        const currentItem = MANUAL_LIST.find(m => m.id === currentManualId);
+        if (!currentItem || currentItem.category !== catId) {{
+          const firstInCat = MANUAL_LIST.find(m => m.category === catId);
+          if (firstInCat) {{
+            selectManual(firstInCat.id);
+          }}
+        }}
+      }}
+    }}
+
+    function populateAddManualCategorySelect() {{
+      const sel = document.getElementById('manualCategorySelect');
+      if (!sel) return;
+      const preferred = (currentCategoryId !== 'all') ? currentCategoryId : (CATEGORIES_DATA[0]?.id || '');
+      sel.innerHTML = CATEGORIES_DATA.map(c =>
+        `<option value="${{c.id}}" ${{c.id === preferred ? 'selected' : ''}}>${{c.name}}</option>`
+      ).join('');
+    }}
+
+    // Category Edit Modal Logic
+    function openCategoryEditModal() {{
+      renderCategoryEditModalContents();
+      catEditModal.hidden = false;
+      document.body.classList.add('modal-open');
+    }}
+
+    function closeCategoryEditModal() {{
+      catEditModal.hidden = true;
+      document.body.classList.remove('modal-open');
+    }}
+
+    catEditModal.addEventListener('click', (e) => {{
+      if (e.target === catEditModal) closeCategoryEditModal();
+    }});
+
+    function renderCategoryEditModalContents() {{
+      const listEl = document.getElementById('categoryEditList');
+      const assignEl = document.getElementById('manualCatAssignList');
+      if (!listEl || !assignEl) return;
+
+      const counts = {{}};
+      CATEGORIES_DATA.forEach(c => {{ counts[c.id] = 0; }});
+      MANUAL_LIST.forEach(m => {{ counts[m.category] = (counts[m.category] || 0) + 1; }});
+
+      listEl.innerHTML = CATEGORIES_DATA.map((c, idx) => `
+        <div class="cat-edit-item" data-cat-id="${{c.id}}">
+          <button type="button" class="cat-icon-btn" title="위로 이동" ${{idx === 0 ? 'disabled' : ''}} onclick="moveCategoryOrder(${{idx}}, -1)">▲</button>
+          <button type="button" class="cat-icon-btn" title="아래로 이동" ${{idx === CATEGORIES_DATA.length - 1 ? 'disabled' : ''}} onclick="moveCategoryOrder(${{idx}}, 1)">▼</button>
+          <input type="text" value="${{c.name.replace(/"/g, '&quot;')}}" onchange="renameCategoryById('${{c.id}}', this.value)" aria-label="카테고리 이름">
+          <span class="cat-item-badge">${{counts[c.id] || 0}}개 매뉴얼</span>
+          <button type="button" class="cat-del-btn" onclick="deleteCategoryById('${{c.id}}')" ${{CATEGORIES_DATA.length <= 1 ? 'disabled' : ''}}>삭제</button>
+        </div>
+      `).join('');
+
+      assignEl.innerHTML = MANUAL_LIST.map(m => `
+        <div class="manual-cat-assign-row">
+          <span class="manual-cat-assign-title" title="${{m.title.replace(/"/g, '&quot;')}}">${{m.title}}</span>
+          <select class="manual-cat-assign-select" onchange="assignManualToCategory('${{m.id}}', this.value)" aria-label="${{m.title}} 카테고리 선택">
+            ${{CATEGORIES_DATA.map(c => `<option value="${{c.id}}" ${{m.category === c.id ? 'selected' : ''}}>${{c.name}}</option>`).join('')}}
+          </select>
+        </div>
+      `).join('');
+    }}
+
+    function handleAddCategory() {{
+      const input = document.getElementById('newCategoryNameInput');
+      const name = (input?.value || '').trim();
+      if (!name) {{
+        alert('추가할 카테고리 이름을 입력해 주세요.');
+        input?.focus();
+        return;
+      }}
+      const newId = 'cat-' + Date.now();
+      const usedThemes = new Set(CATEGORIES_DATA.map((c, idx) => typeof c.theme === 'number' ? c.theme : (idx % 8)));
+      let nextTheme = CATEGORIES_DATA.length % 8;
+      for (let t = 0; t < 8; t++) {{
+        if (!usedThemes.has(t)) {{ nextTheme = t; break; }}
+      }}
+      CATEGORIES_DATA.push({{ id: newId, name, theme: nextTheme }});
+      if (input) input.value = '';
+      saveCategoryStateToStorage(true);
+      renderCategoryBar();
+      renderCategoryEditModalContents();
+    }}
+
+    function renameCategoryById(catId, newName) {{
+      const trimmed = (newName || '').trim();
+      if (!trimmed) {{
+        renderCategoryEditModalContents();
+        return;
+      }}
+      const cat = CATEGORIES_DATA.find(c => c.id === catId);
+      if (cat && cat.name !== trimmed) {{
+        cat.name = trimmed;
+        saveCategoryStateToStorage(true);
+        renderCategoryBar();
+        renderCategoryEditModalContents();
+      }}
+    }}
+
+    function moveCategoryOrder(index, delta) {{
+      const targetIdx = index + delta;
+      if (targetIdx < 0 || targetIdx >= CATEGORIES_DATA.length) return;
+      const temp = CATEGORIES_DATA[index];
+      CATEGORIES_DATA[index] = CATEGORIES_DATA[targetIdx];
+      CATEGORIES_DATA[targetIdx] = temp;
+      saveCategoryStateToStorage(true);
+      renderCategoryBar();
+      renderCategoryEditModalContents();
+    }}
+
+    function deleteCategoryById(catId) {{
+      if (CATEGORIES_DATA.length <= 1) {{
+        alert('최소 1개의 카테고리는 유지되어야 합니다.');
+        return;
+      }}
+      const targetCat = CATEGORIES_DATA.find(c => c.id === catId);
+      const fallbackCat = CATEGORIES_DATA.find(c => c.id !== catId);
+      if (!targetCat || !fallbackCat) return;
+      const affectedCount = MANUAL_LIST.filter(m => m.category === catId).length;
+      const msg = affectedCount > 0
+        ? `'${{targetCat.name}}' 카테고리를 삭제하시겠습니까?\\n소속된 ${{affectedCount}}개 매뉴얼은 '${{fallbackCat.name}}' 카테고리로 자동 이동됩니다.`
+        : `'${{targetCat.name}}' 카테고리를 삭제하시겠습니까?`;
+      if (!confirm(msg)) return;
+
+      MANUAL_LIST.forEach(m => {{
+        if (m.category === catId) m.category = fallbackCat.id;
+      }});
+      CATEGORIES_DATA = CATEGORIES_DATA.filter(c => c.id !== catId);
+      if (currentCategoryId === catId) currentCategoryId = 'all';
+      saveCategoryStateToStorage(true);
+      renderCategoryBar();
+      renderCategoryEditModalContents();
+    }}
+
+    function assignManualToCategory(manualId, newCatId) {{
+      const item = MANUAL_LIST.find(m => m.id === manualId);
+      if (!item || !CATEGORIES_DATA.some(c => c.id === newCatId)) return;
+      item.category = newCatId;
+      const customItem = customManualsStore.find(m => m.id === manualId);
+      if (customItem) {{
+        customItem.category = newCatId;
+        saveCustomManualToDB(customItem);
+      }}
+      saveCategoryStateToStorage(true);
+      renderCategoryBar();
+      renderCategoryEditModalContents();
+    }}
+
+    function resetCategoriesToDefault() {{
+      if (!confirm('카테고리 목록과 매뉴얼 분류를 초기 기본값으로 되돌리시겠습니까?')) return;
+      CATEGORIES_DATA = JSON.parse(JSON.stringify(INITIAL_CATEGORIES));
+      MANUAL_LIST.forEach(m => {{
+        m.category = INITIAL_MANUAL_CATEGORIES[m.id] || CATEGORIES_DATA[0].id;
+      }});
+      currentCategoryId = 'all';
+      try {{
+        localStorage.removeItem(CATEGORIES_STORAGE_KEY);
+        localStorage.removeItem(MANUAL_CAT_MAP_STORAGE_KEY);
+      }} catch (e) {{}}
+      hasCategoryChanged = true;
+      updateDeployButtonVisibility();
+      renderCategoryBar();
+      renderCategoryEditModalContents();
+    }}
+
+    // Collapsible PDF / Video Viewer & Open PDF in New Tab Helpers
+    function toggleCollapsibleViewer(boxId, btnEl, openText, closeText) {{
+      const box = document.getElementById(boxId);
+      if (!box) return;
+      const isHidden = box.style.display === 'none' || !box.style.display;
+      if (isHidden) {{
+        box.style.display = 'block';
+        const frame = box.querySelector('iframe');
+        if (frame) {{
+          if (frame.dataset.lazySrc && !frame.getAttribute('src')) {{
+            frame.setAttribute('src', frame.dataset.lazySrc);
+          }} else if (frame.dataset.pdfSrc) {{
+            hydratePdfFrames(box);
+          }}
+        }}
+        if (btnEl && closeText) btnEl.innerHTML = closeText;
+        box.scrollIntoView({{ behavior: 'smooth', block: 'nearest' }});
+      }} else {{
+        box.style.display = 'none';
+        if (btnEl && openText) btnEl.innerHTML = openText;
+      }}
+    }}
+
+    function openEmbeddedPdfInNewTab(viewerId) {{
+      const box = document.getElementById(viewerId);
+      if (!box) return;
+      const frame = box.querySelector('iframe[data-pdf-src]');
+      if (!frame || !frame.dataset.pdfSrc) return;
+      try {{
+        const b = atob(frame.dataset.pdfSrc.split(',')[1]);
+        const u = new Uint8Array(b.length);
+        for (let i = 0; i < b.length; i++) u[i] = b.charCodeAt(i);
+        const url = URL.createObjectURL(new Blob([u], {{ type: 'application/pdf' }}));
+        window.open(url, '_blank', 'noopener');
+      }} catch (e) {{}}
     }}
 
     function hydratePdfFrames(root = document) {{
       root.querySelectorAll('iframe.pdf-embed-frame[data-pdf-src]').forEach(frame => {{
         if (frame.dataset.hydrated === '1') return;
+        const box = frame.closest('.pdf-embed-wrap');
+        if (box && box.style.display === 'none') return;
         const dataUrl = frame.getAttribute('data-pdf-src');
         if (!dataUrl || !dataUrl.startsWith('data:application/pdf;base64,')) return;
         try {{
@@ -1558,6 +2677,10 @@ index_html = f"""<!doctype html>
       const hash = window.location.hash.replace(/^#/, '').trim();
       const valid = MANUAL_LIST.find(m => m.id === hash);
       if (valid) {{
+        if (currentCategoryId !== 'all' && valid.category !== currentCategoryId) {{
+          currentCategoryId = 'all';
+          renderCategoryBar();
+        }}
         selectManual(valid.id, false);
       }} else {{
         selectManual(MANUAL_LIST[0].id, false);
@@ -1578,6 +2701,20 @@ index_html = f"""<!doctype html>
       if (e.target === modal) closeModal();
     }});
 
+    function openImageInModal(urls, altText, canvaUrl) {{
+      if (!urls || !urls.length) return;
+      if (modalCanvaBtn) {{
+        modalCanvaBtn.href = canvaUrl || '#';
+        modalCanvaBtn.style.visibility = canvaUrl ? 'visible' : 'hidden';
+      }}
+      modalGallery.innerHTML = urls.map((u, i) => `
+        <img src="${{u}}" alt="${{altText || '원본 안내 이미지'}} ${{i + 1}}">
+      `).join('');
+      modal.hidden = false;
+      document.body.classList.add('modal-open');
+      modalCloseBtn.focus();
+    }}
+
     function bindImageToggles(root = document) {{
       root.querySelectorAll('.img-toggle').forEach(btn => {{
         if (btn.dataset.bound === '1') return;
@@ -1586,11 +2723,6 @@ index_html = f"""<!doctype html>
           e.stopPropagation();
           const pane = btn.closest('.manual-pane');
           const canvaUrl = (pane && pane.dataset.canva) ? pane.dataset.canva : (MANUAL_LIST.find(m => m.id === currentManualId)?.canva || '');
-          if (modalCanvaBtn) {{
-            modalCanvaBtn.href = canvaUrl || '#';
-            modalCanvaBtn.style.visibility = canvaUrl ? 'visible' : 'hidden';
-          }}
-
           let urls = [];
           if (btn.dataset.images) {{
             try {{
@@ -1601,15 +2733,20 @@ index_html = f"""<!doctype html>
           }} else if (btn.dataset.image) {{
             urls = [btn.dataset.image];
           }}
-          if (!urls.length) return;
+          openImageInModal(urls, btn.dataset.alt || '원본 안내 이미지', canvaUrl);
+        }});
+      }});
 
-          modalGallery.innerHTML = urls.map((u, i) => `
-            <img src="${{u}}" alt="${{btn.dataset.alt || '원본 안내 이미지'}} ${{i + 1}}">
-          `).join('');
-
-          modal.hidden = false;
-          document.body.classList.add('modal-open');
-          modalCloseBtn.focus();
+      root.querySelectorAll('.inline-figure img').forEach(img => {{
+        if (img.dataset.boundZoom === '1') return;
+        img.dataset.boundZoom = '1';
+        img.addEventListener('click', (e) => {{
+          e.stopPropagation();
+          const src = img.getAttribute('src');
+          if (!src) return;
+          const pane = img.closest('.manual-pane');
+          const canvaUrl = (pane && pane.dataset.canva) ? pane.dataset.canva : (MANUAL_LIST.find(m => m.id === currentManualId)?.canva || '');
+          openImageInModal([src], img.dataset.caption || img.getAttribute('alt') || '상세 이미지', canvaUrl);
         }});
       }});
     }}
@@ -1618,6 +2755,7 @@ index_html = f"""<!doctype html>
 
     // Add Manual Modal Logic
     function openAddManualModal() {{
+      populateAddManualCategorySelect();
       addModal.hidden = false;
       document.body.classList.add('modal-open');
     }}
@@ -1635,6 +2773,7 @@ index_html = f"""<!doctype html>
       if (e.key === 'Escape') {{
         if (!modal.hidden) closeModal();
         if (!addModal.hidden) closeAddManualModal();
+        if (!catEditModal.hidden) closeCategoryEditModal();
       }}
     }});
 
@@ -1682,7 +2821,7 @@ index_html = f"""<!doctype html>
     }}
 
     function buildStandaloneHtmlFromPdfOrImage(title, type, dataUrls, canvaUrl) {{
-      const canvaBtn = canvaUrl ? `<a class="source-button" href="${{canvaUrl}}" target="_blank" rel="noopener">원본 Canva 슬라이드 열기</a>` : '';
+      const canvaBtn = canvaUrl ? `<a class="source-button" href="${{canvaUrl}}" target="_blank" rel="noopener">원본 문서 열기</a>` : '';
       let bodySection = '';
       if (type === 'pdf') {{
         bodySection = `
@@ -1770,7 +2909,7 @@ index_html = f"""<!doctype html>
         const db = await openManualDB();
         return new Promise((resolve) => {{
           const tx = db.transaction('manuals', 'readwrite');
-          const copy = {{ id: item.id, title: item.title, stepsCount: item.stepsCount, canva: item.canva, contentHtml: item.contentHtml, rawHtml: item.rawHtml, fileName: item.fileName }};
+          const copy = {{ id: item.id, title: item.title, stepsCount: item.stepsCount, canva: item.canva, category: item.category, contentHtml: item.contentHtml, rawHtml: item.rawHtml, fileName: item.fileName }};
           tx.objectStore('manuals').put(copy);
           tx.oncomplete = () => resolve(true);
           tx.onerror = () => resolve(false);
@@ -1844,7 +2983,7 @@ index_html = f"""<!doctype html>
         const actionsDiv = doc.createElement('div');
         actionsDiv.className = 'title-actions';
         if (canvaUrl) {{
-          actionsDiv.innerHTML += `<a class="source-button" href="${{canvaUrl}}" target="_blank" rel="noopener">원본 Canva 슬라이드 열기</a>`;
+          actionsDiv.innerHTML += `<a class="source-button" href="${{canvaUrl}}" target="_blank" rel="noopener">원본 문서 열기</a>`;
         }}
         const fileHref = fileName ? `pages/${{fileName}}` : '#';
         actionsDiv.innerHTML += `
@@ -1865,6 +3004,11 @@ index_html = f"""<!doctype html>
         document.getElementById(`pane-${{item.id}}`).remove();
       }}
 
+      const catId = (item.category && CATEGORIES_DATA.some(c => c.id === item.category))
+        ? item.category
+        : (CATEGORIES_DATA[0]?.id || 'office-basic');
+      item.category = catId;
+
       let blobUrl = '';
       if (item.rawHtml) {{
         const blob = new Blob([item.rawHtml], {{ type: 'text/html;charset=utf-8' }});
@@ -1878,7 +3022,7 @@ index_html = f"""<!doctype html>
 
       const existIdx = MANUAL_LIST.findIndex(m => m.id === item.id);
       if (existIdx >= 0) MANUAL_LIST.splice(existIdx, 1);
-      MANUAL_LIST.push({{ id: item.id, title: item.title, canva: item.canva || '', isCustom: true }});
+      MANUAL_LIST.push({{ id: item.id, title: item.title, canva: item.canva || '', category: catId, isCustom: true }});
 
       const navGrid = document.getElementById('manualNavGrid');
       const addBtn = document.getElementById('openAddManualBtn');
@@ -1886,7 +3030,10 @@ index_html = f"""<!doctype html>
       btn.href = '#' + item.id;
       btn.className = 'manual-nav-btn';
       btn.dataset.id = item.id;
+      btn.dataset.category = catId;
+      btn.dataset.catTheme = String(getCategoryThemeIndex(catId));
       btn.dataset.custom = '1';
+      btn.title = getCategoryName(catId);
       btn.draggable = true;
       btn.onclick = (e) => {{
         e.preventDefault();
@@ -1895,7 +3042,6 @@ index_html = f"""<!doctype html>
       btn.innerHTML = `
         <button type="button" class="nav-btn-del" title="이 매뉴얼 삭제" onclick="removeCustomManual(event, '${{item.id}}')">×</button>
         <span class="nav-btn-title">${{item.title}}</span>
-        <span class="nav-btn-steps">${{item.stepsCount}}단계</span>
       `;
       navGrid.insertBefore(btn, addBtn);
 
@@ -1915,6 +3061,7 @@ index_html = f"""<!doctype html>
       contentArea.appendChild(pane);
       bindImageToggles(pane);
       hydratePdfFrames(pane);
+      renderCategoryBar();
       updateDeployButtonVisibility();
     }}
 
@@ -1929,6 +3076,7 @@ index_html = f"""<!doctype html>
       if (sIdx >= 0) customManualsStore.splice(sIdx, 1);
       const idx = MANUAL_LIST.findIndex(m => m.id === id);
       if (idx >= 0) MANUAL_LIST.splice(idx, 1);
+      renderCategoryBar();
       updateDeployButtonVisibility();
       if (currentManualId === id) {{
         selectManual(MANUAL_LIST[0].id);
@@ -1939,6 +3087,7 @@ index_html = f"""<!doctype html>
       if (!uploadedRawHtml) return null;
       const title = document.getElementById('manualShortTitle').value.trim() || uploadedFileName.replace(/\\.html?$/i, '');
       const stepsCount = parseInt(document.getElementById('manualStepsCount').value, 10) || 1;
+      const category = document.getElementById('manualCategorySelect')?.value || (CATEGORIES_DATA[0]?.id || 'office-basic');
       const canva = document.getElementById('manualCanvaUrl').value.trim();
       const slugBase = (uploadedFileName || title).replace(/\\.html?$/i, '').replace(/[^a-zA-Z0-9가-힣_-]/g, '-').toLowerCase();
       const id = 'manual-' + (slugBase || Date.now());
@@ -1950,7 +3099,7 @@ index_html = f"""<!doctype html>
       }}
 
       const contentHtml = buildPaneHtmlFromRaw(finalRawHtml, canva, safeFileName);
-      const item = {{ id, title, stepsCount, canva, contentHtml, rawHtml: finalRawHtml, fileName: safeFileName }};
+      const item = {{ id, title, stepsCount, canva, category, contentHtml, rawHtml: finalRawHtml, fileName: safeFileName }};
 
       renderCustomManual(item);
       await saveCustomManualToDB(item);
@@ -1973,6 +3122,10 @@ index_html = f"""<!doctype html>
       const item = await registerCurrentFormManual();
       if (item) {{
         closeAddManualModal();
+        if (currentCategoryId !== 'all' && currentCategoryId !== item.category) {{
+          currentCategoryId = item.category;
+          renderCategoryBar();
+        }}
         selectManual(item.id);
       }}
     }}
@@ -1981,29 +3134,45 @@ index_html = f"""<!doctype html>
       const clone = document.documentElement.cloneNode(true);
       clone.querySelector('#globalImageModal')?.setAttribute('hidden', '');
       clone.querySelector('#addManualModal')?.setAttribute('hidden', '');
+      clone.querySelector('#categoryEditModal')?.setAttribute('hidden', '');
       clone.querySelector('#btnHeaderDeployDownload')?.setAttribute('hidden', '');
       clone.querySelector('body')?.classList.remove('modal-open');
       clone.querySelectorAll('.nav-btn-del').forEach(el => el.remove());
-      clone.querySelectorAll('.manual-nav-btn').forEach(el => el.removeAttribute('data-custom'));
+      clone.querySelectorAll('.manual-nav-btn').forEach(el => {{
+        el.removeAttribute('data-custom');
+        el.removeAttribute('hidden');
+        const item = MANUAL_LIST.find(m => m.id === el.dataset.id);
+        if (item) {{
+          el.dataset.category = item.category;
+          el.dataset.catTheme = String(getCategoryThemeIndex(item.category));
+          el.title = getCategoryName(item.category);
+        }}
+      }});
       clone.querySelectorAll('.pane-standalone-link').forEach(el => el.removeAttribute('data-blob-url'));
       clone.querySelectorAll('.img-toggle').forEach(el => el.removeAttribute('data-bound'));
+      clone.querySelectorAll('.inline-figure img').forEach(el => el.removeAttribute('data-bound-zoom'));
       clone.querySelectorAll('iframe.pdf-embed-frame[data-pdf-src]').forEach(frame => {{
         frame.removeAttribute('data-hydrated');
-        frame.setAttribute('src', frame.getAttribute('data-pdf-src'));
+        frame.removeAttribute('src');
       }});
       const scriptEl = clone.querySelector('#mainPortalScript');
       if (scriptEl) {{
-        const cleanList = MANUAL_LIST.map(m => ({{ id: m.id, title: m.title, canva: m.canva || '' }}));
-        scriptEl.textContent = scriptEl.textContent.replace(
-          /const MANUAL_LIST = \\[.*?\\];/,
-          'const MANUAL_LIST = ' + JSON.stringify(cleanList) + ';'
-        );
+        const cleanCats = CATEGORIES_DATA.map((c, idx) => ({{ id: c.id, name: c.name, theme: typeof c.theme === 'number' ? c.theme : (idx % 8) }}));
+        const cleanList = MANUAL_LIST.map(m => ({{ id: m.id, title: m.title, canva: m.canva || '', category: m.category }}));
+        scriptEl.textContent = scriptEl.textContent
+          .replace(
+            /const INITIAL_CATEGORIES = \\[.*?\\];/,
+            'const INITIAL_CATEGORIES = ' + JSON.stringify(cleanCats) + ';'
+          )
+          .replace(
+            /const MANUAL_LIST = \\[.*?\\];/,
+            'const MANUAL_LIST = ' + JSON.stringify(cleanList) + ';'
+          );
       }}
       return '<!doctype html>\\n' + clone.outerHTML;
     }}
 
     function downloadAllDeploymentFiles() {{
-      // Synchronously prepare all Blob URLs BEFORE triggering any download so user activation stays active
       const downloadQueue = [];
       customManualsStore.forEach(item => {{
         if (item.rawHtml) {{
@@ -2027,11 +3196,11 @@ index_html = f"""<!doctype html>
         }}
       }});
       hasOrderChanged = false;
+      hasCategoryChanged = false;
       if (deployDownloadBtn) deployDownloadBtn.hidden = true;
     }}
 
-    // Drag and Drop Reordering for Manual Navigation Buttons
-    const ORDER_STORAGE_KEY = 'online_office_manual_nav_order';
+    // Drag and Drop Reordering for Manual Buttons + Drop onto Category Tabs
     let draggedBtn = null;
 
     function syncManualOrderFromDOM(saveToStorage = true) {{
@@ -2066,6 +3235,33 @@ index_html = f"""<!doctype html>
         }});
         syncManualOrderFromDOM(false);
       }} catch (e) {{}}
+    }}
+
+    function bindCategoryTabDropTargets() {{
+      const tabsContainer = document.getElementById('categoryTabs');
+      if (!tabsContainer) return;
+      tabsContainer.querySelectorAll('.category-tab').forEach(tab => {{
+        const catId = tab.dataset.catId;
+        if (!catId || catId === 'all') return;
+        tab.addEventListener('dragover', (e) => {{
+          if (!draggedBtn) return;
+          e.preventDefault();
+          e.dataTransfer.dropEffect = 'move';
+          tab.classList.add('drag-over-cat');
+        }});
+        tab.addEventListener('dragleave', () => {{
+          tab.classList.remove('drag-over-cat');
+        }});
+        tab.addEventListener('drop', (e) => {{
+          if (!draggedBtn) return;
+          e.preventDefault();
+          tab.classList.remove('drag-over-cat');
+          const manualId = draggedBtn.dataset.id;
+          if (manualId) {{
+            assignManualToCategory(manualId, catId);
+          }}
+        }});
+      }});
     }}
 
     function initNavDragAndDrop() {{
@@ -2116,16 +3312,21 @@ index_html = f"""<!doctype html>
       navGrid.addEventListener('dragend', () => {{
         if (draggedBtn) draggedBtn.classList.remove('dragging');
         navGrid.querySelectorAll('.manual-nav-btn').forEach(b => b.classList.remove('drag-over'));
+        document.querySelectorAll('.category-tab').forEach(t => t.classList.remove('drag-over-cat'));
         draggedBtn = null;
       }});
     }}
 
+    loadCategoryStateFromStorage();
+    renderCategoryBar();
     initNavDragAndDrop();
     handleHash();
     window.addEventListener('DOMContentLoaded', async () => {{
       const saved = await loadCustomManualsFromDB();
       saved.forEach(item => renderCustomManual(item));
+      loadCategoryStateFromStorage();
       applySavedManualOrder();
+      renderCategoryBar();
       updateDeployButtonVisibility();
       handleHash();
     }});
@@ -2145,5 +3346,5 @@ with open(__file__, "r", encoding="utf-8") as f:
 with open(bundle_path, "w", encoding="utf-8", newline="\n") as f:
     f.write(self_code)
 
-print("Generated clean index.html with single Canva button and side-by-side 독립창 열기 button.")
+print("Generated clean index.html with 20 manuals, category tabs, and category editor.")
 print("File size:", round(os.path.getsize(index_path) / 1024 / 1024, 2), "MB")
