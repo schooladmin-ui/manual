@@ -31,12 +31,12 @@
 | **02** | [크롬 북마크바 표시 방법](pages/bookmark-bar-manual-with-canva-link.html) | 🛡️기본 환경 세팅 | 3단계 | [파일 열기](pages/bookmark-bar-manual-with-canva-link.html) | 단계 카드 + 🔍 모달 |
 | **03** | [바탕화면에 온라인교무실 바로가기 버튼 만들기](pages/desktop-button-guide-manual.html) | 🛡️기본 환경 세팅 | 4단계 | [파일 열기](pages/desktop-button-guide-manual.html) | 단계 카드 + 🔍 모달 |
 | **04** | [메인 페이지 편집 방법](pages/main-page-edit-guide-manual.html) | 🏢 온라인 교무실 | 4단계 | [파일 열기](pages/main-page-edit-guide-manual.html) | 단계 카드 + 🔍 모달 |
-| **05** | [온라인교무실 공유 폴더 권한 설정 방법](pages/permission-setting-guide-with-canva-link.html) | 🏢 온라인 교무실 | 4단계 | [파일 열기](pages/permission-setting-guide-with-canva-link.html) | 단계 카드 + 🔍 모달 |
-| **06** | [연수서명부 서명 방법](pages/training-signature-guide-manual.html) | 🏢 온라인 교무실 | 4단계 | [파일 열기](pages/training-signature-guide-manual.html) | 단계 카드 + 🔍 모달 |
-| **07** | [구글 Notebook LM 생성 후 공유 방법](pages/notebooklm-create-share-guide-manual.html) | 🏢 온라인 교무실 | 11단계 | [파일 열기](pages/notebooklm-create-share-guide-manual.html) | 단계 카드 + 🔍 모달 |
-| **08** | [구글 채팅(Google Chat) 설치 방법](<pages/우리 학교, 이제 구글 채팅(Google Chat)으로-pdf-guide.html>) | 💬 구글 채팅(Google Chat) | 1단계 | [파일 열기](<pages/우리 학교, 이제 구글 채팅(Google Chat)으로-pdf-guide.html>) | 내장 PDF 뷰어 |
-| **09** | [구글 채팅(Google Chat) 앱에서 채팅방(스페이스) 만드는 방법](pages/google-chat-space-guide.html) | 💬 구글 채팅(Google Chat) | 4단계 | [파일 열기](pages/google-chat-space-guide.html) | 단계 카드 + 🔍 모달 |
-| **10** | [그룹 만들기](pages/google-groups-create-guide.html) | 💬 구글 채팅(Google Chat) | 2단계 | [파일 열기](pages/google-groups-create-guide.html) | 인라인 이미지 바로 표시 |
+| **05** | [구글 Notebook LM 생성 후 공유 방법](pages/notebooklm-create-share-guide-manual.html) | 🏢 온라인 교무실 | 11단계 | [파일 열기](pages/notebooklm-create-share-guide-manual.html) | 단계 카드 + 🔍 모달 |
+| **06** | [온라인교무실 공유 폴더 권한 설정 방법](pages/permission-setting-guide-with-canva-link.html) | 🏢 온라인 교무실 | 4단계 | [파일 열기](pages/permission-setting-guide-with-canva-link.html) | 단계 카드 + 🔍 모달 |
+| **07** | [연수서명부 서명 방법](pages/training-signature-guide-manual.html) | 🏢 온라인 교무실 | 4단계 | [파일 열기](pages/training-signature-guide-manual.html) | 단계 카드 + 🔍 모달 |
+| **08** | [구글 채팅(Google Chat) 앱에서 채팅방(스페이스) 만드는 방법](pages/google-chat-space-guide.html) | 💬 구글 채팅(Google Chat) | 4단계 | [파일 열기](pages/google-chat-space-guide.html) | 단계 카드 + 🔍 모달 |
+| **09** | [그룹 만들기](pages/google-groups-create-guide.html) | 💬 구글 채팅(Google Chat) | 2단계 | [파일 열기](pages/google-groups-create-guide.html) | 인라인 이미지 바로 표시 |
+| **10** | [구글 채팅(Google Chat) 설치 방법](<pages/우리 학교, 이제 구글 채팅(Google Chat)으로-pdf-guide.html>) | 💬 구글 채팅(Google Chat) | 1단계 | [파일 열기](<pages/우리 학교, 이제 구글 채팅(Google Chat)으로-pdf-guide.html>) | 내장 PDF 뷰어 |
 | **11** | [디벗 전원이 켜지지 않을 때](pages/dibut-power-on-guide.html) | 💻 디벗 수업 활용 | 2단계 | [파일 열기](pages/dibut-power-on-guide.html) | 인라인 이미지 바로 표시 |
 | **12** | [학생 비번 재설정 방법](pages/student-password-reset-guide.html) | 💻 디벗 수업 활용 | 3단계 | [파일 열기](pages/student-password-reset-guide.html) | 인라인 이미지 바로 표시 |
 | **13** | [북마크 수정하기 (관리 북마크)](pages/managed-bookmark-edit-guide.html) | 💻 디벗 수업 활용 | 2단계 | [파일 열기](pages/managed-bookmark-edit-guide.html) | 2장 모두 인라인 바로 표시 |
@@ -93,11 +93,11 @@
 
 ```
 06-온라인교무실 매뉴얼/
-├── index.html                                                          # 10개 매뉴얼 통합 웹 포털 (메인 배포 파일)
+├── index.html                                                          # 20개 매뉴얼 통합 웹 포털 (메인 배포 파일)
 ├── bundle_manuals.py                                                   # pages/ 내 HTML을 모아 index.html로 빌드하는 스크립트
 ├── README.md                                                           # 프로젝트 설명서 (본 문서)
 │
-├── pages/                                                              # 개별 매뉴얼 HTML 폴더 (10종)
+├── pages/                                                              # 개별 매뉴얼 HTML 폴더 (20종)
 │   ├── chrome-default-app-guide-with-canva-link.html                   # [01] 크롬 기본앱 설정 가이드
 │   ├── bookmark-bar-manual-with-canva-link.html                        # [02] 크롬 북마크바 표시 가이드
 │   ├── desktop-button-guide-manual.html                                # [03] 바탕화면 바로가기 버튼 가이드
@@ -107,7 +107,17 @@
 │   ├── training-signature-guide-manual.html                            # [07] 연수서명부 서명 가이드
 │   ├── google-chat-space-guide.html                                    # [08] 구글 채팅방(스페이스) 만드는 방법 가이드
 │   ├── google-groups-create-guide.html                                 # [09] 그룹 만들기 가이드
-│   └── 우리 학교, 이제 구글 채팅(Google Chat)으로-pdf-guide.html          # [10] 구글 채팅(Google Chat) 설치 방법 가이드 (PDF 내장)
+│   ├── 우리 학교, 이제 구글 채팅(Google Chat)으로-pdf-guide.html          # [10] 구글 채팅(Google Chat) 설치 방법 가이드 (PDF 내장)
+│   ├── dibut-power-on-guide.html                                       # [11] 디벗 전원이 켜지지 않을 때 가이드
+│   ├── student-password-reset-guide.html                               # [12] 학생 비번 재설정 방법 가이드
+│   ├── managed-bookmark-edit-guide.html                                # [13] 북마크 수정하기 (관리 북마크) 가이드
+│   ├── teacher-app-extension-guide.html                                # [14] 앱 및 확장 프로그램 추가 방법 (교사용) 가이드
+│   ├── student-app-extension-guide.html                                # [15] 앱 및 확장 프로그램 추가 방법 (학생용) 가이드
+│   ├── cursor-style-change-guide.html                                  # [16] 기본 커서 모양 변경하기 가이드
+│   ├── wired-mirroring-display-guide.html                              # [17] 유선 미러링 화면 복사 기능 구현하기 가이드
+│   ├── focuspang-guide.html                                            # [18] 포커스팡(FocusPang) 활용 방법 가이드
+│   ├── dibut-charging-cabinet-1-2-guide.html                           # [19] 디벗 충전함 사용법 (1·2학년) 가이드
+│   └── dibut-charging-cabinet-3-guide.html                             # [20] 디벗 충전함 사용법 (3학년) 가이드
 │
 ├── images/                                                             # 매뉴얼 원본 이미지 및 아이콘 폴더
 │   ├── dorms-icon.png
@@ -158,7 +168,7 @@
 python bundle_manuals.py
 ```
 
-- 스크립트 실행 즉시 `pages/` 폴더의 10개 매뉴얼 본문과 내장 데이터를 추출하여 `index.html`에 일괄 반영합니다.
+- 스크립트 실행 즉시 `pages/` 폴더의 20개 매뉴얼 본문과 내장 데이터를 추출하여 `index.html`에 일괄 반영합니다.
 
 ---
 

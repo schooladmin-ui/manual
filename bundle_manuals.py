@@ -62,6 +62,16 @@ MANUALS = [
         "category": "google-admin"
     },
     {
+        "id": "notebooklm",
+        "file": "notebooklm-create-share-guide-manual.html",
+        "short_title": "구글 Notebook LM 생성 후 공유 방법",
+        "full_title": "구글 Notebook LM 생성 후 공유 방법",
+        "steps_count": 11,
+        "canva": "https://www.canva.com/design/DAHEc7d9s8A/single-page-manual",
+        "source_label": "원본 Canva 슬라이드 열기",
+        "category": "google-admin"
+    },
+    {
         "id": "permission-setting",
         "file": "permission-setting-guide-with-canva-link.html",
         "short_title": "온라인교무실 공유 폴더 권한 설정 방법",
@@ -81,28 +91,8 @@ MANUALS = [
         "source_label": "원본 Canva 슬라이드 열기",
         "category": "google-admin"
     },
-    {
-        "id": "notebooklm",
-        "file": "notebooklm-create-share-guide-manual.html",
-        "short_title": "구글 Notebook LM 생성 후 공유 방법",
-        "full_title": "구글 Notebook LM 생성 후 공유 방법",
-        "steps_count": 11,
-        "canva": "https://www.canva.com/design/DAHEc7d9s8A/single-page-manual",
-        "source_label": "원본 Canva 슬라이드 열기",
-        "category": "google-admin"
-    },
 
     # 3. 💬 구글 채팅(Google Chat) (3개)
-    {
-        "id": "manual-우리-학교--이제-구글-채팅-google-chat-으로-pdf-guide",
-        "file": "우리 학교, 이제 구글 채팅(Google Chat)으로-pdf-guide.html",
-        "short_title": "구글 채팅(Google Chat) 설치 방법",
-        "full_title": "구글 채팅(Google Chat) 설치 방법",
-        "steps_count": 1,
-        "canva": "",
-        "source_label": "",
-        "category": "comm-ai"
-    },
     {
         "id": "google-chat",
         "file": "google-chat-space-guide.html",
@@ -119,6 +109,16 @@ MANUALS = [
         "short_title": "그룹 만들기",
         "full_title": "그룹 만들기",
         "steps_count": 2,
+        "canva": "",
+        "source_label": "",
+        "category": "comm-ai"
+    },
+    {
+        "id": "manual-우리-학교--이제-구글-채팅-google-chat-으로-pdf-guide",
+        "file": "우리 학교, 이제 구글 채팅(Google Chat)으로-pdf-guide.html",
+        "short_title": "구글 채팅(Google Chat) 설치 방법",
+        "full_title": "구글 채팅(Google Chat) 설치 방법",
+        "steps_count": 1,
         "canva": "",
         "source_label": "",
         "category": "comm-ai"
